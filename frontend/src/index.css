@@ -1,0 +1,8 @@
+@import "tailwindcss";
+html {
+  font-size: 80%;
+}
+::selection {
+  background: #e850e0;
+  color: black;
+}
