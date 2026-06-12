@@ -7,7 +7,7 @@ import shutil
 from database_session import get_db
 from models import Attachment
 from schemas import AttachmentResponse
-
+from fastapi import HTTPException
 router = APIRouter()
 class AttachmentUpdate(BaseModel):
     message_id: int
@@ -85,3 +85,36 @@ def update_attachment(
         db.commit()
 
     return {"message": "Attachment updated"}    
+
+
+@router.delete("/attachment/{attachment_id}")
+def delete_attachment(
+    attachment_id: int,
+    db: Session = Depends(get_db)
+):
+
+    attachment = db.query(Attachment).filter(
+        Attachment.id == attachment_id
+    ).first()
+
+    if not attachment:
+        raise HTTPException(
+            status_code=404,
+            detail="Attachment not found"
+        )
+
+    # Delete file from uploads folder
+    if os.path.exists(attachment.file_path):
+
+        os.remove(
+            attachment.file_path
+        )
+
+    # Delete from database
+    db.delete(attachment)
+
+    db.commit()
+
+    return {
+        "message": "Attachment deleted"
+    }

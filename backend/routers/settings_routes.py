@@ -4,10 +4,11 @@ from models import (
     Mood,
     Journal,
     ChatSession,
-    Message
+    Message,
+    Attachment
 )
 from database_session import get_db
-
+import os
 router = APIRouter()
 
 
@@ -34,6 +35,23 @@ def clear_all_data(
 
     # DELETE MESSAGES OF EACH SESSION
     for session in sessions:
+
+        messages = db.query(Message).filter(
+            Message.session_id == session.id
+        ).all()
+
+        for message in messages:
+
+            attachments = db.query(Attachment).filter(
+                Attachment.message_id == message.id
+            ).all()
+
+            for attachment in attachments:
+
+                if os.path.exists(attachment.file_path):
+                    os.remove(attachment.file_path)
+
+                db.delete(attachment)
 
         db.query(Message).filter(
             Message.session_id == session.id
@@ -62,6 +80,23 @@ def clear_chat_history(
     ).all()
 
     for session in sessions:
+
+        messages = db.query(Message).filter(
+            Message.session_id == session.id
+        ).all()
+
+        for message in messages:
+
+            attachments = db.query(Attachment).filter(
+                Attachment.message_id == message.id
+            ).all()
+
+            for attachment in attachments:
+
+                if os.path.exists(attachment.file_path):
+                    os.remove(attachment.file_path)
+
+                db.delete(attachment)
 
         db.query(Message).filter(
             Message.session_id == session.id

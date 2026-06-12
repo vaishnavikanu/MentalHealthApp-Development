@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from models import ChatSession, Message, User, Attachment
 from database_session import get_db
-
+from datetime import datetime
 from schemas import (
     ChatSessionCreate,
     MessageCreate
@@ -45,6 +45,8 @@ def get_chat_sessions(
 
     sessions = db.query(ChatSession).filter(
         ChatSession.user_id == user_id
+    ).order_by(
+        ChatSession.updated_at.desc()
     ).all()
 
     return sessions
@@ -63,6 +65,14 @@ def create_message(
     db.add(new_message)
     db.commit()
     db.refresh(new_message)
+    
+    session = db.query(ChatSession).filter(
+        ChatSession.id == message_data.session_id
+    ).first()
+
+    session.updated_at = datetime.now()
+
+    db.commit()
 
     return {
         "message": "Message added",

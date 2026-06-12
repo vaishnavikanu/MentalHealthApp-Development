@@ -18,6 +18,12 @@ function Settings({
   const [message, setMessage] =
     useState("");
 
+  const [showChatPopup, setShowChatPopup] =
+    useState(false);
+
+  const [showDataPopup, setShowDataPopup] =
+    useState(false);  
+
   /* SHOW MESSAGE */
   const showMessage = (text) => {
 
@@ -48,51 +54,52 @@ function Settings({
   /* CLEAR DATA */
   const clearAllData = async () => {
 
-  try {
+    try {
 
-    await API.delete(
-      `/clear-data/${user.id}`
-    );
+      await API.delete(
+        `/clear-data/${user.id}`
+      );
 
-    showMessage(
-      "All data cleared successfully!"
-    );
+      showMessage(
+        "All data cleared successfully!"
+      );
 
-  } catch (error) {
+    } catch (error) {
 
-    console.log(error);
+      console.log(error);
 
-    showMessage(
-      "Failed to clear data."
-    );
+      showMessage(
+        "Failed to clear data."
+      );
 
-  }
+    }
 
-};
+  };
   /*CLEAR CHAT HISTORY*/
-const clearChatHistory = async () => {
+  const clearChatHistory = async () => {
 
-  try {
 
-    await API.delete(
-      `/clear-chat-history/${user.id}`
-    );
+    try {
 
-    showMessage(
-      "Chat history cleared!"
-    );
+      await API.delete(
+        `/clear-chat-history/${user.id}`
+      );
 
-  } catch (error) {
+      showMessage(
+        "Chat history cleared!"
+      );
 
-    console.log(error);
+    } catch (error) {
 
-    showMessage(
-      "Failed to clear chat history."
-    );
+      console.log(error);
 
-  }
+      showMessage(
+        "Failed to clear chat history."
+      );
 
-};
+    }
+
+  };
   /* LOGOUT */
   const logoutUser = () => {
 
@@ -102,7 +109,137 @@ const clearChatHistory = async () => {
   };
 
   return (
+    <>
+          {showChatPopup && (
 
+        <div className="
+          fixed inset-0
+          bg-black/50
+          flex items-center justify-center
+          z-50
+        ">
+
+          <div className={`
+            w-[400px]
+            rounded-3xl
+            p-8
+            ${
+              darkMode
+                ? "bg-[#1f2937] text-white"
+                : "bg-white text-black"
+            }
+          `}>
+
+            <h2 className="text-2xl font-bold mb-4">
+              Clear Chat History
+            </h2>
+
+            <p className="mb-6">
+              Are you sure you want to delete all chat history?
+            </p>
+
+            <div className="flex justify-end gap-3">
+
+              <button
+                onClick={() =>
+                  setShowChatPopup(false)
+                }
+                className="
+                  px-5 py-2 rounded-xl
+                  bg-gray-300 text-black
+                "
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={async () => {
+
+                  setShowChatPopup(false);
+
+                  await clearChatHistory();
+
+                }}
+                className="
+                  px-5 py-2 rounded-xl
+                  bg-red-500 text-white
+                "
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+      {showDataPopup && (
+
+        <div className="
+          fixed inset-0
+          bg-black/50
+          flex items-center justify-center
+          z-50
+        ">
+
+          <div className={`
+            w-[400px]
+            rounded-3xl
+            p-8
+            ${
+              darkMode
+                ? "bg-[#1f2937] text-white"
+                : "bg-white text-black"
+            }
+          `}>
+
+            <h2 className="text-2xl font-bold mb-4">
+              Clear All Data
+            </h2>
+
+            <p className="mb-6">
+              This will permanently delete all your data.
+            </p>
+
+            <div className="flex justify-end gap-3">
+
+              <button
+                onClick={() =>
+                  setShowDataPopup(false)
+                }
+                className="
+                  px-5 py-2 rounded-xl
+                  bg-gray-300 text-black
+                "
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={async () => {
+
+                  setShowDataPopup(false);
+
+                  await clearAllData();
+
+                }}
+                className="
+                  px-5 py-2 rounded-xl
+                  bg-red-500 text-white
+                "
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
     <div
       className={`
         min-h-full
@@ -339,7 +476,9 @@ const clearChatHistory = async () => {
         <div className="flex flex-col gap-4">
 
           <button
-             onClick={clearChatHistory}
+            onClick={() =>
+              setShowChatPopup(true)
+            }
             className={`
               px-5
               py-3
@@ -357,7 +496,9 @@ const clearChatHistory = async () => {
           </button>
 
           <button
-            onClick={clearAllData}
+            onClick={() =>
+              setShowDataPopup(true)
+            }
             className="
               bg-red-100
               hover:bg-red-200
@@ -537,6 +678,7 @@ const clearChatHistory = async () => {
       </div>
 
     </div>
+    </>
   );
 }
 

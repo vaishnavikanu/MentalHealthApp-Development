@@ -33,6 +33,9 @@ function Chat({ newChat, darkMode }) {
     const [attachments, setAttachments] =
       useState([]);
 
+    const [showAttachmentMenu, setShowAttachmentMenu] =
+      useState(false);  
+
     const fileInputRef =
       useRef(null);
 
@@ -41,6 +44,11 @@ function Chat({ newChat, darkMode }) {
 
     const textareaRef =
       useRef(null);
+
+    const isMobile =
+      /Android|iPhone|iPad|iPod/i.test(
+        navigator.userAgent
+      );  
     
 /* CHAT SESSION CURRENT OPEN*/
   const [sessionId, setSessionId] =
@@ -203,10 +211,7 @@ textareaRef.current?.focus();
         currentSessionId
       );
 
-      navigate(
-        `/?session=${currentSessionId}`,
-        { replace: true }
-      );
+      
 
     }
 
@@ -235,6 +240,14 @@ textareaRef.current?.focus();
         );
 
       }  
+      if (!sessionId) {
+
+        navigate(
+          `/?session=${currentSessionId}`,
+          { replace: true }
+        );
+
+      }
 
     /* TEMP BOT RESPONSE */
     const botText =
@@ -329,8 +342,32 @@ textareaRef.current?.focus();
 
     }
     textareaRef.current?.focus();
+    e.target.value = "";
   };
 
+  const removeAttachment = async (id) => {
+
+    try {
+
+      await API.delete(
+        `/attachment/${id}`
+      );
+
+      setAttachments(prev =>
+        prev.filter(
+          file => file.id !== id
+        )
+      );
+
+    }
+
+    catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
   return (
 
     <>
@@ -477,6 +514,9 @@ textareaRef.current?.focus();
       <div
         key={file.id}
         className={`
+          flex
+          items-center
+          gap-2
           px-3
           py-2
           rounded-xl
@@ -487,21 +527,41 @@ textareaRef.current?.focus();
               : "bg-white"
           }
         `}
-            >
-              📎 {file.filename}
-            </div>
+      >
 
-          ))}
+        <span>
+          📎 {file.filename}
+        </span>
+
+        <button
+          onClick={() =>
+            removeAttachment(file.id)
+          }
+          className="
+            ml-1
+            font-bold
+            hover:text-red-500
+            transition
+          "
+        >
+          ×
+        </button>
+
+      </div>
+
+    ))}
 
         </div>
 
     )}
 
-        <div className="flex items-end gap-4">
+        <div className="flex items-end gap-4 relative">
 
           <button
             onClick={() =>
-              fileInputRef.current.click()
+              setShowAttachmentMenu(
+                !showAttachmentMenu
+              )
             }
             className={`
               p-5
@@ -515,6 +575,81 @@ textareaRef.current?.focus();
           >
             <FaPaperclip fontSize={18} />
           </button>
+
+          {showAttachmentMenu && (
+
+            <div
+              className={`
+                absolute
+                bottom-20
+                left-0
+                w-52
+                rounded-2xl
+                shadow-xl
+                overflow-hidden
+                z-50
+                ${
+                  darkMode
+                    ? "bg-[#1e293b] border border-gray-700"
+                    : "bg-white border border-gray-200"
+                }
+              `}
+            >
+
+              <button
+                onClick={() => {
+
+                  fileInputRef.current.click();
+
+                  setShowAttachmentMenu(false);
+
+                }}
+                className={`
+                  w-full
+                  text-left
+                  px-4
+                  py-3
+                 ${
+                    darkMode
+                      ? "text-white hover:bg-[#334155]"
+                      : "text-black hover:bg-purple-100"
+                  }
+                `}
+              >
+                📁 Upload File/Image
+              </button>
+
+              {isMobile && (
+
+                <button
+                  onClick={() => {
+
+                    cameraInputRef.current.click();
+
+                    setShowAttachmentMenu(false);
+
+                  }}
+                  className={`
+                    w-full
+                    text-left
+                    px-4
+                    py-3
+                    hover:bg-purple-100
+                    ${
+                      darkMode
+                        ? "hover:bg-[#334155]"
+                        : ""
+                    }
+                  `}
+                >
+                  📷 Take Photo
+                </button>
+
+              )}
+
+            </div>
+
+          )}      
 
           <textarea
             ref={textareaRef}

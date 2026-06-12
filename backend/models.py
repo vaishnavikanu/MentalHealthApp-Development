@@ -62,8 +62,12 @@ class ChatSession(Base):
     )
     title = Column(String)
     created_at = Column(
-    DateTime,
-    default=lambda: datetime.utcnow() + timedelta(hours=5, minutes=30)
+        DateTime,
+        default=lambda: datetime.utcnow() + timedelta(hours=5, minutes=30)
+    )
+    updated_at = Column(
+        DateTime,
+        default=datetime.utcnow
     )
  
 class Message(Base):

@@ -406,11 +406,15 @@ const patientId =
       {/*MOOD TRACKER --- VISIBLE ONLY TO DOCTOR*/ }
      
 
-        <div className="flex justify-between items-center mb-6">
-      <h2 className="text-3xl font-semibold">
+       
+          {patientId &&(
+             <div className="flex justify-between items-center mb-6">
+            <h2 className="text-3xl font-semibold">
             Mood Tracker
-          </h2>    
+          </h2>   
           </div>
+          )}
+       
       {patientId && (
 
         <MoodGraph
