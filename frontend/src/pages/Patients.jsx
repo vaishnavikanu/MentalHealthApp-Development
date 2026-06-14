@@ -42,7 +42,7 @@ function Patients({ darkMode }) {
 
       patient.username
         .toLowerCase()
-        .includes(
+        .includes( //include is used to check if the search term is present in the username or not
           searchTerm.toLowerCase()
         )
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 function SelfCare({ darkMode }) {
 
+  //ARRAY OF AFFIRMATION
   const affirmations = [
 
     "You are stronger than you think 💜",
@@ -31,7 +32,7 @@ function SelfCare({ darkMode }) {
     "1 thing you can TASTE"
 
   ];
-
+//THESE ARE TO KNOW WHETHER THE POPUP IS OPEN OR CLOSE
   const [showBreathing, setShowBreathing] =
     useState(false);
 
@@ -49,10 +50,10 @@ function SelfCare({ darkMode }) {
 
   const [showAffirmation, setShowAffirmation] =
     useState(false);
-
+//TELLS WHICH ONE TO DISPLAY CURRENTLY
   const [affirmation, setAffirmation] =
     useState("");
-
+//FOR MEDITATION
   const [timeLeft, setTimeLeft] =
     useState(60);
 
@@ -62,7 +63,7 @@ function SelfCare({ darkMode }) {
     const random =
       affirmations[
         Math.floor(
-          Math.random() *
+          Math.random() *//GENERATES RANDOM NUMBER B/W 0,1
           affirmations.length
         )
       ];
@@ -109,7 +110,7 @@ function SelfCare({ darkMode }) {
 
         if (count === 4) {
 
-          clearInterval(interval);
+          clearInterval(interval);//STOPS THE BEEP
         }
 
       }, 700);
@@ -118,7 +119,7 @@ function SelfCare({ darkMode }) {
     return () => clearTimeout(timer);
 
   }, [showMeditation, timeLeft]);
-
+//STYLING OF CARDS AND BUTTON TO REUSE THEM 
   const cardStyle = `
     rounded-[28px]
     p-6
@@ -141,6 +142,7 @@ function SelfCare({ darkMode }) {
 
   return (
 
+    //ENTIRE PAGE DIV
     <div
       className={`
         h-full
@@ -403,7 +405,8 @@ function SelfCare({ darkMode }) {
       {/* BREATHING POPUP */}
       {showBreathing && (
 
-        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50"> {/*BG 40% OPACITY,Z-5 MEANS POPUP 
+        ON TOP OF EVERYTHINGS*/}
 
           <div
             className={`
@@ -424,7 +427,7 @@ function SelfCare({ darkMode }) {
               onClick={() =>
                 setShowBreathing(false)
               }
-              className="absolute right-5 top-4 text-3xl text-gray-400"
+              className="absolute right-5 top-4 text-3xl text-gray-400" //POSITION RELATIVE TO POPUP BOX
             >
               ×
             </button>
@@ -493,7 +496,7 @@ function SelfCare({ darkMode }) {
             <div className="text-6xl font-bold text-purple-600 mb-6">
 
               {Math.floor(timeLeft / 60)}:
-              {String(timeLeft % 60).padStart(2, "0")}
+              {String(timeLeft % 60).padStart(2, "0")} {/*CONVERTING INTO CLOCK FORMAT*/}
 
             </div>
 
@@ -547,6 +550,7 @@ function SelfCare({ darkMode }) {
 
             <div className="flex flex-col gap-3 text-xl">
 
+              {/*CREATES DIV FOR EACH POINT*/}
               {groundingSteps.map((step, index) => (
 
                 <div
@@ -562,7 +566,8 @@ function SelfCare({ darkMode }) {
                     }
                   `}
                 >
-                  {step}
+                
+                  { step}
                 </div>
 
               ))}

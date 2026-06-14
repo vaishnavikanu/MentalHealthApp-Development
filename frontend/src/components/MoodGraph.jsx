@@ -43,32 +43,45 @@ function MoodGraph({
 
     const today = new Date();
 
+    const weeksBack =
+  selectedPeriod === "Current"
+    ? 0
+    : Number(selectedPeriod);
+
+const weekStart =
+  new Date(today);
+
+weekStart.setDate(
+  today.getDate()
+  - today.getDay()
+  - (weeksBack * 7)
+);
+
+weekStart.setHours(
+  0, 0, 0, 0
+);
+
+    const monthsBack =
+  selectedPeriod === "Current"
+    ? 0
+    : Number(selectedPeriod);
+
+const targetMonth =
+  new Date(
+    today.getFullYear(),
+    today.getMonth() - monthsBack,
+    1
+  );
+
     if (selected === "Weekly") {
 
-      const weeksBack =
-        selectedPeriod === "Current"
-          ? 0
-          : Number(selectedPeriod);
-
-      const start =
-        new Date(today);
-
-      start.setDate(
-        today.getDate()
-        - today.getDay()
-        - (weeksBack * 7)
-      );
-
-      start.setHours(
-        0, 0, 0, 0
-      );
 
       const end =
-        new Date(start);
+  new Date(weekStart);
 
-      end.setDate(
-        start.getDate() + 7
-      );
+end.setDate(
+  weekStart.getDate() + 7
+);
 
       filteredData =
         data.filter((item) => {
@@ -79,8 +92,8 @@ function MoodGraph({
             );
 
           return (
-            date >= start &&
-            date < end
+            date >= weekStart &&
+date < end
           );
 
         });
@@ -89,18 +102,6 @@ function MoodGraph({
 
     else {
 
-      const monthsBack =
-        selectedPeriod === "Current"
-          ? 0
-          : Number(selectedPeriod);
-
-      const targetMonth =
-        new Date(
-          today.getFullYear(),
-          today.getMonth()
-          - monthsBack,
-          1
-        );
 
       filteredData =
         data.filter((item) => {
@@ -140,7 +141,8 @@ function MoodGraph({
 
       ];
 
-      const weeklyMap = {
+      const weeklyMap = 
+      {
 
         Sun: [],
         Mon: [],
@@ -152,7 +154,8 @@ function MoodGraph({
 
       };
 
-      filteredData.forEach((item) => {
+      filteredData.forEach((item) => 
+      {
 
         const date =
           new Date(item.created_at);
@@ -171,17 +174,7 @@ function MoodGraph({
 
       });
 
-      const weeklyData = [
-
-        "Mon",
-        "Tue",
-        "Wed",
-        "Thu",
-        "Fri",
-        "Sat",
-        "Sun"
-
-      ].map((day) => {
+      const weeklyData = daysOrder.map((day, index) => {
 
         const values =
           weeklyMap[day];
@@ -194,7 +187,6 @@ function MoodGraph({
             values.reduce(
 
               (sum, value) =>
-
                 sum + value,
 
               0
@@ -209,9 +201,27 @@ function MoodGraph({
 
         }
 
+        // Create a new date by adding days properly
+        const labelDate =
+          new Date(weekStart);
+
+        labelDate.setDate(
+          weekStart.getDate() + index
+        );
+
+        // Format with month and date correctly
+        const monthNames = [
+          "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+
+        const monthLabel =
+          monthNames[labelDate.getMonth()];
+
         return {
 
-          day,
+          day:
+            `${day} ${labelDate.getDate()} ${monthLabel}`,
 
           value: average
 
@@ -227,106 +237,84 @@ function MoodGraph({
 
     else {
 
-      const monthlyMap = {
-
-        W1: [],
-        W2: [],
-        W3: [],
-        W4: []
-
-      };
+      const monthlyMap = {};
 
       filteredData.forEach((item) => {
 
         const date =
           new Date(item.created_at);
 
-        const day =
-          date.getDate();
+        const dayOfMonth = date.getDate();
 
-        let week = "W1";
+        // Calculate which week this day belongs to (1-7, 8-14, 15-21, 22-28, 29+)
+        const weekIndex = Math.floor((dayOfMonth - 1) / 7);
 
-        if (day <= 7) {
+  if (!monthlyMap[weekIndex]) {
 
-          week = "W1";
+    monthlyMap[weekIndex] = [];
 
-        }
+  }
 
-        else if (day <= 14) {
+  monthlyMap[weekIndex].push(
+    moodValues[item.mood] || 0
+  );
 
-          week = "W2";
+});
 
-        }
+      const monthlyData = [];
 
-        else if (day <= 21) {
+const lastDay =
+  new Date(
+    targetMonth.getFullYear(),
+    targetMonth.getMonth() + 1,
+    0
+  ).getDate();
 
-          week = "W3";
+for (
+  let weekIndex = 0;
+  weekIndex <= Math.floor((lastDay - 1) / 7);
+  weekIndex++
+) {
 
-        }
+  const values =
+    monthlyMap[weekIndex] || [];
 
-        else {
+  let average = 0;
 
-          week = "W4";
+  if (values.length > 0) {
 
-        }
+    average = Math.round(
 
-        const value =
-          moodValues[item.mood] || 0;
+      values.reduce(
+        (sum, value) => sum + value,
+        0
+      ) / values.length
 
-        monthlyMap[week].push(
-          value
-        );
+    );
 
-      });
+  }
 
-      const monthlyData = [
+  const rangeStart =
+    weekIndex * 7 + 1;
 
-        "W1",
-        "W2",
-        "W3",
-        "W4"
+  const rangeEnd =
+    Math.min(
+      rangeStart + 6,
+      lastDay
+    );
 
-      ].map((week) => {
+  monthlyData.push({
 
-        const values =
-          monthlyMap[week];
+    day:
+      `${rangeStart}-${rangeEnd}`,
 
-        let average = 0;
+    value: average
 
-        if (values.length > 0) {
+  });
 
-          const total =
-            values.reduce(
+}
 
-              (sum, value) =>
-
-                sum + value,
-
-              0
-
-            );
-
-          average =
-            Math.round(
-              total /
-              values.length
-            );
-
-        }
-
-        return {
-
-          day: week,
-
-          value: average
-
-        };
-
-      });
-
-      setGraphData(
-        monthlyData
-      );
+setGraphData(monthlyData);
 
     }
 
@@ -541,7 +529,9 @@ function MoodGraph({
                     height:
                       `${item.value}%`,
                     minHeight:
-                      "1px"
+                      item.value === 0
+                        ? "2px"
+                        : "1px"
                   }}
                   className="
                     w-full

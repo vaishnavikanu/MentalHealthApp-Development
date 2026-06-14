@@ -4,11 +4,10 @@ import API from "../api/api";
 
 function Signup({ darkMode }) {
 
-  const navigate = useNavigate();
 
-  const usernameRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const usernameRef = useRef(null);//REFERS USERNAME INPUT BOX
+  const emailRef = useRef(null);//EMAIL BOX
+  const passwordRef = useRef(null);//PASSWORD BOX
   const confirmPasswordRef = useRef(null);
 
   const [username, setUsername] =
@@ -71,7 +70,7 @@ function Signup({ darkMode }) {
 
       localStorage.setItem(
         "user",
-        JSON.stringify(
+        JSON.stringify( // STORES USER INFO IN LOCAL STORAGE IN STRING FORMAT
           response.data.user
         )
       );
@@ -100,7 +99,7 @@ function Signup({ darkMode }) {
 
   const handleSubmit = (e) => {
 
-    e.preventDefault();
+    e.preventDefault(); //PREVENTS PAGE REFRESH ON FORM SUBMISSION BECAUSE OF DEFAULT BEHAVIOR
 
     signupUser();
 
@@ -114,12 +113,12 @@ function Signup({ darkMode }) {
 
     if (
       e.key === "ArrowDown" &&
-      nextRef
+      nextRef 
     ) {
 
-      e.preventDefault();
+      e.preventDefault(); //PREVENTS SCROLLING THE PAGE WHEN USING ARROW KEYS
 
-      nextRef.current.focus();
+      nextRef.current.focus();//FOCUSES THE NEXT INPUT FIELD
 
     }
 
@@ -138,10 +137,10 @@ function Signup({ darkMode }) {
 
   return (
 
-    <div
+    <div //WE USE FLEX BECAUSE WE WANT TO CENTER THE FORM BOTH VERTICALLY AND HORIZONTALLY
       className={`
         min-h-screen
-        flex
+        flex 
         items-center
         justify-center
         px-6
@@ -154,7 +153,7 @@ function Signup({ darkMode }) {
     >
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit} 
         className={`
           w-full
           max-w-md
@@ -337,7 +336,8 @@ function Signup({ darkMode }) {
 
           <div className="flex gap-4">
 
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2">{/* RADIO BUTTON FOR PATIENT ROLE LABEL IS FLEX 
+            TO ALIGN THE RADIO BUTTON AND TEXT HORIZONTALLY */}
 
               <input
                 type="radio"
@@ -386,7 +386,8 @@ function Signup({ darkMode }) {
             mb-5
           "
         >
-          Sign Up
+          Sign Up {/* WHEN THIS BUTTON IS CLICKED THE FORM 
+          SUBMISSION IS TRIGGERED AND THE SIGNUP FUNCTION IS CALLED */}
         </button>
 
         {/* LOGIN LINK */}

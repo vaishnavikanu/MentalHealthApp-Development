@@ -88,7 +88,7 @@ function Login({ darkMode }) {
 
   const handleSubmit = (e) => {
 
-    e.preventDefault();
+    e.preventDefault(); 
 
     loginUser();
 
@@ -142,7 +142,7 @@ function Login({ darkMode }) {
         }
       `}
     >
-
+{/* to group related elements together and apply styles to them as a whole we use form. */}
       <form
         onSubmit={handleSubmit}
         className={`
