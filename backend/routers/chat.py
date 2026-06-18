@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from models import ChatSession, Message, User, Attachment
 from database_session import get_db
-from datetime import datetime
+from datetime import datetime, timedelta
 from schemas import (
     ChatSessionCreate,
     MessageCreate
@@ -70,7 +70,8 @@ def create_message(
         ChatSession.id == message_data.session_id
     ).first()
 
-    session.updated_at = datetime.now()
+    # Update with IST timezone
+    session.updated_at = datetime.utcnow() + timedelta(hours=5, minutes=30)
 
     db.commit()
 
@@ -119,3 +120,15 @@ def get_messages(
         })
 
     return result
+
+@router.get("/messages/{session_id}")
+def get_messages(
+    session_id: int,
+    db: Session = Depends(get_db)
+):
+
+    messages = db.query(Message).filter(
+        Message.session_id == session_id
+    ).all()
+
+    return messages

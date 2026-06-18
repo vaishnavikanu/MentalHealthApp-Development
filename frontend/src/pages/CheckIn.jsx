@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import API from "../api/api";
-
+import {
+  useLanguage
+} from "../context/LanguageContext";
 function CheckIn({ darkMode }) {
 
   const user =
   JSON.parse(
     localStorage.getItem("user")
   );
+  const { t } = useLanguage();
 
   const moods = [
     "😊",
@@ -80,10 +83,9 @@ function CheckIn({ darkMode }) {
   const saveCheckIn = async () => {
 
     if (!selectedMood) {
-
-      setMessage(
-        "Please select a mood."
-      );
+    setMessage(
+    t("checkin.selectMood")
+    );
       /*TIME THE MSG STAY ON SCREEN*/
       setTimeout(() => {
 
@@ -111,8 +113,8 @@ function CheckIn({ darkMode }) {
       await fetchCheckins();
 
       setMessage(
-        "Check-in saved successfully!"
-      );
+  t("checkin.saved")
+);
 
       setSelectedMood("");
 
@@ -129,8 +131,8 @@ function CheckIn({ darkMode }) {
       console.log(error);
 
       setMessage(
-        "Failed to save check-in."
-      );
+  t("checkin.failed")
+);
 
     }
 
@@ -162,7 +164,7 @@ function CheckIn({ darkMode }) {
 
       {/* HEADING */}
       <h1 className="text-5xl font-bold mb-2">
-        Daily Check-In
+        {t("checkin.title")}
       </h1>
 
       <p
@@ -172,7 +174,7 @@ function CheckIn({ darkMode }) {
             : "text-gray-500"
         }`}
       >
-        Track your emotions and thoughts today.
+        {t("checkin.subtitle")}
       </p>
 
       {/* MESSAGE */}
@@ -210,7 +212,7 @@ function CheckIn({ darkMode }) {
       >
 
         <h2 className="text-3xl font-semibold mb-6">
-          How are you feeling today?
+          {t("checkin.howFeeling")}
         </h2>
 
         <div className="flex gap-5 flex-wrap">
@@ -260,12 +262,12 @@ function CheckIn({ darkMode }) {
       >
 
         <h2 className="text-3xl font-semibold mb-5">
-          Add a Note
+          {t("checkin.addNote")}
         </h2>
 
         <textarea
           rows={6}
-          placeholder="Write about your day..."
+          placeholder={t("checkin.notePlaceholder")}
           value={note}
           onChange={(e) =>
             setNote(e.target.value)
@@ -299,7 +301,7 @@ function CheckIn({ darkMode }) {
             text-base
           "
         >
-          Save Check-In
+         {t("checkin.save")}
         </button>
 
       </div>
@@ -308,7 +310,7 @@ function CheckIn({ darkMode }) {
       <div className="flex items-center justify-between mb-5">
 
         <h2 className="text-3xl font-semibold">
-          Recent Check-Ins
+          {t("checkin.recent")}
         </h2>
 
         {recentCheckins.length > 5 && (
@@ -329,8 +331,8 @@ function CheckIn({ darkMode }) {
             "
           >
             {showAll
-              ? "Show Less"
-              : "See More"}
+              ? t("common.showLess")
+              : t("common.seeMore")}
           </button>
 
         )}
@@ -357,7 +359,7 @@ function CheckIn({ darkMode }) {
 
             <div className="flex justify-between mb-3">
 
-              <span className="text-3xl">
+              <span className="text-5xl">
                 {item.mood}
               </span>
 

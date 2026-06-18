@@ -1,37 +1,37 @@
 import { useState, useEffect } from "react";
-
+import { useLanguage }
+from "../context/LanguageContext";
 function SelfCare({ darkMode }) {
 
+  const { t } = useLanguage();
   //ARRAY OF AFFIRMATION
   const affirmations = [
-
-    "You are stronger than you think 💜",
-    "You are doing your best 🌸",
-    "Your feelings are valid 💖",
-    "You deserve peace and happiness ✨",
-    "Take one step at a time 🌿",
-    "You are enough 💕",
-    "Progress matters more than perfection 🌈",
-    "You can overcome difficult moments 🌻",
-    "Believe in yourself 💫",
-    "Rest is productive too ☁️",
-    "You are growing every day 🌱",
-    "Small steps still move you forward 🚶‍♀️",
-    "You are capable of amazing things ⭐",
-    "Your mental health matters 🩵",
-    "You are not alone 🤍"
-
-  ];
+  t("selfCare.aff1"),
+  t("selfCare.aff2"),
+  t("selfCare.aff3"),
+  t("selfCare.aff4"),
+  t("selfCare.aff5"),
+  t("selfCare.aff6"),
+  t("selfCare.aff7"),
+  t("selfCare.aff8"),
+  t("selfCare.aff9"),
+  t("selfCare.aff10"),
+  t("selfCare.aff11"),
+  t("selfCare.aff12"),
+  t("selfCare.aff13"),
+  t("selfCare.aff14"),
+  t("selfCare.aff15")
+];
 
   const groundingSteps = [
 
-    "5 things you can SEE",
-    "4 things you can TOUCH",
-    "3 things you can HEAR",
-    "2 things you can SMELL",
-    "1 thing you can TASTE"
+  t("selfCare.step1"),
+  t("selfCare.step2"),
+  t("selfCare.step3"),
+  t("selfCare.step4"),
+  t("selfCare.step5")
 
-  ];
+];
 //THESE ARE TO KNOW WHETHER THE POPUP IS OPEN OR CLOSE
   const [showBreathing, setShowBreathing] =
     useState(false);
@@ -160,7 +160,7 @@ function SelfCare({ darkMode }) {
 
       {/* TITLE */}
       <h1 className="text-3xl font-bold mb-1">
-        Self Care Tools
+       {t("selfCare.title")}
       </h1>
 
       <p
@@ -170,7 +170,7 @@ function SelfCare({ darkMode }) {
             : "text-gray-500"
         }`}
       >
-        Practice calming wellness activities
+      {t("selfCare.subtitle")}
       </p>
 
       {/* GRID */}
@@ -189,7 +189,7 @@ function SelfCare({ darkMode }) {
         >
 
           <h2 className="text-[22px] font-bold mb-4">
-            Breathing Exercise
+          {t("selfCare.breathing")}
           </h2>
 
           <p
@@ -199,7 +199,7 @@ function SelfCare({ darkMode }) {
                 : "text-gray-600"
             }`}
           >
-            Relax with guided breathing.
+          {t("selfCare.breathingDesc")}
           </p>
 
           <button
@@ -208,7 +208,7 @@ function SelfCare({ darkMode }) {
             }
             className={buttonStyle}
           >
-            Start
+          {t("selfCare.start")}
           </button>
 
         </div>
@@ -226,7 +226,7 @@ function SelfCare({ darkMode }) {
         >
 
           <h2 className="text-[22px] font-bold mb-4">
-            Meditation Timer
+          {t("selfCare.meditation")}
           </h2>
 
           <p
@@ -236,7 +236,7 @@ function SelfCare({ darkMode }) {
                 : "text-gray-600"
             }`}
           >
-            1 minute calming meditation.
+          {t("selfCare.meditationDesc")}
           </p>
 
           <button
@@ -249,7 +249,7 @@ function SelfCare({ darkMode }) {
             }}
             className={buttonStyle}
           >
-            Start
+           {t("selfCare.start")}
           </button>
 
         </div>
@@ -267,7 +267,7 @@ function SelfCare({ darkMode }) {
         >
 
           <h2 className="text-[22px] font-bold mb-4">
-            Grounding Exercise
+         {t("selfCare.grounding")}
           </h2>
 
           <p
@@ -277,7 +277,7 @@ function SelfCare({ darkMode }) {
                 : "text-gray-600"
             }`}
           >
-            Reduce anxiety and stay present.
+          {t("selfCare.groundingDesc")}
           </p>
 
           <button
@@ -286,7 +286,7 @@ function SelfCare({ darkMode }) {
             }
             className={buttonStyle}
           >
-            Start
+            {t("selfCare.start")}
           </button>
 
         </div>
@@ -304,7 +304,7 @@ function SelfCare({ darkMode }) {
         >
 
           <h2 className="text-[22px] font-bold mb-4">
-            Positive Affirmation
+          {t("selfCare.affirmation")}
           </h2>
 
           <p
@@ -314,14 +314,14 @@ function SelfCare({ darkMode }) {
                 : "text-gray-600"
             }`}
           >
-            Boost positivity and confidence.
+          {t("selfCare.affirmationDesc")}
           </p>
 
           <button
             onClick={generateAffirmation}
             className={buttonStyle}
           >
-            Show
+          {t("selfCare.show")}
           </button>
 
         </div>
@@ -339,7 +339,7 @@ function SelfCare({ darkMode }) {
         >
 
           <h2 className="text-[22px] font-bold mb-4">
-            Gratitude Practice
+          {t("selfCare.gratitude")}
           </h2>
 
           <p
@@ -349,7 +349,7 @@ function SelfCare({ darkMode }) {
                 : "text-gray-600"
             }`}
           >
-            Reflect on positive moments.
+          {t("selfCare.gratitudeDesc")}
           </p>
 
           <button
@@ -358,7 +358,7 @@ function SelfCare({ darkMode }) {
             }
             className={buttonStyle}
           >
-            Start
+            {t("selfCare.start")}
           </button>
 
         </div>
@@ -376,7 +376,7 @@ function SelfCare({ darkMode }) {
         >
 
           <h2 className="text-[22px] font-bold mb-4">
-            Sleep Relaxation
+          {t("selfCare.sleep")}
           </h2>
 
           <p
@@ -386,7 +386,7 @@ function SelfCare({ darkMode }) {
                 : "text-gray-600"
             }`}
           >
-            Relax your mind before sleep.
+          {t("selfCare.sleepDesc")}
           </p>
 
           <button
@@ -395,7 +395,7 @@ function SelfCare({ darkMode }) {
             }
             className={buttonStyle}
           >
-            Start
+          {t("selfCare.start")}
           </button>
 
         </div>
@@ -433,12 +433,12 @@ function SelfCare({ darkMode }) {
             </button>
 
             <h2 className="text-3xl font-bold mb-4">
-              Breathing Exercise
+            {t("selfCare.breathing")}
             </h2>
 
             <div className="w-52 h-52 mx-auto rounded-full bg-purple-300 flex items-center justify-center text-4xl text-purple-800 mb-3 animate-pulse">
 
-              Breathe
+              {t("selfCare.breathe")}
 
             </div>
 
@@ -449,9 +449,7 @@ function SelfCare({ darkMode }) {
                   : "text-gray-600"
               }`}
             >
-              Inhale slowly for 4 seconds...
-              Hold...
-              Exhale gently...
+            {t("selfCare.breatheText")}
             </p>
 
           </div>
@@ -490,7 +488,7 @@ function SelfCare({ darkMode }) {
             </button>
 
             <h2 className="text-3xl font-bold mb-3">
-              Meditation Timer
+            {t("selfCare.meditation")}
             </h2>
 
             <div className="text-6xl font-bold text-purple-600 mb-6">
@@ -507,7 +505,7 @@ function SelfCare({ darkMode }) {
                   : "text-gray-600"
               }`}
             >
-              Close your eyes and breathe calmly.
+            {t("selfCare.meditationText")}
             </p>
 
           </div>
@@ -545,7 +543,7 @@ function SelfCare({ darkMode }) {
             </button>
 
             <h2 className="text-3xl font-bold text-center mb-5">
-              Grounding Exercise
+            {t("selfCare.grounding")}
             </h2>
 
             <div className="flex flex-col gap-3 text-xl">
@@ -610,7 +608,7 @@ function SelfCare({ darkMode }) {
             </button>
 
             <h2 className="text-3xl font-bold mb-6">
-              Sleep Relaxation
+            {t("selfCare.sleep")}
             </h2>
 
             <p
@@ -620,11 +618,7 @@ function SelfCare({ darkMode }) {
                   : "text-gray-600"
               }`}
             >
-              Take deep breaths 🌙
-              <br />
-              Relax your body slowly.
-              <br />
-              Let your thoughts drift away.
+              {t("selfCare.sleepText")}
             </p>
 
           </div>
@@ -663,7 +657,7 @@ function SelfCare({ darkMode }) {
             </button>
 
             <h2 className="text-3xl font-bold mb-6">
-              Positive Affirmation
+            {t("selfCare.affirmation")}
             </h2>
 
             <p
@@ -712,7 +706,7 @@ function SelfCare({ darkMode }) {
             </button>
 
             <h2 className="text-3xl font-bold mb-5">
-              Gratitude Practice
+            {t("selfCare.gratitude")}
             </h2>
 
             <p
@@ -722,21 +716,21 @@ function SelfCare({ darkMode }) {
                   : "text-gray-600"
               }`}
             >
-              Think about:
+              {t("selfCare.thinkAbout")}
             </p>
 
             <div className="flex flex-col gap-4 text-[19px]">
 
               <div>
-                • Something good today
+                • {t("selfCare.goodToday")}
               </div>
 
               <div>
-                • Someone you appreciate
+               • {t("selfCare.someone")}
               </div>
 
               <div>
-                • One thing you're proud of
+              • {t("selfCare.proud")}
               </div>
 
             </div>

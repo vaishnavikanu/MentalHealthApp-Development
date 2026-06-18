@@ -29,6 +29,7 @@ class UserSignup(BaseModel):
     email: str
     password: str
     role: str
+    language: str = "en"  # ← ADD THIS
 
 
 class UserLogin(BaseModel):
@@ -48,6 +49,5 @@ class AttachmentResponse(BaseModel):
     filename: str
     file_path: str
     file_type: str
-         
-    
-  
+
+

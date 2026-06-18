@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import API from "../api/api";
-
+import { useLanguage } from "../context/LanguageContext";
 function Journal({ darkMode }) {
 
   const user =
@@ -8,6 +8,7 @@ function Journal({ darkMode }) {
     localStorage.getItem("user")
   );
 
+  const { t } = useLanguage();
   const [journals, setJournals] =
     useState([]);
 
@@ -61,7 +62,7 @@ function Journal({ darkMode }) {
     {
 
       setMessage(
-        "Please fill all fields."
+        t("journal.fillFields")
       );
 
       setTimeout(() => {
@@ -92,7 +93,7 @@ function Journal({ darkMode }) {
       setContent("");
 
       setMessage(
-        "Journal added successfully!"
+        t("journal.addedSuccess")
       );
 
       setTimeout(() => {
@@ -106,7 +107,7 @@ function Journal({ darkMode }) {
       console.log(error);
 
       setMessage(
-        "Failed to save journal."
+       t("journal.saveFailed")
       );
 
     }
@@ -127,7 +128,7 @@ function Journal({ darkMode }) {
       fetchJournals();
 
       setMessage(
-        "Journal deleted successfully!"
+        t("journal.deletedSuccess")
       );
 
       setTimeout(() => {
@@ -141,7 +142,7 @@ function Journal({ darkMode }) {
       console.log(error);
 
       setMessage(
-        "Failed to delete journal."
+        t("journal.deleteFailed")
       );
 
     }
@@ -168,7 +169,7 @@ function Journal({ darkMode }) {
 
       {/* HEADING */}
       <h1 className="text-5xl font-bold mb-2">
-        Journal
+        {t("journal.title")}
       </h1>
 
       <p
@@ -178,7 +179,7 @@ function Journal({ darkMode }) {
             : "text-gray-500"
         }`}
       >
-        Write your thoughts and reflect on your emotions.
+        {t("journal.subtitle")}
       </p>
 
       {/* MESSAGE */}
@@ -217,13 +218,13 @@ function Journal({ darkMode }) {
       >
 
         <h2 className="text-2xl font-semibold mb-5">
-          New Journal Entry
+          {t("journal.newEntry")}
         </h2>
 
         {/* TITLE */}
         <input
           type="text"
-          placeholder="Journal title"
+          placeholder={t("journal.journalTitle")}
           value={title}
           onChange={(e) =>
             setTitle(e.target.value)
@@ -246,7 +247,7 @@ function Journal({ darkMode }) {
 
         {/* CONTENT */}
         <textarea
-          placeholder="Write your thoughts..."
+          placeholder={t("journal.writeThoughts")}
           rows={6}
           value={content}
           onChange={(e) =>
@@ -282,7 +283,7 @@ function Journal({ darkMode }) {
             text-base
           "
         >
-          Save Journal
+         {t("journal.saveJournal")}
         </button>
 
       </div>
@@ -291,7 +292,7 @@ function Journal({ darkMode }) {
       <div className="flex items-center justify-between mb-5">
 
         <h2 className="text-3xl font-bold">
-          Recent Journals
+          {t("journal.recentJournals")}
         </h2>
 
         {journals.length > 5 && (
@@ -312,8 +313,8 @@ function Journal({ darkMode }) {
             "
           >
             {showAll
-              ? "Show Less"
-              : "See More"}
+              ? t("common.showLess")
+              : t("common.seeMore")}
           </button>
 
         )}
@@ -386,7 +387,7 @@ function Journal({ darkMode }) {
                 text-sm
               "
             >
-              Delete
+              {t("journal.delete")}
             </button>
 
           </div>

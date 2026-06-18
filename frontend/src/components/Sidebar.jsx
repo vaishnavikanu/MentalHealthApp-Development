@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 
 import {
   FaComments,
@@ -16,6 +17,7 @@ function Sidebar({
   startNewChat,
   darkMode
 }) {
+  const { t } = useLanguage();
 
   const navigate = useNavigate();
   const user =
@@ -85,7 +87,7 @@ function Sidebar({
         `}
       >
         <FaPlus />
-        New Chat
+        {t("sidebar.newChat")}
       </button>
 
       {/* NAVIGATION */}
@@ -93,7 +95,7 @@ function Sidebar({
 
   <NavLink to="/" className={navStyle}>
     <FaComments />
-    <span>Chat</span>
+    <span>{t("sidebar.chat")}</span>
   </NavLink>
 
   {user.role === "patient" && (
@@ -103,7 +105,7 @@ function Sidebar({
         className={navStyle}
       >
         <FaSmile />
-        <span>Check-In</span>
+        <span>{t("sidebar.checkIn")}</span>
       </NavLink>
 
       <NavLink
@@ -111,7 +113,7 @@ function Sidebar({
         className={navStyle}
       >
         <FaChartLine />
-        <span>Mood Tracker</span>
+        <span>{t("sidebar.moodTracker")}</span>
       </NavLink>
 
       <NavLink
@@ -119,7 +121,7 @@ function Sidebar({
         className={navStyle}
       >
         <FaBook />
-        <span>Journal</span>
+        <span>{t("sidebar.journal")}</span>
       </NavLink>
 
       <NavLink
@@ -127,7 +129,7 @@ function Sidebar({
         className={navStyle}
       >
         <FaHistory />
-        <span>History</span>
+        <span>{t("sidebar.history")}</span>
       </NavLink>
 
       <NavLink
@@ -135,7 +137,7 @@ function Sidebar({
         className={navStyle}
       >
         <FaHeart />
-        <span>Self-Care</span>
+        <span>{t("sidebar.selfCare")}</span>
       </NavLink>
     </>
   )}
@@ -147,7 +149,15 @@ function Sidebar({
       className={navStyle}
     >
       <FaHistory />
-      <span>Patients</span>
+      <span>{t("sidebar.patients")}</span>
+    </NavLink>
+
+    <NavLink
+      to="/history"
+      className={navStyle}
+    >
+      <FaHistory />
+      <span>{t("sidebar.history")}</span>
     </NavLink>
   </>
 )}
@@ -157,7 +167,7 @@ function Sidebar({
     className={navStyle}
   >
     <FaCog />
-    <span>Settings</span>
+    <span>{t("sidebar.settings")}</span>
   </NavLink>
 
 </div>
@@ -184,7 +194,7 @@ function Sidebar({
           <FaPhone />
 
           <span className="font-semibold text-sm">
-            Emergency Help
+          {t("helpline.emergency")}
           </span>
 
         </div>
@@ -196,7 +206,7 @@ function Sidebar({
               : "text-gray-600"
           }`}
         >
-          Mental Health Helpline
+        {t("helpline.title")}
         </p>
 
         <p className="text-xl font-bold text-red-500 mt-2">

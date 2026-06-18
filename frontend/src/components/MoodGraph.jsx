@@ -1,31 +1,17 @@
 import { useState, useEffect } from "react";
+import { useLanguage } from "../context/LanguageContext";  // ← ADD THIS
 
-function MoodGraph({
-  moods,
-  darkMode
-}) {
+function MoodGraph({ moods, darkMode }) {
 
-  const [selected, setSelected] =
-    useState("Weekly");
+  const { t } = useLanguage();  // ← ADD THIS
+  const [selected, setSelected] = useState("Weekly");
+  const [selectedPeriod, setSelectedPeriod] = useState("Current");
+  const [graphData, setGraphData] = useState([]);
 
-  const [selectedPeriod, setSelectedPeriod] =
-    useState("Current");
-//STORE GRAPH VALUES WITH DAY
-  const [graphData, setGraphData] =
-    useState([]);
-
-//UPDATES GRAPH WHEN BUTTON CHANGES
   useEffect(() => {
-
     generateGraphData(moods);
+  }, [moods, selected, selectedPeriod]);
 
-  }, [
-    moods,
-    selected,
-    selectedPeriod
-  ]);
-  
-  // GENERATE GRAPH
   const generateGraphData = (data) => {
 
     const moodValues = {
@@ -140,7 +126,6 @@ date < end
         "Sat"
 
       ];
-
       const weeklyMap = 
       {
 
@@ -326,12 +311,9 @@ setGraphData(monthlyData);
 
       <div className="flex flex-wrap gap-3 items-center mb-6">
 
+        {/* WEEKLY BUTTON - CHANGE TEXT */}
         <button
-          onClick={() =>
-            setSelected(
-              "Weekly"
-            )
-          }
+          onClick={() => setSelected("Weekly")}
           className={`
             px-5
             py-2
@@ -348,15 +330,12 @@ setGraphData(monthlyData);
             }
           `}
         >
-          Weekly
+         {t("moodGraph.weekly")}
         </button>
 
+        {/* MONTHLY BUTTON - CHANGE TEXT */}
         <button
-          onClick={() =>
-            setSelected(
-              "Monthly"
-            )
-          }
+          onClick={() => setSelected("Monthly")}
           className={`
             px-5
             py-2
@@ -373,16 +352,13 @@ setGraphData(monthlyData);
             }
           `}
         >
-          Monthly
+        {t("moodGraph.monthly")}
         </button>
 
+        {/* DROPDOWN - CHANGE OPTIONS */}
         <select
           value={selectedPeriod}
-          onChange={(e) =>
-            setSelectedPeriod(
-              e.target.value
-            )
-          }
+          onChange={(e) => setSelectedPeriod(e.target.value)}
           className={`
             px-4
             py-2
@@ -399,7 +375,7 @@ setGraphData(monthlyData);
         >
 
           <option value="Current">
-            Current
+            {t("moodGraph.current") || "Current"}
           </option>
 
           {selected === "Weekly" ? (
@@ -407,15 +383,15 @@ setGraphData(monthlyData);
             <>
 
               <option value="1">
-                Last Week
+                {t("moodGraph.lastWeek") || "Last Week"}
               </option>
 
               <option value="2">
-                2 Weeks Ago
+                {t("moodGraph.twoWeeksAgo") || "2 Weeks Ago"}
               </option>
 
               <option value="3">
-                3 Weeks Ago
+                {t("moodGraph.threeWeeksAgo") || "3 Weeks Ago"}
               </option>
 
             </>
@@ -425,23 +401,21 @@ setGraphData(monthlyData);
             <>
 
               <option value="1">
-                Last Month
+                {t("moodGraph.lastMonth") || "Last Month"}
               </option>
 
               <option value="2">
-                2 Months Ago
+                {t("moodGraph.twoMonthsAgo") || "2 Months Ago"}
               </option>
 
               <option value="3">
-                3 Months Ago
+                {t("moodGraph.threeMonthsAgo") || "3 Months Ago"}
               </option>
 
             </>
 
           )}
-
         </select>
-
       </div>
 
       <div
@@ -459,8 +433,9 @@ setGraphData(monthlyData);
         `}
       >
 
+        {/* TITLE - CHANGE THIS */}
         <h2 className="text-2xl font-semibold mb-8">
-          Mood Analysis
+          {t("moodGraph.analysis")}
         </h2>
 
         <div className="flex gap-5 h-72 overflow-hidden">

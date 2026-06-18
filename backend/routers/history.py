@@ -29,13 +29,16 @@ def get_history(
 
     chats = db.query(ChatSession).filter(
         ChatSession.user_id == user_id
+    ).order_by(
+        ChatSession.updated_at.desc()
     ).all()
 
     return {
     "patient": {
         "id": user.id,
         "username": user.username,
-        "email": user.email
+        "email": user.email,
+        "role": user.role
     },
     "moods": moods,
     "journals": journals,

@@ -1,5 +1,8 @@
 import { useState } from "react";
 import API from "../api/api";
+import {
+  useLanguage
+} from "../context/LanguageContext";
 function Settings({
   darkMode,
   setDarkMode
@@ -11,9 +14,17 @@ function Settings({
       localStorage.getItem("user")
     );
 
+    const {
+  language,
+  changeLanguage,
+  t
+} = useLanguage();
   /* TEMP THEME */
   const [tempDarkMode, setTempDarkMode] =
     useState(darkMode);
+
+const [tempLanguage, setTempLanguage] =
+  useState(language);  
 
   const [message, setMessage] =
     useState("");
@@ -39,17 +50,22 @@ function Settings({
   /* SAVE SETTINGS */
   const saveSettings = () => {
 
-    setDarkMode(tempDarkMode);
+  setDarkMode(tempDarkMode);
 
-    localStorage.setItem(
-      "theme",
-      tempDarkMode ? "dark" : "light"
-    );
+  localStorage.setItem(
+    "theme",
+    tempDarkMode ? "dark" : "light"
+  );
 
-    showMessage(
-      "Settings saved successfully!"
-    );
-  };
+  changeLanguage(
+    tempLanguage
+  );
+
+  showMessage(
+  t("settings.saved")
+);
+
+};
 
   /* CLEAR DATA */
   const clearAllData = async () => {
@@ -61,7 +77,7 @@ function Settings({
       );
 
       showMessage(
-        "All data cleared successfully!"
+       t("settings.dataCleared")
       );
 
     } catch (error) {
@@ -69,7 +85,7 @@ function Settings({
       console.log(error);
 
       showMessage(
-        "Failed to clear data."
+        t("settings.dataClearFailed")
       );
 
     }
@@ -86,7 +102,7 @@ function Settings({
       );
 
       showMessage(
-        "Chat history cleared!"
+       t("settings.chatCleared")
       );
 
     } catch (error) {
@@ -94,7 +110,7 @@ function Settings({
       console.log(error);
 
       showMessage(
-        "Failed to clear chat history."
+       t("settings.chatClearFailed")
       );
 
     }
@@ -105,7 +121,7 @@ function Settings({
 
     localStorage.removeItem("user");
 
-    window.location.href = "/login";
+    window.location.href = "/login"; //CHANGE THE PAGE-REDIRECTING TO LOGIN
   };
 
   return (
@@ -131,11 +147,11 @@ function Settings({
           `}>
 
             <h2 className="text-2xl font-bold mb-4">
-              Clear Chat History
+            {t("settings.clearChatHistory")}
             </h2>
 
             <p className="mb-6">
-              Are you sure you want to delete all chat history?
+            {t("settings.chatPopup")}
             </p>
 
             <div className="flex justify-end gap-3">
@@ -149,7 +165,7 @@ function Settings({
                   bg-gray-300 text-black
                 "
               >
-                Cancel
+               {t("settings.cancel")}
               </button>
 
               <button
@@ -165,7 +181,7 @@ function Settings({
                   bg-red-500 text-white
                 "
               >
-                Delete
+               {t("settings.delete")}
               </button>
 
             </div>
@@ -196,11 +212,11 @@ function Settings({
           `}>
 
             <h2 className="text-2xl font-bold mb-4">
-              Clear All Data
+            {t("settings.clearAllData")}
             </h2>
 
             <p className="mb-6">
-              This will permanently delete all your data.
+            {t("settings.dataPopup")}
             </p>
 
             <div className="flex justify-end gap-3">
@@ -214,7 +230,7 @@ function Settings({
                   bg-gray-300 text-black
                 "
               >
-                Cancel
+              {t("settings.cancel")}
               </button>
 
               <button
@@ -230,7 +246,7 @@ function Settings({
                   bg-red-500 text-white
                 "
               >
-                Delete
+              {t("settings.delete")}
               </button>
 
             </div>
@@ -258,7 +274,7 @@ function Settings({
 
       {/* HEADING */}
       <h1 className="text-4xl font-bold mb-2">
-        Settings
+       {t("settings.title")}
       </h1>
 
       <p
@@ -268,7 +284,7 @@ function Settings({
             : "text-gray-500"
         }`}
       >
-        Manage your account and preferences.
+      {t("settings.subtitle")}
       </p>
 
       {/* MESSAGE */}
@@ -306,7 +322,7 @@ function Settings({
       >
 
         <h2 className="text-xl font-semibold mb-5">
-          Profile
+        {t("settings.profile")}
         </h2>
 
         <div className="flex flex-col gap-5">
@@ -321,7 +337,7 @@ function Settings({
                   : "text-gray-400"
               }`}
             >
-              Name
+            {t("settings.name")}
             </p>
 
             <div
@@ -351,7 +367,7 @@ function Settings({
                   : "text-gray-400"
               }`}
             >
-              Email
+            {t("settings.email")}
             </p>
 
             <div
@@ -390,7 +406,7 @@ function Settings({
       >
 
         <h2 className="text-xl font-semibold mb-5">
-          Preferences
+        {t("settings.preferences")}
         </h2>
 
         <div className="flex items-center justify-between">
@@ -398,7 +414,7 @@ function Settings({
           <div>
 
             <h3 className="font-medium">
-              Dark Mode
+            {t("settings.darkMode")}
             </h3>
 
             <p
@@ -408,7 +424,7 @@ function Settings({
                   : "text-gray-500"
               }`}
             >
-              Enable dark appearance
+            {t("settings.darkModeDesc")}
             </p>
 
           </div>
@@ -444,7 +460,7 @@ function Settings({
                 ${
                   tempDarkMode
                     ? "left-8"
-                    : "left-1"
+                    : "left-1" //FOR TOGGLING 
                 }
               `}
             />
@@ -453,6 +469,46 @@ function Settings({
 
         </div>
 
+
+        <div className="mt-6 flex justify-between">
+
+  <h3 className="font-medium mb-2">
+ {t("settings.language")}
+  </h3>
+
+  <select
+  value={tempLanguage}
+  onChange={(e) =>
+  setTempLanguage(
+    e.target.value
+  )
+}
+  className={`
+    px-4
+    py-2
+    rounded-xl
+    border
+    ${
+      darkMode
+        ? "bg-[#374151] text-white border-gray-600"
+        : "bg-white text-black border-gray-300"
+    }
+  `}
+>
+  <option value="en">
+    English
+  </option>
+
+  <option value="hi">
+    हिन्दी
+  </option>
+
+  <option value="te">
+    తెలుగు
+  </option>
+</select>
+
+</div>        
       </div>
 
       {/* DATA MANAGEMENT */}
@@ -470,7 +526,7 @@ function Settings({
       >
 
         <h2 className="text-xl font-semibold mb-5">
-          Data Management
+        {t("settings.dataManagement")}
         </h2>
 
         <div className="flex flex-col gap-4">
@@ -492,7 +548,7 @@ function Settings({
               }
             `}
           >
-            Clear Chat History
+          {t("settings.clearChatHistory")}
           </button>
 
           <button
@@ -510,7 +566,7 @@ function Settings({
               text-left
             "
           >
-            Clear All Data
+          {t("settings.clearAllData")}
           </button>
 
         </div>
@@ -532,7 +588,7 @@ function Settings({
       >
 
         <h2 className="text-xl font-semibold mb-4">
-          Help & Support
+        {t("settings.helpSupport")}
         </h2>
 
         <p
@@ -542,7 +598,7 @@ function Settings({
               : "text-gray-600"
           }`}
         >
-          Need help? Contact our support team.
+        {t("settings.helpText")}
         </p>
 
         <div
@@ -558,7 +614,7 @@ function Settings({
             }
           `}
         >
-          📞 Support: +91 9876543210
+          📞 {t("settings.support")}: +91 9876543210
         </div>
 
       </div>
@@ -578,7 +634,7 @@ function Settings({
       >
 
         <h2 className="text-xl font-semibold mb-5">
-          Terms & Privacy
+        {t("settings.termsPrivacy")}
         </h2>
 
         <div className="flex flex-col gap-4">
@@ -597,13 +653,11 @@ function Settings({
           >
 
             <h3 className="font-semibold mb-2">
-              Privacy Policy
+            {t("settings.privacyPolicy")}
             </h3>
 
             <p className="text-sm leading-6">
-              Your journals, moods and emotional
-              data are stored securely and are
-              never shared with third parties.
+            {t("settings.privacyText")}
             </p>
 
           </div>
@@ -622,14 +676,11 @@ function Settings({
           >
 
             <h3 className="font-semibold mb-2">
-              Terms & Conditions
+             {t("settings.termsConditions")}
             </h3>
 
             <p className="text-sm leading-6">
-              Mindful Ally provides emotional
-              wellness support and is not a
-              replacement for professional
-              medical advice.
+             {t("settings.termsText")}
             </p>
 
           </div>
@@ -655,7 +706,7 @@ function Settings({
             text-base
           "
         >
-          Save Settings
+        {t("settings.saveSettings")}
         </button>
 
         {/* LOGOUT */}
@@ -672,7 +723,7 @@ function Settings({
             text-base
           "
         >
-          Logout
+        {t("settings.logout")}
         </button>
 
       </div>

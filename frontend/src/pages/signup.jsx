@@ -1,15 +1,31 @@
 import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api/api";
-
+import { useLanguage }
+from "../context/LanguageContext";
 function Signup({ darkMode }) {
 
-
+  const {
+  language,
+  changeLanguage,
+  t
+} = useLanguage();
   const usernameRef = useRef(null);//REFERS USERNAME INPUT BOX
   const emailRef = useRef(null);//EMAIL BOX
   const passwordRef = useRef(null);//PASSWORD BOX
   const confirmPasswordRef = useRef(null);
 
+  const showMessage = (text) => {
+
+  setMessage(text);
+
+  setTimeout(() => {
+
+    setMessage("");
+
+  }, 3000);
+
+};
   const [username, setUsername] =
     useState("");
 
@@ -37,9 +53,9 @@ function Signup({ darkMode }) {
       !confirmPassword
     ) {
 
-      setMessage(
-        "Please fill all fields."
-      );
+      showMessage(
+  t("signup.fillFields")
+);
 
       return;
     }
@@ -48,9 +64,9 @@ function Signup({ darkMode }) {
       password !== confirmPassword
     ) {
 
-      setMessage(
-        "Passwords do not match."
-      );
+      showMessage(
+  t("signup.passwordMismatch")
+);
 
       return;
     }
@@ -64,7 +80,8 @@ function Signup({ darkMode }) {
             username,
             email,
             password,
-            role
+            role,
+            language
           }
         );
 
@@ -75,9 +92,9 @@ function Signup({ darkMode }) {
         )
       );
 
-      setMessage(
-        "Signup successful!"
-      );
+      showMessage(
+  t("signup.signupSuccess")
+);
 
       setTimeout(() => {
 
@@ -89,9 +106,9 @@ function Signup({ darkMode }) {
 
       console.log(error);
 
-      setMessage(
-        "Signup failed."
-      );
+      showMessage(
+  t("signup.signupFailed")
+);
 
     }
 
@@ -168,9 +185,43 @@ function Signup({ darkMode }) {
         `}
       >
 
+        <div className="mb-5">
+
+  <select
+    value={language}
+    onChange={(e) =>
+      changeLanguage(
+        e.target.value
+      )
+    }
+    className="
+      w-full
+      px-4
+      py-3
+      rounded-xl
+      mb-2
+      text-black
+    "
+  >
+
+    <option value="en">
+      English
+    </option>
+
+    <option value="hi">
+      हिन्दी
+    </option>
+
+    <option value="te">
+      తెలుగు
+    </option>
+
+  </select>
+
+</div>
         {/* TITLE */}
         <h1 className="text-4xl font-bold mb-2">
-          Create Account
+          {t("signup.title")}
         </h1>
 
         <p
@@ -180,7 +231,7 @@ function Signup({ darkMode }) {
               : "text-gray-500"
           }`}
         >
-          Sign up to continue.
+          {t("signup.subtitle")}
         </p>
 
         {/* MESSAGE */}
@@ -206,7 +257,7 @@ function Signup({ darkMode }) {
         <input
           ref={usernameRef}
           type="text"
-          placeholder="Username"
+          placeholder={t("signup.username")}
           value={username}
           onChange={(e) =>
             setUsername(e.target.value)
@@ -237,7 +288,7 @@ function Signup({ darkMode }) {
         <input
           ref={emailRef}
           type="email"
-          placeholder="Email"
+          placeholder={t("signup.email")}
           value={email}
           onChange={(e) =>
             setEmail(e.target.value)
@@ -268,7 +319,7 @@ function Signup({ darkMode }) {
         <input
           ref={passwordRef}
           type="password"
-          placeholder="Password"
+          placeholder={t("signup.password")}
           value={password}
           onChange={(e) =>
             setPassword(e.target.value)
@@ -299,7 +350,7 @@ function Signup({ darkMode }) {
         <input
           ref={confirmPasswordRef}
           type="password"
-          placeholder="Confirm Password"
+          placeholder={t("signup.confirmPassword")}
           value={confirmPassword}
           onChange={(e) =>
             setConfirmPassword(
@@ -331,7 +382,7 @@ function Signup({ darkMode }) {
         <div className="mb-6">
 
           <p className="mb-3 font-medium">
-            Sign Up As
+            {t("signup.signupAs")}
           </p>
 
           <div className="flex gap-4">
@@ -348,7 +399,7 @@ function Signup({ darkMode }) {
                 }
               />
 
-              Patient
+              {t("signup.patient")}
 
             </label>
 
@@ -363,7 +414,7 @@ function Signup({ darkMode }) {
                 }
               />
 
-              Doctor
+             {t("signup.doctor")}
 
             </label>
 
@@ -386,7 +437,7 @@ function Signup({ darkMode }) {
             mb-5
           "
         >
-          Sign Up {/* WHEN THIS BUTTON IS CLICKED THE FORM 
+          {t("signup.signup")} {/* WHEN THIS BUTTON IS CLICKED THE FORM 
           SUBMISSION IS TRIGGERED AND THE SIGNUP FUNCTION IS CALLED */}
         </button>
 
@@ -398,7 +449,7 @@ function Signup({ darkMode }) {
               : "text-gray-500"
           }`}
         >
-          Already have an account?{" "}
+          {t("signup.haveAccount")}{" "}
 
           <Link
             to="/login"
@@ -407,7 +458,7 @@ function Signup({ darkMode }) {
               font-medium
             "
           >
-            Login
+            {t("signup.loginLink")}
           </Link>
 
         </p>

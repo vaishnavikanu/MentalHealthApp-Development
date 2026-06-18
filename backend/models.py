@@ -17,10 +17,11 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    username = Column(String)
-    email = Column(String)
+    username = Column(String, unique=True)
+    email = Column(String, unique=True)
     password = Column(String)
     role = Column(String)
+    language = Column(String, default="en")  # ← Add this
 
 class Mood(Base):
     __tablename__ = "moods"
@@ -67,7 +68,7 @@ class ChatSession(Base):
     )
     updated_at = Column(
         DateTime,
-        default=datetime.utcnow
+        default=lambda: datetime.utcnow() + timedelta(hours=5, minutes=30)
     )
  
 class Message(Base):
@@ -104,5 +105,4 @@ class Attachment(Base):
 
     file_path = Column(String)
 
-    file_type = Column(String)   
-    
+    file_type = Column(String)

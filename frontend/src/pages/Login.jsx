@@ -1,9 +1,15 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import API from "../api/api";
-
+import { useLanguage }
+from "../context/LanguageContext";
 function Login({ darkMode }) {
 
+  const {
+  language,
+  changeLanguage,
+  t
+} = useLanguage();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
@@ -19,13 +25,22 @@ function Login({ darkMode }) {
   const [message, setMessage] =
     useState("");
 
+    const showMessage = (text) => {
+
+      setMessage(text);
+
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+
+    };
   const loginUser = async () => {
 
     if (!email || !password) {
 
-      setMessage(
-        "Please fill all fields."
-      );
+      showMessage(
+  t("login.fillFields")
+);
 
       return;
     }
@@ -43,19 +58,27 @@ function Login({ darkMode }) {
         );
 
       if (
-        response.data.message ===
-          "User not found" ||
+  response.data.message ===
+  "User not found"
+) {
 
-        response.data.message ===
-          "Incorrect password"
-      ) {
+ showMessage(
+  t("login.userNotFound")
+);
 
-        setMessage(
-          response.data.message
-        );
+  return;
+}
 
-        return;
-      }
+if (
+  response.data.message ===
+  "Incorrect password"
+) {
+
+showMessage(
+  t("login.incorrectPassword")
+);
+  return;
+}
 
       localStorage.setItem(
         "user",
@@ -64,9 +87,9 @@ function Login({ darkMode }) {
         )
       );
 
-      setMessage(
-        "Login successful!"
-      );
+      showMessage(
+  t("login.loginSuccess")
+);
 
       setTimeout(() => {
 
@@ -78,9 +101,9 @@ function Login({ darkMode }) {
 
       console.log(error);
 
-      setMessage(
-        "Login failed."
-      );
+      sshowMessage(
+  t("login.loginFailed")
+);
 
     }
 
@@ -161,9 +184,43 @@ function Login({ darkMode }) {
         `}
       >
 
+        <div className="mb-5">
+
+  <select
+    value={language}
+    onChange={(e) =>
+      changeLanguage(
+        e.target.value
+      )
+    }
+    className="
+      w-full
+      px-4
+      py-3
+      rounded-xl
+      mb-2
+      text-black
+    "
+  >
+
+    <option value="en">
+      English
+    </option>
+
+    <option value="hi">
+      हिन्दी
+    </option>
+
+    <option value="te">
+      తెలుగు
+    </option>
+
+  </select>
+
+</div>
         {/* TITLE */}
         <h1 className="text-4xl font-bold mb-2">
-          Welcome Back
+          {t("login.title")}
         </h1>
 
         <p
@@ -173,7 +230,7 @@ function Login({ darkMode }) {
               : "text-gray-500"
           }`}
         >
-          Login to continue.
+         {t("login.subtitle")}
         </p>
 
         {/* MESSAGE */}
@@ -200,7 +257,7 @@ function Login({ darkMode }) {
         <input
           ref={emailRef}
           type="email"
-          placeholder="Email"
+          placeholder={t("login.email")}
           value={email}
           onChange={(e) =>
             setEmail(e.target.value)
@@ -232,7 +289,7 @@ function Login({ darkMode }) {
         <input
           ref={passwordRef}
           type="password"
-          placeholder="Password"
+          placeholder={t("login.password")}
           value={password}
           onChange={(e) =>
             setPassword(e.target.value)
@@ -263,7 +320,7 @@ function Login({ darkMode }) {
         <div className="mb-6">
 
           <p className="mb-3 font-medium">
-            Login As
+            {t("login.loginAs")}
           </p>
 
           <div className="flex gap-4">
@@ -279,7 +336,7 @@ function Login({ darkMode }) {
                 }
               />
 
-              Patient
+              {t("login.patient")}
 
             </label>
 
@@ -294,7 +351,7 @@ function Login({ darkMode }) {
                 }
               />
 
-              Doctor
+              {t("login.doctor")}
 
             </label>
 
@@ -317,7 +374,7 @@ function Login({ darkMode }) {
             mb-5
           "
         >
-          Login
+          {t("login.login")}
         </button>
 
         {/* SIGNUP LINK */}
@@ -328,7 +385,7 @@ function Login({ darkMode }) {
               : "text-gray-500"
           }`}
         >
-          Don't have an account?{" "}
+          {t("login.noAccount")}{" "}
 
           <Link
             to="/signup"
@@ -338,7 +395,7 @@ function Login({ darkMode }) {
               hover:underline
             "
           >
-            Sign Up
+            {t("login.signupLink")}
           </Link>
 
         </p>

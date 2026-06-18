@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/api";
-
+import { useLanguage } from "../context/LanguageContext";
 function Patients({ darkMode }) {
 
+  const { t } = useLanguage();
   const [patients, setPatients] =
     useState([]);
 
@@ -66,7 +67,7 @@ function Patients({ darkMode }) {
 
       {/* HEADING */}
       <h1 className="text-5xl font-bold mb-2">
-        Patients
+       {t("patients.title")}
       </h1>
 
       <p
@@ -76,7 +77,7 @@ function Patients({ darkMode }) {
             : "text-gray-500"
         }`}
       >
-        Select a patient to view their history.
+      {t("patients.subtitle")}
       </p>
 
       <p
@@ -86,13 +87,13 @@ function Patients({ darkMode }) {
             : "text-gray-500"
         }`}
       >
-        Total Patients: {patients.length}
+      {t("patients.totalPatients")} {patients.length}
       </p>
 
       {/* SEARCH */}
       <input
         type="text"
-        placeholder="Search Patient..."
+        placeholder={t("patients.search")}
         value={searchTerm}
         onChange={(e) =>
           setSearchTerm(
@@ -142,7 +143,7 @@ function Patients({ darkMode }) {
               : "text-gray-500"
           }`}
         >
-          No patient found.
+        {t("patients.noPatient")}
         </div>
 
       )}
@@ -154,11 +155,22 @@ function Patients({ darkMode }) {
 
           <div
             key={patient.id}
-            onClick={() =>
-              navigate(
-                `/history?patient=${patient.id}`
-              )
-            }
+            onClick={() => {
+
+  const scrollContainer =
+    document.querySelector(
+      ".overflow-y-auto"
+    );
+
+  if (scrollContainer) {
+    scrollContainer.scrollTop = 0;
+  }
+
+  navigate(
+    `/patient-history?patient=${patient.id}`
+  );
+
+}}
             className={`
               rounded-3xl
               p-6
@@ -206,7 +218,7 @@ function Patients({ darkMode }) {
               </div>
 
               <div className="text-purple-600 font-medium">
-                View History →
+              {t("patients.viewHistory")} →
               </div>
 
             </div>

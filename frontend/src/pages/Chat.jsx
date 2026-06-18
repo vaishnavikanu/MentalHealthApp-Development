@@ -9,20 +9,24 @@ import {
 } from "react-router-dom";
 import API from "../api/api";
 import { FaPaperclip } from "react-icons/fa";
+import {
+  useLanguage
+} from "../context/LanguageContext";
 function Chat({ newChat, darkMode }) {
 
   const user = JSON.parse(
   localStorage.getItem("user")
   );
 
+  const { t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
   const defaultMessages = [
-    {
-      sender: "bot",
-      text: "Hello! I'm your health buddy.\nHow are you feeling today?"
-    }
-  ];
+  {
+    sender: "bot",
+    text: t("chat.welcome")
+  }
+];
 
   const [messages, setMessages] =
     useState(defaultMessages);
@@ -250,8 +254,8 @@ textareaRef.current?.focus();
       }
 
     /* TEMP BOT RESPONSE */
-    const botText =
-      "I understand. Tell me more about how you're feeling.";
+   const botText =
+  t("chat.botReply");
 
     const botReply = {
       sender: "bot",
@@ -616,7 +620,7 @@ textareaRef.current?.focus();
                   }
                 `}
               >
-                📁 Upload File/Image
+                {t("chat.upload")}
               </button>
 
               {isMobile && (
@@ -642,7 +646,7 @@ textareaRef.current?.focus();
                     }
                   `}
                 >
-                  📷 Take Photo
+                  {t("chat.takePhoto")}
                 </button>
 
               )}
@@ -653,7 +657,7 @@ textareaRef.current?.focus();
 
           <textarea
             ref={textareaRef}
-            placeholder="Type your message..."
+            placeholder={t("chat.typeMessage")}
             value={input}
             onChange={(e) =>
               setInput(e.target.value)
@@ -717,7 +721,7 @@ textareaRef.current?.focus();
               }
             `}
           >
-            Send
+            {t("chat.send")}
           </button>
 
         </div>

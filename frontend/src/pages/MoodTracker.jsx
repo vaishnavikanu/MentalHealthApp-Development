@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import API from "../api/api";
 import MoodGraph from "../components/MoodGraph";
+import {
+  useLanguage
+} from "../context/LanguageContext";
 function MoodTracker({ darkMode }) {
 
   const user =
   JSON.parse(
     localStorage.getItem("user")
   );
-
+const { t } = useLanguage();
 
   const [moodEntries, setMoodEntries] =
     useState([]);
@@ -83,7 +86,7 @@ function MoodTracker({ darkMode }) {
       >
         <div>
           <h1 className=" text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
-            Mood Tracker
+            {t("moodTracker.title")}
           </h1>
           <p
             className={`text-lg ${
@@ -92,7 +95,7 @@ function MoodTracker({ darkMode }) {
                 : "text-gray-500"
             }`}
           >
-            Track your emotional well-being.
+           {t("moodTracker.subtitle")}
           </p>
 
         </div>
@@ -107,7 +110,7 @@ function MoodTracker({ darkMode }) {
       <div className="flex items-center justify-between mb-5">
 
         <h2 className="text-3xl font-semibold">
-          Recent Mood Entries
+          {t("moodTracker.recent")}
         </h2>
 
         {moodEntries.length > 5 && (
@@ -128,8 +131,8 @@ function MoodTracker({ darkMode }) {
             "
           >
             {showAll
-              ? "Show Less"
-              : "See More"}
+  ? t("common.showLess")
+  : t("common.seeMore")}
           </button>
 
         )}
@@ -166,7 +169,7 @@ function MoodTracker({ darkMode }) {
                 <div>
 
                   <h3 className="font-semibold text-lg">
-                    Mood Entry
+                    {t("moodTracker.entry")}
                   </h3>
 
                   <p

@@ -11,12 +11,12 @@ import {
 import MoodGraph from "../components/MoodGraph";
 import API from "../api/api";
 
-function History({ darkMode }) {
+function PatientHistory({ darkMode }) {
 
-  //STORING A NAVIGATION FUNCTION
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useLanguage();
+
   const [chatHistory, setChatHistory] =
     useState([]);
 
@@ -38,23 +38,26 @@ function History({ darkMode }) {
   const [showAllJournals, setShowAllJournals] =
     useState(false);
 
-  const user = JSON.parse(
-    localStorage.getItem("user")
-  );
-
   const queryParams =
   new URLSearchParams(
     location.search
   );
 
-const patientId =
-  queryParams.get("patient");
-  /* FETCH HISTORY */
+  const patientId =
+    queryParams.get("patient");
+
   useEffect(() => {
 
-    fetchHistory();
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "smooth"
+  });
 
-  }, []);
+}, [patientId]);
+  useEffect(() => {
+    fetchHistory();
+  }, [patientId]);
 
   const fetchHistory = async () => {
 
@@ -62,9 +65,7 @@ const patientId =
 
       const response =
         await API.get(
-          `/history/${
-            patientId || user.id
-          }`
+          `/history/${patientId}`
         );
 
       setPatientInfo(
@@ -111,13 +112,7 @@ const patientId =
 
       {/* HEADING */}
       <h1 className="text-5xl font-bold mb-2">
-
-        {patientId
-        ? t("history.patientHistory")
-        : user.role === "doctor"
-        ? t("history.myHistory")
-        : t("history.history")}
-
+      {t("history.patientHistory")}
       </h1>
 
       <p
@@ -127,16 +122,10 @@ const patientId =
             : "text-gray-500"
         }`}
       >
-
-        {patientId
-        ? t("history.viewPatientRecords")
-        : user.role === "doctor"
-        ? t("history.viewOwnHistory")
-        : t("history.viewActivities")}
-
+      {t("history.viewPatientRecords")}
       </p>
 
-       {patientId && patientInfo && (
+      {patientInfo && (
 
         <div
           className={`mb-10 rounded-2xl p-5 ${
@@ -160,7 +149,7 @@ const patientId =
 
         </div>
 
-)}     
+      )}
 
       {/* CHAT HISTORY */}
       <div className="mb-14">
@@ -168,7 +157,7 @@ const patientId =
         <div className="flex justify-between items-center mb-6">
 
           <h2 className="text-3xl font-semibold">
-           {t("history.chatHistory")}
+          {t("history.chatHistory")}
           </h2>
 
           {chatHistory.length > 5 && (
@@ -191,8 +180,8 @@ const patientId =
               "
             >
               {showAllChats
-                ? t("common.showLess")
-                : t("common.seeMore")}
+              ? t("common.showLess")
+              : t("common.seeMore")}
             </button>
 
           )}
@@ -227,10 +216,10 @@ const patientId =
               <div
                 key={chat.id}
                 onClick={() =>
-                  navigate(
-                    `/?session=${chat.id}`
-                  )
-                }
+  navigate(
+    `/doctor-chat-view?session=${chat.id}`
+  )
+}
                 className={`
                   rounded-2xl
                   p-4
@@ -289,9 +278,6 @@ const patientId =
 
       </div>
 
-
-      
-
       {/* MOOD HISTORY */}
       <div className="mb-14">
 
@@ -321,8 +307,8 @@ const patientId =
               "
             >
               {showAllMoods
-                ? t("common.showLess")
-                : t("common.seeMore")}
+  ? t("common.showLess")
+  : t("common.seeMore")}
             </button>
 
           )}
@@ -353,7 +339,7 @@ const patientId =
               ? moodHistory
               : moodHistory.slice(0, 5)
             ).map((mood) => (
-              //FOR THE COMPLETE CARD
+
               <div
                 key={mood.id}
                 className={`
@@ -367,7 +353,7 @@ const patientId =
                   }
                 `}
               >
-                {/*FOR THE TEXT INSIDE CARD*/}                
+
                 <div className="flex justify-between items-center mb-3">
 
                   <h3 className="text-5xl font-semibold">
@@ -408,26 +394,19 @@ const patientId =
 
       </div>
 
-      {/*MOOD TRACKER --- VISIBLE ONLY TO DOCTOR*/ }
-     
-
-       
-          {patientId &&(
-             <div className="flex justify-between items-center mb-6">
-            <h2 className="text-3xl font-semibold">
+      {/* MOOD TRACKER */}
+      <div className="mb-14">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-3xl font-semibold">
           {t("history.moodTracker")}
           </h2>   
-          </div>
-          )}
-       
-      {patientId && (
+        </div>
 
         <MoodGraph
           moods={moodHistory}
           darkMode={darkMode}
         />
-
-      )}
+      </div>
 
       {/* JOURNAL HISTORY */}
       <div>
@@ -458,8 +437,8 @@ const patientId =
               "
             >
               {showAllJournals
-                ? t("common.showLess")
-                : t("common.seeMore")}
+  ? t("common.showLess")
+  : t("common.seeMore")}
             </button>
 
           )}
@@ -490,7 +469,7 @@ const patientId =
               ? journalHistory
               : journalHistory.slice(0, 5)
             ).map((journal) => (
-              //FOR CARD
+
               <div
                 key={journal.id}
                 className={`
@@ -504,7 +483,7 @@ const patientId =
                   }
                 `}
               >
-                
+
                 <div className="flex justify-between items-center mb-3">
 
                   <h3 className="text-lg font-semibold">
@@ -550,4 +529,4 @@ const patientId =
   );
 }
 
-export default History;
+export default PatientHistory;

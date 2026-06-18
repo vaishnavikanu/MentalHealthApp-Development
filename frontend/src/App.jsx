@@ -6,9 +6,9 @@ import {
 } from "react-router-dom";
 import Patients from "./pages/Patients";
 import { useState, useEffect } from "react";
-
+import { useRef } from "react";
 import Sidebar from "./components/Sidebar";
-
+import DoctorChatView from "./pages/DoctorChatView";
 import Chat from "./pages/Chat";
 import CheckIn from "./pages/CheckIn";
 import MoodTracker from "./pages/MoodTracker";
@@ -18,6 +18,7 @@ import SelfCare from "./pages/SelfCare";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import Signup from "./pages/signup";
+import PatientHistory from "./pages/PatientHistory";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
       )
     );
 
+    const contentRef = useRef(null);
     const role = user?.role;
   /* NEW CHAT */
   const [newChat, setNewChat] =
@@ -298,6 +300,7 @@ function App() {
 
             {/* PAGE CONTENT */}
             <div
+            ref={contentRef}
               className={`
                 flex-1
                 overflow-y-auto
@@ -417,7 +420,25 @@ function App() {
                     />
                   }
                 />
-                
+
+                {/* PATIENT HISTORY */}
+                <Route
+                  path="/patient-history"
+                  element={
+                    <PatientHistory
+                      darkMode={darkMode}
+                    />
+                  }
+                />
+                {/*DOCTOR VIEW OF CHAT*/}
+                <Route
+                  path="/doctor-chat-view"
+                  element={
+                    <DoctorChatView
+                      darkMode={darkMode}
+                    />
+                  }
+                />
 
                 {/* INVALID ROUTE */}
                 <Route
