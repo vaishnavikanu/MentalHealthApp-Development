@@ -152,7 +152,9 @@ checkin: {
     "Check-in saved successfully!",
 
   failed:
-    "Failed to save check-in."
+    "Failed to save check-in.",
+    deleted: "Mood deleted successfully",
+    deleteFailed: "Failed to delete mood"
 
 },
 
@@ -160,7 +162,8 @@ common: {
 
   seeMore: "See More",
 
-  showLess: "Show Less"
+  showLess: "Show Less",
+  delete: "Delete"
 
 },
 moodTracker: {

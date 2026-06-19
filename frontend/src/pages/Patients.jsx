@@ -156,16 +156,6 @@ function Patients({ darkMode }) {
           <div
             key={patient.id}
             onClick={() => {
-
-  const scrollContainer =
-    document.querySelector(
-      ".overflow-y-auto"
-    );
-
-  if (scrollContainer) {
-    scrollContainer.scrollTop = 0;
-  }
-
   navigate(
     `/patient-history?patient=${patient.id}`
   );

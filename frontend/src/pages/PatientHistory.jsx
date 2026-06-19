@@ -46,13 +46,21 @@ function PatientHistory({ darkMode }) {
   const patientId =
     queryParams.get("patient");
 
-  useEffect(() => {
+useEffect(() => {
 
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: "smooth"
-  });
+  const container =
+    document.getElementById(
+      "main-content"
+    );
+
+  if (container) {
+
+    container.scrollTo({
+      top: 0,
+      behavior: "instant"
+    });
+
+  }
 
 }, [patientId]);
   useEffect(() => {
@@ -77,11 +85,11 @@ function PatientHistory({ darkMode }) {
       );
 
       setMoodHistory(
-        response.data.moods.reverse()
+        response.data.moods
       );
 
       setJournalHistory(
-        response.data.journals.reverse()
+        response.data.journals
       );
 
     } catch (error) {

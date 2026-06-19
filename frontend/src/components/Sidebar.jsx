@@ -12,11 +12,12 @@ import {
   FaPhone,
   FaPlus
 } from "react-icons/fa";
-
 function Sidebar({
   startNewChat,
-  darkMode
-}) {
+  darkMode,
+  setSidebarOpen
+})
+ {
   const { t } = useLanguage();
 
   const navigate = useNavigate();
@@ -24,10 +25,28 @@ function Sidebar({
   JSON.parse(
     localStorage.getItem("user")
   );
-  const handleNewChat = () => {
-    startNewChat();
-    navigate("/");
-  };
+  const handleNavClick = () => {
+
+  if (window.innerWidth < 900) {
+
+    setSidebarOpen(false);
+
+  }
+
+};
+const handleNewChat = () => {
+
+  startNewChat();
+
+  navigate("/");
+
+  if (window.innerWidth < 900) {
+
+    setSidebarOpen(false);
+
+  }
+
+};
 
   const navStyle = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-3 rounded-xl transition text-[15px]
@@ -48,6 +67,8 @@ function Sidebar({
         flex
         flex-col
         p-4
+        overflow-y-auto
+        overflow-x-hidden
         transition-all
         duration-300
         ${
@@ -93,7 +114,7 @@ function Sidebar({
       {/* NAVIGATION */}
       <div className="flex flex-col gap-2.5">
 
-  <NavLink to="/" className={navStyle}>
+  <NavLink to="/" className={navStyle} onClick={handleNavClick}>
     <FaComments />
     <span>{t("sidebar.chat")}</span>
   </NavLink>
@@ -103,6 +124,7 @@ function Sidebar({
       <NavLink
         to="/checkin"
         className={navStyle}
+        onClick={handleNavClick}
       >
         <FaSmile />
         <span>{t("sidebar.checkIn")}</span>
@@ -111,6 +133,7 @@ function Sidebar({
       <NavLink
         to="/moodtracker"
         className={navStyle}
+        onClick={handleNavClick}
       >
         <FaChartLine />
         <span>{t("sidebar.moodTracker")}</span>
@@ -119,6 +142,7 @@ function Sidebar({
       <NavLink
         to="/journal"
         className={navStyle}
+        onClick={handleNavClick}
       >
         <FaBook />
         <span>{t("sidebar.journal")}</span>
@@ -127,6 +151,7 @@ function Sidebar({
       <NavLink
         to="/history"
         className={navStyle}
+        onClick={handleNavClick}
       >
         <FaHistory />
         <span>{t("sidebar.history")}</span>
@@ -135,6 +160,7 @@ function Sidebar({
       <NavLink
         to="/selfcare"
         className={navStyle}
+        onClick={handleNavClick}
       >
         <FaHeart />
         <span>{t("sidebar.selfCare")}</span>
@@ -147,6 +173,7 @@ function Sidebar({
     <NavLink
       to="/patients"
       className={navStyle}
+      onClick={handleNavClick}
     >
       <FaHistory />
       <span>{t("sidebar.patients")}</span>
@@ -155,6 +182,7 @@ function Sidebar({
     <NavLink
       to="/history"
       className={navStyle}
+      onClick={handleNavClick}
     >
       <FaHistory />
       <span>{t("sidebar.history")}</span>
@@ -165,6 +193,7 @@ function Sidebar({
   <NavLink
     to="/settings"
     className={navStyle}
+    onClick={handleNavClick}
   >
     <FaCog />
     <span>{t("sidebar.settings")}</span>
@@ -175,7 +204,7 @@ function Sidebar({
       {/* HELPLINE COMPLETE BOX*/}
       <div
         className={`
-          mt-auto
+          mt-6
           rounded-xl
           p-3
           border

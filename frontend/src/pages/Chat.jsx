@@ -625,27 +625,26 @@ textareaRef.current?.focus();
 
               {isMobile && (
 
-                <button
-                  onClick={() => {
+  <button
+    onClick={() => {
 
-                    cameraInputRef.current.click();
+      cameraInputRef.current.click();
 
-                    setShowAttachmentMenu(false);
+      setShowAttachmentMenu(false);
 
-                  }}
-                  className={`
-                    w-full
-                    text-left
-                    px-4
-                    py-3
-                    hover:bg-purple-100
-                    ${
-                      darkMode
-                        ? "hover:bg-[#334155]"
-                        : ""
-                    }
-                  `}
-                >
+    }}
+    className={`
+      w-full
+      text-left
+      px-4
+      py-3
+      ${
+        darkMode
+          ? "text-white hover:bg-[#334155]"
+          : "text-black hover:bg-purple-100"
+      }
+    `}
+  >
                   {t("chat.takePhoto")}
                 </button>
 

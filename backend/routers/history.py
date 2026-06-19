@@ -19,13 +19,19 @@ def get_history(
     if not user:
         return {"message": "User does not exist"}
 
-    moods = db.query(Mood).filter(
-        Mood.user_id == user_id
-    ).all()
+    moods = (
+        db.query(Mood)
+        .filter(Mood.user_id == user_id)
+        .order_by(Mood.created_at.desc())
+        .all()
+    )
 
-    journals = db.query(Journal).filter(
-        Journal.user_id == user_id
-    ).all()
+    journals = (
+        db.query(Journal)
+        .filter(Journal.user_id == user_id)
+        .order_by(Journal.created_at.desc())
+        .all()
+    )
 
     chats = db.query(ChatSession).filter(
         ChatSession.user_id == user_id

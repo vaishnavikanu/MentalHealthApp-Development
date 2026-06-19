@@ -101,7 +101,7 @@ showMessage(
 
       console.log(error);
 
-      sshowMessage(
+      showMessage(
   t("login.loginFailed")
 );
 
@@ -193,14 +193,19 @@ showMessage(
         e.target.value
       )
     }
-    className="
-      w-full
-      px-4
-      py-3
-      rounded-xl
-      mb-2
-      text-black
-    "
+   className={`
+  w-full
+  px-4
+  py-3
+  rounded-xl
+  mb-2
+  border
+  ${
+    darkMode
+      ? "bg-[#374151] text-white border-gray-600"
+      : "bg-white text-black border-gray-300"
+  }
+`}
   >
 
     <option value="en">

@@ -36,9 +36,12 @@ def get_journals(
     if not user:
         return {"message": "User does not exist"}
 
-    journals = db.query(Journal).filter(
-        Journal.user_id == user_id
-    ).all()
+    journals = (
+    db.query(Journal)
+    .filter(Journal.user_id == user_id)
+    .order_by(Journal.created_at.desc())
+    .all()
+)
 
     return journals
 

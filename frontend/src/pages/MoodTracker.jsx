@@ -34,10 +34,9 @@ const { t } = useLanguage();
       const response =
         await API.get(`/moods/${user.id}`);
 
-      const moods =
-        response.data.reverse();
+      
 
-      setMoodEntries(moods);
+      setMoodEntries(response.data);
 
     } catch (error) {
 
@@ -60,7 +59,7 @@ const { t } = useLanguage();
     <div
       className={`
         min-h-full
-        px-9
+        px-3 md:px-6 lg:px-9
         py-6
         pb-20
         transition-all
@@ -101,10 +100,15 @@ const { t } = useLanguage();
         </div>
       </div>
       {/*GRAPH SECTION*/}
-      <MoodGraph
+      <div className="overflow-x-auto">
+
+  <MoodGraph
         moods={moodEntries}
         darkMode={darkMode}
       />
+
+</div>
+      
 
       {/* RECENT ENTRIES */}
       <div className="flex items-center justify-between mb-5">
@@ -158,7 +162,8 @@ const { t } = useLanguage();
             `}
           >
 
-            <div className="flex items-center justify-between mb-3">
+           <div className="   flex   flex-col   sm:flex-row   sm:items-center  sm:justify-between
+                gap-3 mb-3">
 
               <div className="flex items-center gap-3">
 

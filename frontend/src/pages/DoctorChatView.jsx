@@ -19,6 +19,23 @@ function DoctorChatView({ darkMode }) {
   const sessionId =
     queryParams.get("session");
 
+    useEffect(() => {
+
+  const container =
+    document.getElementById(
+      "main-content"
+    );
+
+  if (container) {
+
+    container.scrollTo({
+      top: 0
+    });
+
+  }
+
+}, []);
+
   useEffect(() => {
 
     fetchMessages();

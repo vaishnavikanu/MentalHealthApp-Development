@@ -44,7 +44,7 @@ function Journal({ darkMode }) {
         await API.get(`/journals/${user.id}`);//GETS ALL THE JOURNALS RELATED TO USER_ID
 
       setJournals(
-        response.data.reverse()
+        response.data
       );
 
     } catch (error) {

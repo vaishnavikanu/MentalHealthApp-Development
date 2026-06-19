@@ -19,7 +19,7 @@ import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import Signup from "./pages/signup";
 import PatientHistory from "./pages/PatientHistory";
-
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   
@@ -44,12 +44,37 @@ function App() {
   const [sidebarWidth, setSidebarWidth] =
     useState(290);
 
+  const [isMobile, setIsMobile] =
+  useState(window.innerWidth < 768);  
+
   /* DARK MODE TOGGLE*/
   const [darkMode, setDarkMode] =
     useState(
       localStorage.getItem("theme") === "dark"
     );
 
+    useEffect(() => {
+
+  const handleResize = () => {
+
+    setIsMobile(
+      window.innerWidth < 768
+    );
+
+  };
+
+  window.addEventListener(
+    "resize",
+    handleResize
+  );
+
+  return () =>
+    window.removeEventListener(
+      "resize",
+      handleResize
+    );
+
+}, []);
   /* APPLY THEME */
   useEffect(() => {
 
@@ -74,6 +99,40 @@ function App() {
     }
 
   }, [darkMode]);
+
+
+  useEffect(() => {
+
+  const handleResize = () => {
+
+    if (window.innerWidth < 900) {
+
+      setSidebarWidth(220);
+
+    }
+
+    else {
+
+      setSidebarWidth(290);
+
+    }
+
+  };
+
+  handleResize();
+
+  window.addEventListener(
+    "resize",
+    handleResize
+  );
+
+  return () =>
+    window.removeEventListener(
+      "resize",
+      handleResize
+    );
+
+}, []);
 
   /* NEW CHAT */
   const startNewChat = () => {
@@ -139,6 +198,7 @@ function App() {
 
     <BrowserRouter>
 
+       <ScrollToTop />
       {/* LOGIN/SIGNUP SCREEN */}
       {!user ? (
 
@@ -192,14 +252,20 @@ function App() {
           {/* SIDEBAR */}
           <div
             style={{
-              width: sidebarOpen
-                ? `${sidebarWidth}px`
-                : "0px"
-            }}
+  width:
+    sidebarOpen
+      ? (
+          isMobile
+            ? "100%"
+            : `${sidebarWidth}px`
+        )
+      : "0px"
+}}
             className={`
               transition-all
               duration-300
-              overflow-hidden
+              overflow-y-auto
+              overflow-x-hidden
               shrink-0
               relative
 
@@ -215,9 +281,10 @@ function App() {
           >
 
             <Sidebar
-              startNewChat={startNewChat}
-              darkMode={darkMode}
-            />
+  startNewChat={startNewChat}
+  darkMode={darkMode}
+  setSidebarOpen={setSidebarOpen}
+/>
 
             {/* RESIZE HANDLE */}
             {sidebarOpen && (
@@ -300,6 +367,7 @@ function App() {
 
             {/* PAGE CONTENT */}
             <div
+            id="main-content"
             ref={contentRef}
               className={`
                 flex-1

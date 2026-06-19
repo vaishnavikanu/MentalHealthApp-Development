@@ -43,26 +43,51 @@ function CheckIn({ darkMode }) {
       const response =
         await API.get(`/moods/${user.id}`);
 
-      const formattedData =
-        response.data.map((item) => ({
+     const formattedData =
+  response.data.map((item) => ({
 
-          mood: item.mood,
+    id: item.id,
 
-          note: item.note,
+    mood: item.mood,
 
-          date: new Date(
-            item.created_at
-          ).toLocaleDateString(),
+    note: item.note,
 
-          time: new Date(
-            item.created_at
-          ).toLocaleTimeString()
+    created_at: item.created_at,
 
-        }));
+    date: new Date(
+      item.created_at
+    ).toLocaleDateString(),
 
-      setRecentCheckins(
-        formattedData.reverse()
-      );
+    time: new Date(
+      item.created_at
+    ).toLocaleTimeString()
+
+}));
+
+formattedData.sort(
+  (a, b) =>
+    new Date(b.created_at) -
+    new Date(a.created_at)
+);
+
+setRecentCheckins(
+  formattedData
+);
+
+      const sortedData =
+  formattedData.sort(
+    (a, b) =>
+      new Date(
+        `${b.date} ${b.time}`
+      ) -
+      new Date(
+        `${a.date} ${a.time}`
+      )
+  );
+
+setRecentCheckins(
+  sortedData
+);
 
     } catch (error) {
 
@@ -137,6 +162,38 @@ function CheckIn({ darkMode }) {
     }
 
   };
+
+const deleteMood = async (moodId) => {
+
+  try {
+
+    await API.delete(
+      `/mood/${moodId}`
+    );
+
+    fetchCheckins();
+
+   setMessage(
+  t("checkin.deleted")
+);
+
+    setTimeout(() => {
+
+      setMessage("");
+
+    }, 3000);
+
+  } catch (error) {
+
+    console.log(error);
+
+   setMessage(
+  t("checkin.deleteFailed")
+);
+
+  }
+
+};
 
   /* SHOW ONLY 5 */
   const displayedEntries =
@@ -357,27 +414,48 @@ function CheckIn({ darkMode }) {
             `}
           >
 
-            <div className="flex justify-between mb-3">
+            <div className="flex justify-between items-start mb-3">
 
-              <span className="text-5xl">
-                {item.mood}
-              </span>
+  <span className="text-5xl">
+    {item.mood}
+  </span>
 
-              <div
-                className={`text-sm text-right ${
-                  darkMode
-                    ? "text-gray-400"
-                    : "text-gray-500"
-                }`}
-              >
+  <div className="flex gap-3">
 
-                <p>{item.date}</p>
+    <div
+      className={`text-sm text-right ${
+        darkMode
+          ? "text-gray-400"
+          : "text-gray-500"
+      }`}
+    >
 
-                <p>{item.time}</p>
+      <p>{item.date}</p>
 
-              </div>
+      <p>{item.time}</p>
 
-            </div>
+    </div>
+
+    <button
+      onClick={() =>
+        deleteMood(item.id)
+      }
+      className="
+        bg-red-500
+        hover:bg-red-600
+        text-white
+        px-3
+        py-1
+        rounded-lg
+        text-sm
+      "
+    >
+      {t("common.delete")}
+    </button>
+
+  </div>
+
+</div>
 
             <p
               className={`text-sm ${

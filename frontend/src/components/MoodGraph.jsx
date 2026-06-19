@@ -421,7 +421,7 @@ setGraphData(monthlyData);
       <div
         className={`
           rounded-3xl
-          p-6
+          p-3 md:p-6
           mb-10
           border
           overflow-x-auto
@@ -438,7 +438,7 @@ setGraphData(monthlyData);
           {t("moodGraph.analysis")}
         </h2>
 
-        <div className="flex gap-5 h-72 overflow-hidden">
+        <div className="  flex  gap-2  md:gap-5  h-72  overflow-x-auto">
 
           <div
             className={`
@@ -495,7 +495,7 @@ setGraphData(monthlyData);
                   items-center
                   justify-end
                   h-full
-                  flex-1
+                  min-w-[70px]
                 "
               >
 
@@ -521,7 +521,9 @@ setGraphData(monthlyData);
                   className={`
                     mt-3
                     text-sm
+                    md:text-sm
                     font-medium
+                    whitespace-nowrap
                     ${
                       darkMode
                         ? "text-gray-300"

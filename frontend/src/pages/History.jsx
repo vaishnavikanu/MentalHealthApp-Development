@@ -76,12 +76,20 @@ const patientId =
       );
 
       setMoodHistory(
-        response.data.moods.reverse()
-      );
+  [...response.data.moods].sort(
+    (a, b) =>
+      new Date(b.created_at) -
+      new Date(a.created_at)
+  )
+);
 
-      setJournalHistory(
-        response.data.journals.reverse()
-      );
+     setJournalHistory(
+  [...response.data.journals].sort(
+    (a, b) =>
+      new Date(b.created_at) -
+      new Date(a.created_at)
+  )
+);
 
     } catch (error) {
 
