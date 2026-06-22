@@ -7,6 +7,8 @@ function MoodGraph({ moods, darkMode }) {
   const [selected, setSelected] = useState("Weekly");
   const [selectedPeriod, setSelectedPeriod] = useState("Current");
   const [graphData, setGraphData] = useState([]);
+  const [selectedBar, setSelectedBar] =
+useState(null);
 
   useEffect(() => {
     generateGraphData(moods);
@@ -206,7 +208,9 @@ date < end
         return {
 
           day:
-            `${day} ${labelDate.getDate()} ${monthLabel}`,
+          window.innerWidth < 640
+            ? `${labelDate.getDate()}`
+            : `${day} ${labelDate.getDate()} ${monthLabel}`,
 
           value: average
 
@@ -468,9 +472,9 @@ setGraphData(monthlyData);
             className={`
               flex
               items-end
-              gap-5
+              gap-2 sm:gap-3 md:gap-4 lg:gap-5
               h-full
-              flex-1
+              w-fit
               border-b
               border-l
               p-4
@@ -485,37 +489,85 @@ setGraphData(monthlyData);
             `}
           >
 
-            {graphData.map((item, index) => (
+           {graphData.map((item, index) => (
 
-              <div
-                key={index}
+           <div
+              key={index}
+              onClick={() => {
+
+                setSelectedBar(index);
+
+                clearTimeout(window.moodTimer);
+
+                window.moodTimer = setTimeout(() => {
+
+                  setSelectedBar(null);
+
+                }, 1000);
+
+              }}
+              className={`
+                flex
+                flex-col
+                items-center
+                justify-end
+                h-full
+                relative
+                group
+                ${
+                  selected === "Monthly"
+                    ? "min-w-[55px] sm:min-w-[90px] md:min-w-[120px] lg:min-w-[150px]"
+                    : "min-w-[40px] sm:min-w-[60px] md:min-w-[80px] lg:min-w-[100px]"
+                }
+              `}
+            >
+
+               <div
+                style={{
+                  height: `${item.value}%`,
+                  minHeight:
+                    item.value === 0
+                      ? "2px"
+                      : "1px"
+                }}
                 className="
-                  flex
-                  flex-col
-                  items-center
-                  justify-end
-                  h-full
-                  min-w-[70px]
+                  w-full
+                  bg-purple-600
+                  rounded-t-xl
+                  transition-all
+                  duration-500
+                  hover:bg-purple-500
+                  cursor-pointer
                 "
-              >
-
+              />
                 <div
-                  style={{
-                    height:
-                      `${item.value}%`,
-                    minHeight:
-                      item.value === 0
-                        ? "2px"
-                        : "1px"
-                  }}
-                  className="
-                    w-full
-                    bg-purple-600
-                    rounded-t-xl
-                    transition-all
-                    duration-500
-                  "
-                />
+                  className={`
+                    absolute
+                    top-2
+                    left-1/2
+                    -translate-x-1/2
+                    px-2
+                    py-1
+                    rounded-lg
+                    text-xl
+                    font-semibold
+                    transition
+                    pointer-events-none
+                    whitespace-nowrap
+                    ${
+                      selectedBar === index
+                        ? "opacity-100"
+                        : "opacity-0"
+                    }
+                    ${
+                      darkMode
+                        ? "bg-gray-800 text-white"
+                        : "bg-white text-black shadow-md border"
+                    }
+                  `}
+                >
+                  {item.value}
+                </div>
 
                 <p
                   className={`

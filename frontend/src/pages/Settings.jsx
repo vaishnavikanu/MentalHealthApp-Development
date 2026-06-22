@@ -35,6 +35,9 @@ const [tempLanguage, setTempLanguage] =
   const [showDataPopup, setShowDataPopup] =
     useState(false);  
 
+  const [showLanguageMenu, setShowLanguageMenu] =
+    useState(false);  
+
   /* SHOW MESSAGE */
   const showMessage = (text) => {
 
@@ -136,9 +139,11 @@ const [tempLanguage, setTempLanguage] =
         ">
 
           <div className={`
-            w-[400px]
+            w-[92%]
+            max-w-[420px]
             rounded-3xl
-            p-8
+            p-5 sm:p-8
+            mx-4
             ${
               darkMode
                 ? "bg-[#1f2937] text-white"
@@ -146,22 +151,33 @@ const [tempLanguage, setTempLanguage] =
             }
           `}>
 
-            <h2 className="text-2xl font-bold mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">
             {t("settings.clearChatHistory")}
             </h2>
 
-            <p className="mb-6">
+            <p className="mb-6 text-sm sm:text-base">
             {t("settings.chatPopup")}
             </p>
 
-            <div className="flex justify-end gap-3">
+            <div 
+            className="
+              flex
+              flex-col
+              sm:flex-row
+              justify-end
+              gap-3
+            ">
 
               <button
                 onClick={() =>
                   setShowChatPopup(false)
                 }
                 className="
-                  px-5 py-2 rounded-xl
+                  w-full
+                  sm:w-auto
+                  px-5
+                  py-3
+                  rounded-xl
                   bg-gray-300 text-black
                 "
               >
@@ -177,7 +193,11 @@ const [tempLanguage, setTempLanguage] =
 
                 }}
                 className="
-                  px-5 py-2 rounded-xl
+                    w-full
+                    sm:w-auto
+                    px-5
+                    py-3
+                    rounded-xl
                   bg-red-500 text-white
                 "
               >
@@ -201,9 +221,10 @@ const [tempLanguage, setTempLanguage] =
         ">
 
           <div className={`
-            w-[400px]
+            w-[90%]
+            max-w-[400px]
             rounded-3xl
-            p-8
+            p-5 sm:p-6
             ${
               darkMode
                 ? "bg-[#1f2937] text-white"
@@ -211,22 +232,33 @@ const [tempLanguage, setTempLanguage] =
             }
           `}>
 
-            <h2 className="text-2xl font-bold mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">
             {t("settings.clearAllData")}
             </h2>
 
-            <p className="mb-6">
+            <p className="mb-6 text-sm sm:text-base">
             {t("settings.dataPopup")}
             </p>
 
-            <div className="flex justify-end gap-3">
+            <div 
+            className="
+              flex
+              flex-col
+              sm:flex-row
+              justify-end
+              gap-3
+            ">
 
               <button
                 onClick={() =>
                   setShowDataPopup(false)
                 }
                 className="
-                  px-5 py-2 rounded-xl
+                  w-full
+                  sm:w-auto
+                  px-5
+                  py-3
+                  rounded-xl
                   bg-gray-300 text-black
                 "
               >
@@ -242,7 +274,11 @@ const [tempLanguage, setTempLanguage] =
 
                 }}
                 className="
-                  px-5 py-2 rounded-xl
+                    w-full
+                    sm:w-auto
+                    px-5
+                    py-3
+                    rounded-xl
                   bg-red-500 text-white
                 "
               >
@@ -468,45 +504,109 @@ const [tempLanguage, setTempLanguage] =
           </button>
 
         </div>
+        <div className="
+  mt-6
+  flex
+  flex-col
+  sm:flex-row
+  sm:justify-between
+  sm:items-center
+  gap-3
+">
 
-
-        <div className="mt-6 flex justify-between">
-
-  <h3 className="font-medium mb-2">
- {t("settings.language")}
+  <h3 className="font-medium">
+    {t("settings.language")}
   </h3>
 
-  <select
-  value={tempLanguage}
-  onChange={(e) =>
-  setTempLanguage(
-    e.target.value
-  )
-}
-  className={`
-    px-4
-    py-2
-    rounded-xl
-    border
-    ${
-      darkMode
-        ? "bg-[#374151] text-white border-gray-600"
-        : "bg-white text-black border-gray-300"
+  <div className="relative w-full sm:w-auto">
+
+  <button
+    onClick={() =>
+      setShowLanguageMenu(
+        !showLanguageMenu
+      )
     }
-  `}
->
-  <option value="en">
-    English
-  </option>
+    className={`
+      w-full
+      sm:w-[150px]
+      px-4
+      py-2
+      rounded-xl
+      border
+      text-left
+      ${
+        darkMode
+          ? "bg-[#374151] text-white border-gray-600"
+          : "bg-white text-black border-gray-300"
+      }
+    `}
+  >
+    {tempLanguage === "en"
+      ? "English"
+      : tempLanguage === "hi"
+      ? "हिन्दी"
+      : "తెలుగు"}
+  </button>
 
-  <option value="hi">
-    हिन्दी
-  </option>
+  {showLanguageMenu && (
 
-  <option value="te">
-    తెలుగు
-  </option>
-</select>
+    <div
+      className={`
+        absolute
+        top-full
+        mt-2
+        left-0
+        w-full
+        rounded-xl
+        overflow-hidden
+        shadow-lg
+        z-50
+        ${
+          darkMode
+            ? "bg-[#374151]"
+            : "bg-white"
+        }
+      `}
+    >
+
+      <button
+        onClick={() => {
+          setTempLanguage("en");
+          setShowLanguageMenu(false);
+        }}
+        className="w-full px-4 py-3 text-left hover:bg-purple-100"
+      >
+        English
+      </button>
+
+      <button
+        onClick={() => {
+          setTempLanguage("hi");
+          setShowLanguageMenu(false);
+        }}
+        className="w-full px-4 py-3 text-left hover:bg-purple-100"
+      >
+        हिन्दी
+      </button>
+
+      <button
+        onClick={() => {
+          setTempLanguage("te");
+          setShowLanguageMenu(false);
+        }}
+        className="w-full px-4 py-3 text-left hover:bg-purple-100"
+      >
+        తెలుగు
+      </button>
+
+    </div>
+
+  )}
+
+</div>
+
+        
+
 
 </div>        
       </div>
@@ -727,8 +827,7 @@ const [tempLanguage, setTempLanguage] =
         </button>
 
       </div>
-
-    </div>
+    </div>  
     </>
   );
 }

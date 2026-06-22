@@ -44,6 +44,9 @@ function Signup({ darkMode }) {
   const [message, setMessage] =
     useState("");
 
+  const [showLanguages, setShowLanguages] =
+    useState(false);  
+
   const signupUser = async () => {
 
     if (
@@ -157,10 +160,11 @@ function Signup({ darkMode }) {
     <div //WE USE FLEX BECAUSE WE WANT TO CENTER THE FORM BOTH VERTICALLY AND HORIZONTALLY
       className={`
         min-h-screen
-        flex 
-        items-center
+        flex
         justify-center
         px-6
+        py-6
+        overflow-y-scroll
         ${
           darkMode
             ? "bg-[#111827]"
@@ -175,7 +179,8 @@ function Signup({ darkMode }) {
           w-full
           max-w-md
           rounded-3xl
-          p-8
+          p-4 sm:p-8
+          my-6
           shadow-lg
           ${
             darkMode
@@ -185,47 +190,134 @@ function Signup({ darkMode }) {
         `}
       >
 
-        <div className="mb-5">
+      <div className="mb-5 relative">
 
-  <select
-    value={language}
-    onChange={(e) =>
-      changeLanguage(
-        e.target.value
+  <button
+    type="button"
+    onClick={() =>
+      setShowLanguages(
+        !showLanguages
       )
     }
     className={`
-  w-full
-  px-4
-  py-3
-  rounded-xl
-  mb-2
-  border
-  ${
-    darkMode
-      ? "bg-[#374151] text-white border-gray-600"
-      : "bg-white text-black border-gray-300"
-  }
-`}
+      w-full
+      px-4
+      py-3
+      rounded-xl
+      border
+      flex
+      justify-between
+      items-center
+      ${
+        darkMode
+          ? "bg-[#374151] text-white border-gray-600"
+          : "bg-white text-black border-gray-300"
+      }
+    `}
   >
 
-    <option value="en">
-      English
-    </option>
+    <span>
 
-    <option value="hi">
-      हिन्दी
-    </option>
+      {language === "en"
+        ? "English"
+        : language === "hi"
+        ? "हिन्दी"
+        : "తెలుగు"}
 
-    <option value="te">
-      తెలుగు
-    </option>
+    </span>
 
-  </select>
+    <span>▼</span>
+
+  </button>
+
+  {showLanguages && (
+
+    <div
+      className={`
+        absolute
+        top-full
+        left-0
+        mt-2
+        w-full
+        rounded-xl
+        overflow-hidden
+        shadow-xl
+        z-50
+        ${
+          darkMode
+            ? "bg-[#374151]"
+            : "bg-white"
+        }
+      `}
+    >
+
+      <button
+        type="button"
+        onClick={() => {
+
+          changeLanguage("en");
+
+          setShowLanguages(false);
+
+        }}
+        className="
+          w-full
+          text-left
+          px-4
+          py-3
+          hover:bg-purple-100
+        "
+      >
+        English
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+
+          changeLanguage("hi");
+
+          setShowLanguages(false);
+
+        }}
+        className="
+          w-full
+          text-left
+          px-4
+          py-3
+          hover:bg-purple-100
+        "
+      >
+        हिन्दी
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+
+          changeLanguage("te");
+
+          setShowLanguages(false);
+
+        }}
+        className="
+          w-full
+          text-left
+          px-4
+          py-3
+          hover:bg-purple-100
+        "
+      >
+        తెలుగు
+      </button>
+
+    </div>
+
+  )}
 
 </div>
         {/* TITLE */}
-        <h1 className="text-4xl font-bold mb-2">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-2">
           {t("signup.title")}
         </h1>
 

@@ -34,6 +34,12 @@ function Chat({ newChat, darkMode }) {
   const [input, setInput] =
     useState("");
 
+  const [isWaitingForReply, setIsWaitingForReply] =
+  useState(false);  // to not let send while waiting for bot reply
+
+  const [typingText, setTypingText] =
+  useState("");//to show thinking message for bot
+
     const [attachments, setAttachments] =
       useState([]);
 
@@ -105,6 +111,18 @@ useEffect(() => {
   }
 
 }, [messages]);
+
+useEffect(() => {
+
+  if (typingText) {
+
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth"
+    });
+
+  }
+
+}, [typingText]);
 //TO LOAD OLD CHAT MESSAGES
   useEffect(() => {
 
@@ -162,8 +180,12 @@ const loadMessages = async (
 
 };
 
+
   const sendMessage = async () => {
 
+    if (isWaitingForReply) {
+      return;
+    }
   if (
   input.trim() === "" &&
   attachments.length === 0
@@ -175,49 +197,62 @@ const loadMessages = async (
   [...attachments];
 
   const currentInput = input;
-const userMessage = {
-  sender: "user",
-  text: input,
-  attachments: currentAttachments
-};
+  const userMessage = {
+    sender: "user",
+    text: input,
+    attachments: currentAttachments
+  };
 
     setMessages(prev => [
-  ...prev,
-  userMessage
-]);
+      ...prev,
+      userMessage
+    ]);
 
-setInput("");
-setAttachments([]);
+    setInput("");
+    setAttachments([]);
+    setIsWaitingForReply(true);
 
-textareaRef.current?.focus();
+    textareaRef.current?.focus();
 
   try {
 
-    let currentSessionId =
-      sessionId;
 
     /* CREATE NEW SESSION */
-    if (!currentSessionId) {
+   let currentSessionId =
+  sessionId;
 
-      const sessionResponse =
-        await API.post(
-          "/chat-session",
-          {
-            user_id: user.id,
-            title: currentInput
-          }
-        );
+/* CREATE NEW SESSION */
+if (!currentSessionId) {
 
-      currentSessionId =
-        sessionResponse.data.session_id;
+  let chatTitle = currentInput;
 
-      setSessionId(
-        currentSessionId
-      );
+  if (
+    currentInput.trim() === "" &&
+    currentAttachments.length > 0
+  ) {
 
-      
+    chatTitle =
+      currentAttachments[0].filename;
 
-    }
+  }
+
+  const sessionResponse =
+    await API.post(
+      "/chat-session",
+      {
+        user_id: user.id,
+        title: chatTitle
+      }
+    );
+
+  currentSessionId =
+    sessionResponse.data.session_id;
+
+  setSessionId(
+    currentSessionId
+  );
+
+}
 
     /* SAVE USER MESSAGE IN DB */
     const messageResponse =
@@ -257,20 +292,47 @@ textareaRef.current?.focus();
    const botText =
   t("chat.botReply");
 
-    const botReply = {
-      sender: "bot",
-      text: botText
-    };
+let currentText = "";
 
-    setTimeout(async () => {
+let index = 0;
+
+const typingInterval =
+  setInterval(() => {
+
+    currentText +=
+      botText[index];
+
+    setTypingText(
+      currentText
+    );
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth"
+    });
+
+    index++;
+
+    if (
+      index >= botText.length
+    ) {
+
+      clearInterval(
+        typingInterval
+      );
 
       setMessages(prev => [
+
         ...prev,
-        botReply
+
+        {
+          sender: "bot",
+          text: botText
+        }
+
       ]);
 
-      /* SAVE BOT MESSAGE */
-      await API.post(
+      setTypingText("");
+
+      API.post(
         "/message",
         {
           session_id:
@@ -280,7 +342,14 @@ textareaRef.current?.focus();
         }
       );
 
-    }, 800);
+      setIsWaitingForReply(false);
+
+    }
+
+  }, 30);
+
+    
+    
 
   } catch (error) {
 
@@ -486,6 +555,36 @@ textareaRef.current?.focus();
 
           ))}
 
+          {typingText && (
+
+          <div
+            className={`
+              max-w-[70%]
+              px-6
+              py-4
+              rounded-3xl
+              text-[18px]
+              leading-relaxed
+              whitespace-pre-wrap
+              break-words
+              shadow-sm
+              ${
+                darkMode
+                  ? "bg-[#1e293b] text-gray-100"
+                  : "bg-[#e9e9ee] text-black"
+              }
+            `}
+          >
+
+            {typingText}
+
+            <span className="animate-pulse">
+              |
+            </span>
+
+          </div>
+
+        )}
           <div ref={messagesEndRef} />
 
         </div>
@@ -699,6 +798,7 @@ textareaRef.current?.focus();
           />
 
           <button
+          disabled={isWaitingForReply}
             onClick={sendMessage}
             className={`
               px-8
@@ -713,6 +813,13 @@ textareaRef.current?.focus();
               transition-all
               duration-300
               shrink-0
+               ${
+                isWaitingForReply
+                  ? "opacity-50 cursor-not-allowed"
+                  : darkMode
+                  ? "hover:opacity-80 shadow-lg shadow-purple-600/30"
+                  : "hover:opacity-90 shadow-md"
+              }
               ${
                 darkMode
                   ? "hover:opacity-80 shadow-lg shadow-purple-600/30"
@@ -720,7 +827,9 @@ textareaRef.current?.focus();
               }
             `}
           >
-            {t("chat.send")}
+           {isWaitingForReply
+            ? t("chat.thinking")
+            : t("chat.send")}
           </button>
 
         </div>

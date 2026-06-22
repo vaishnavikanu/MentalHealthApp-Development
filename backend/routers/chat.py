@@ -93,9 +93,12 @@ def get_messages(
     if not session:
         return {"message": "Chat session does not exist"}
 
-    messages = db.query(Message).filter(
-        Message.session_id == session_id
-    ).all()
+    messages = (
+        db.query(Message)
+        .filter(Message.session_id == session_id)
+        .order_by(Message.created_at.asc())
+        .all()
+    )
 
     result = []
 
@@ -121,14 +124,43 @@ def get_messages(
 
     return result
 
-@router.get("/messages/{session_id}")
-def get_messages(
+@router.delete("/chat-session/{session_id}")
+def delete_chat_session(
     session_id: int,
     db: Session = Depends(get_db)
 ):
+
+    session = db.query(ChatSession).filter(
+        ChatSession.id == session_id
+    ).first()
+
+    if not session:
+        return {
+            "message": "Session not found"
+        }
 
     messages = db.query(Message).filter(
         Message.session_id == session_id
     ).all()
 
-    return messages
+    for message in messages:
+
+        attachments = db.query(Attachment).filter(
+            Attachment.message_id == message.id
+        ).all()
+
+        for attachment in attachments:
+            db.delete(attachment)
+
+        db.delete(message)
+
+    # IMPORTANT
+    db.flush()
+
+    db.delete(session)
+
+    db.commit()
+
+    return {
+        "message": "Chat deleted successfully"
+    }

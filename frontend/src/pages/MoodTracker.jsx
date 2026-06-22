@@ -165,18 +165,13 @@ const { t } = useLanguage();
            <div className="   flex   flex-col   sm:flex-row   sm:items-center  sm:justify-between
                 gap-3 mb-3">
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between w-full">
 
                 <span className="text-5xl">
                   {entry.mood}
                 </span>
 
-                <div>
-
-                  <h3 className="font-semibold text-lg">
-                    {t("moodTracker.entry")}
-                  </h3>
-
+                <div >
                   <p
                     className={`text-sm ${
                       darkMode

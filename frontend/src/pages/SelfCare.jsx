@@ -410,11 +410,14 @@ function SelfCare({ darkMode }) {
 
           <div
             className={`
-              w-[430px]
-              rounded-[30px]
-              p-5
+              w-[92vw]
+              max-w-[430px]
+              rounded-[24px]
+              p-4 md:p-5
               relative
               text-center
+              max-h-[85vh]
+              overflow-y-auto
               ${
                 darkMode
                   ? "bg-[#1f2937]"
@@ -432,18 +435,35 @@ function SelfCare({ darkMode }) {
               ×
             </button>
 
-            <h2 className="text-3xl font-bold mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">
             {t("selfCare.breathing")}
             </h2>
 
-            <div className="w-52 h-52 mx-auto rounded-full bg-purple-300 flex items-center justify-center text-4xl text-purple-800 mb-3 animate-pulse">
+            <div 
+            className="
+              w-36 h-36
+              sm:w-44 sm:h-44
+              md:w-52 md:h-52
+              mx-auto
+              rounded-full
+              bg-purple-300
+              flex
+              items-center
+              justify-center
+              text-2xl
+              sm:text-3xl
+              md:text-4xl
+              text-purple-800
+              mb-4
+              animate-pulse
+            ">
 
               {t("selfCare.breathe")}
 
             </div>
 
             <p
-              className={`text-xl leading-relaxed ${
+              className={`text-base md:text-xl leading-relaxed ${
                 darkMode
                   ? "text-gray-300"
                   : "text-gray-600"
@@ -465,11 +485,14 @@ function SelfCare({ darkMode }) {
 
           <div
             className={`
-              w-[420px]
+              w-[92vw] 
+              max-w-[420px]
               rounded-[30px]
               p-4
               relative
               text-center
+              max-h-[85vh]
+              overflow-y-auto
               ${
                 darkMode
                   ? "bg-[#1f2937]"
@@ -487,11 +510,11 @@ function SelfCare({ darkMode }) {
               ×
             </button>
 
-            <h2 className="text-3xl font-bold mb-3">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">
             {t("selfCare.meditation")}
             </h2>
 
-            <div className="text-6xl font-bold text-purple-600 mb-6">
+            <div className="text-4xl md:text-6xl font-bold text-purple-600 mb-6">
 
               {Math.floor(timeLeft / 60)}:
               {String(timeLeft % 60).padStart(2, "0")} {/*CONVERTING INTO CLOCK FORMAT*/}
@@ -521,10 +544,13 @@ function SelfCare({ darkMode }) {
 
           <div
             className={`
-              w-[460px]
+              w-[92vw] 
+              max-w-[460px]
               rounded-[30px]
               p-4
               relative
+              max-h-[85vh]
+              overflow-y-auto
               ${
                 darkMode
                   ? "bg-[#1f2937]"
@@ -542,11 +568,11 @@ function SelfCare({ darkMode }) {
               ×
             </button>
 
-            <h2 className="text-3xl font-bold text-center mb-5">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-5">
             {t("selfCare.grounding")}
             </h2>
 
-            <div className="flex flex-col gap-3 text-xl">
+            <div className="flex flex-col gap-3 text-base md:text-xl">
 
               {/*CREATES DIV FOR EACH POINT*/}
               {groundingSteps.map((step, index) => (
@@ -585,11 +611,14 @@ function SelfCare({ darkMode }) {
 
           <div
             className={`
-              w-[430px]
+              w-[92vw] 
+              max-w-[430px]
               rounded-[30px]
               p-8
               relative
               text-center
+              max-h-[85vh]
+              overflow-y-auto
               ${
                 darkMode
                   ? "bg-[#1f2937]"
@@ -634,11 +663,14 @@ function SelfCare({ darkMode }) {
 
           <div
             className={`
-              w-[500px]
+              w-[92vw] 
+              max-w-[500px]
               rounded-[32px]
               p-5
               relative
               text-center
+              max-h-[85vh]
+              overflow-y-auto
               ${
                 darkMode
                   ? "bg-[#1f2937]"
@@ -683,11 +715,14 @@ function SelfCare({ darkMode }) {
 
           <div
             className={`
-              w-[520px]
+              w-[92vw] 
+              max-w-[520px]
               rounded-[32px]
               p-5
               relative
               text-center
+              max-h-[85vh]
+              overflow-y-auto
               ${
                 darkMode
                   ? "bg-[#1f2937]"

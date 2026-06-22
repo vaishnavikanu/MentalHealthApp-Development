@@ -99,6 +99,29 @@ const patientId =
 
   };
 
+ const deleteChat = async (
+  chatId
+) => {
+
+
+  try {
+
+    await API.delete(
+      `/chat-session/${chatId}`
+    );
+
+    fetchHistory();
+
+  }
+
+  catch (error) {
+
+    console.log(error);
+
+  }
+
+}; 
+
   return (
 
     <div
@@ -273,17 +296,46 @@ const patientId =
 
                   </div>
 
-                  <p
-                    className={`text-sm ${
-                      darkMode
-                        ? "text-gray-400"
-                        : "text-gray-400"
-                    }`}
-                  >
-                    {new Date(
-                      chat.updated_at
-                    ).toLocaleString()}
-                  </p>
+                  <div className="flex flex-col items-end gap-2">
+
+  <p
+    className={`text-sm ${
+      darkMode
+        ? "text-gray-400"
+        : "text-gray-400"
+    }`}
+  >
+    {new Date(
+      chat.updated_at
+    ).toLocaleString()}
+  </p>
+
+  {!patientId && (
+
+    <button
+      onClick={(e) => {
+
+        e.stopPropagation();
+
+        deleteChat(chat.id);
+
+      }}
+      className="
+        bg-red-500
+        hover:bg-red-600
+        text-white
+        px-3
+        py-1
+        rounded-lg
+        text-xs
+      "
+    >
+     {t("common.delete")}
+    </button>
+
+  )}
+
+</div>
 
                 </div>
 

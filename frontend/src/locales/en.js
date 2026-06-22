@@ -120,7 +120,8 @@ chat: {
     "Type your message...",
 
   send:
-    "Send"
+    "Send",
+    "thinking": "Thinking..."
 
 },
 checkin: {

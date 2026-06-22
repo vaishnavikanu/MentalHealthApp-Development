@@ -25,6 +25,9 @@ function Login({ darkMode }) {
   const [message, setMessage] =
     useState("");
 
+  const [showLanguages, setShowLanguages] =
+    useState(false);  
+
     const showMessage = (text) => {
 
       setMessage(text);
@@ -149,22 +152,25 @@ showMessage(
 
   return (
 
-    <div
-      className={`
-        min-h-screen
-        flex
-        items-center
-        justify-center
-        px-6
-        transition-all
-        duration-300
-        ${
-          darkMode
-            ? "bg-[#111827]"
-            : "bg-[#f5f5f7]"
-        }
-      `}
-    >
+   <div
+  className={`
+    min-h-screen
+    overflow-y-auto
+    flex
+    items-center
+    justify-center
+    px-6
+    py-6
+    transition-all
+    duration-300
+    ${
+      darkMode
+        ? "bg-[#111827]"
+        : "bg-[#f5f5f7]"
+    }
+  `}
+>
+    
 {/* to group related elements together and apply styles to them as a whole we use form. */}
       <form
         onSubmit={handleSubmit}
@@ -184,43 +190,130 @@ showMessage(
         `}
       >
 
-        <div className="mb-5">
+      <div className="mb-5 relative">
 
-  <select
-    value={language}
-    onChange={(e) =>
-      changeLanguage(
-        e.target.value
+  <button
+    type="button"
+    onClick={() =>
+      setShowLanguages(
+        !showLanguages
       )
     }
-   className={`
-  w-full
-  px-4
-  py-3
-  rounded-xl
-  mb-2
-  border
-  ${
-    darkMode
-      ? "bg-[#374151] text-white border-gray-600"
-      : "bg-white text-black border-gray-300"
-  }
-`}
+    className={`
+      w-full
+      px-4
+      py-3
+      rounded-xl
+      border
+      flex
+      justify-between
+      items-center
+      ${
+        darkMode
+          ? "bg-[#374151] text-white border-gray-600"
+          : "bg-white text-black border-gray-300"
+      }
+    `}
   >
 
-    <option value="en">
-      English
-    </option>
+    <span>
 
-    <option value="hi">
-      हिन्दी
-    </option>
+      {language === "en"
+        ? "English"
+        : language === "hi"
+        ? "हिन्दी"
+        : "తెలుగు"}
 
-    <option value="te">
-      తెలుగు
-    </option>
+    </span>
 
-  </select>
+    <span>▼</span>
+
+  </button>
+
+  {showLanguages && (
+
+    <div
+      className={`
+        absolute
+        top-full
+        left-0
+        mt-2
+        w-full
+        rounded-xl
+        overflow-hidden
+        shadow-xl
+        z-50
+        ${
+          darkMode
+            ? "bg-[#374151]"
+            : "bg-white"
+        }
+      `}
+    >
+
+      <button
+        type="button"
+        onClick={() => {
+
+          changeLanguage("en");
+
+          setShowLanguages(false);
+
+        }}
+        className="
+          w-full
+          text-left
+          px-4
+          py-3
+          hover:bg-purple-100
+        "
+      >
+        English
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+
+          changeLanguage("hi");
+
+          setShowLanguages(false);
+
+        }}
+        className="
+          w-full
+          text-left
+          px-4
+          py-3
+          hover:bg-purple-100
+        "
+      >
+        हिन्दी
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+
+          changeLanguage("te");
+
+          setShowLanguages(false);
+
+        }}
+        className="
+          w-full
+          text-left
+          px-4
+          py-3
+          hover:bg-purple-100
+        "
+      >
+        తెలుగు
+      </button>
+
+    </div>
+
+  )}
 
 </div>
         {/* TITLE */}
