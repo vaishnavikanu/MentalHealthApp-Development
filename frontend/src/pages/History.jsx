@@ -327,7 +327,7 @@ const patientId =
         px-3
         py-1
         rounded-lg
-        text-xs
+        text-xl
       "
     >
      {t("common.delete")}

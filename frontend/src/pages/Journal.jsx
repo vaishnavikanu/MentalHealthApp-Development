@@ -360,35 +360,39 @@ function Journal({ darkMode }) {
 
             </div>
 
-            <p
-              className={`text-sm mb-1 leading-6.5 ${
-                darkMode
-                  ? "text-gray-300"
-                  : "text-gray-600"
-              }`}
-            >
-              {journal.content}
-            </p>
+            <div className="flex justify-between items-end">
 
-            <button
-              onClick={() =>
-                deleteJournal(
-                  journal.id
-                )
-              }
-              className="
-                bg-red-500
-                hover:bg-red-600
-                transition
-                text-white
-                px-4
-                py-2
-                rounded-lg
-                text-sm
-              "
-            >
-              {t("journal.delete")}
-            </button>
+              <p
+                className={`text-sm leading-6.5 flex-1 ${
+                  darkMode
+                    ? "text-gray-300"
+                    : "text-gray-600"
+                }`}
+              >
+                {journal.content}
+              </p>
+
+              <button
+                onClick={() =>
+                  deleteJournal(journal.id)
+                }
+                className="
+                  ml-4
+                  bg-red-500
+                  hover:bg-red-600
+                  transition
+                  text-white
+                  px-3
+                  py-1
+                  rounded-lg
+                  text-xl
+                  shrink-0
+                "
+              >
+                {t("journal.delete")}
+              </button>
+
+            </div>
 
           </div>
 

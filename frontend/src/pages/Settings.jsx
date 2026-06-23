@@ -574,7 +574,7 @@ const [tempLanguage, setTempLanguage] =
           setTempLanguage("en");
           setShowLanguageMenu(false);
         }}
-        className="w-full px-4 py-3 text-left hover:bg-purple-100"
+        className="w-full px-4 py-3 text-left hover:bg-purple-700"
       >
         English
       </button>
@@ -584,7 +584,7 @@ const [tempLanguage, setTempLanguage] =
           setTempLanguage("hi");
           setShowLanguageMenu(false);
         }}
-        className="w-full px-4 py-3 text-left hover:bg-purple-100"
+        className="w-full px-4 py-3 text-left hover:bg-purple-700"
       >
         हिन्दी
       </button>
@@ -594,7 +594,7 @@ const [tempLanguage, setTempLanguage] =
           setTempLanguage("te");
           setShowLanguageMenu(false);
         }}
-        className="w-full px-4 py-3 text-left hover:bg-purple-100"
+        className="w-full px-4 py-3 text-left hover:bg-purple-700"
       >
         తెలుగు
       </button>

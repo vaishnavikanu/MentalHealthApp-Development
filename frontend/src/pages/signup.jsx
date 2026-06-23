@@ -160,6 +160,7 @@ function Signup({ darkMode }) {
       className={`
         min-h-screen
         flex
+        items-center
         justify-center
         px-6
         py-6
@@ -179,7 +180,6 @@ function Signup({ darkMode }) {
           max-w-md
           rounded-3xl
           p-4 sm:p-8
-          my-6
           shadow-lg
           ${
             darkMode
@@ -264,7 +264,7 @@ function Signup({ darkMode }) {
           text-left
           px-4
           py-3
-          hover:bg-purple-100
+          hover:bg-purple-700
         "
       >
         English
@@ -284,7 +284,7 @@ function Signup({ darkMode }) {
           text-left
           px-4
           py-3
-          hover:bg-purple-100
+          hover:bg-purple-700
         "
       >
         हिन्दी
@@ -304,7 +304,7 @@ function Signup({ darkMode }) {
           text-left
           px-4
           py-3
-          hover:bg-purple-100
+          hover:bg-purple-700
         "
       >
         తెలుగు
@@ -321,7 +321,7 @@ function Signup({ darkMode }) {
         </h1>
 
         <p
-          className={`mb-8 ${
+          className={`mb-6 ${
             darkMode
               ? "text-gray-300"
               : "text-gray-500"

@@ -414,27 +414,23 @@ const deleteMood = async (moodId) => {
             `}
           >
 
-            <div className="flex justify-between items-start mb-3">
+  <div className="flex justify-between items-start mb-3">
 
   <span className="text-5xl">
     {item.mood}
   </span>
 
-  <div className="flex gap-3">
+  <div className="flex flex-col items-end gap-2">
 
-    <div
-      className={`text-sm text-right ${
+    <span
+      className={`text-sm ${
         darkMode
           ? "text-gray-400"
           : "text-gray-500"
       }`}
     >
-
-      <p>{item.date}</p>
-
-      <p>{item.time}</p>
-
-    </div>
+      {new Date(item.created_at).toLocaleString()}
+    </span>
 
     <button
       onClick={() =>
@@ -447,7 +443,7 @@ const deleteMood = async (moodId) => {
         px-3
         py-1
         rounded-lg
-        text-sm
+        text-xl
       "
     >
       {t("common.delete")}

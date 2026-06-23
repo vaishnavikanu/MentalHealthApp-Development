@@ -265,7 +265,7 @@ showMessage(
           text-left
           px-4
           py-3
-          hover:bg-purple-100
+          hover:bg-purple-700
         "
       >
         English
@@ -285,7 +285,7 @@ showMessage(
           text-left
           px-4
           py-3
-          hover:bg-purple-100
+          hover:bg-purple-700
         "
       >
         हिन्दी
@@ -305,7 +305,7 @@ showMessage(
           text-left
           px-4
           py-3
-          hover:bg-purple-100
+          hover:bg-purple-700
         "
       >
         తెలుగు
