@@ -75,6 +75,9 @@ function Chat({ newChat, darkMode }) {
   const messagesEndRef =
     useRef(null);
 
+  const chatContainerRef =
+  useRef(null);  
+
   const isInitialLoad =
   useRef(true);  
 
@@ -85,6 +88,12 @@ useEffect(() => {
     setMessages(defaultMessages);
 
     setSessionId(null);
+
+    setTimeout(() => {
+
+      textareaRef.current?.focus();
+
+    }, 100);
 
   }
 
@@ -114,33 +123,33 @@ useEffect(() => {
 
 useEffect(() => {
 
-  if (typingText) {
+  textareaRef.current?.focus();
 
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth"
-    });
-
-  }
-
-}, [typingText]);
+}, []);
 //TO LOAD OLD CHAT MESSAGES
   useEffect(() => {
 
-    if (urlSessionId) {
+  if (urlSessionId) {
 
-      loadMessages(
-        urlSessionId
-      );
+    loadMessages(
+      urlSessionId
+    );
 
-    }
+  }
 
-    else {
+  else {
 
-      setMessages(defaultMessages);
+    setMessages(defaultMessages);
 
-    }
+  }
 
-  }, [urlSessionId]);
+  setTimeout(() => {
+
+    textareaRef.current?.focus();
+
+  }, 100);
+
+}, [urlSessionId]);
 
 const loadMessages = async (
   session_id
@@ -305,8 +314,19 @@ const typingInterval =
     setTypingText(
       currentText
     );
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth"
+
+    requestAnimationFrame(() => {
+
+      if (chatContainerRef.current) {
+
+        chatContainerRef.current.scrollTo({
+          top:
+            chatContainerRef.current.scrollHeight,
+          behavior: "smooth"
+        });
+
+      }
+
     });
 
     index++;
@@ -343,6 +363,7 @@ const typingInterval =
       );
 
       setIsWaitingForReply(false);
+      textareaRef.current?.focus();
 
     }
 
@@ -477,6 +498,7 @@ const typingInterval =
 
       {/* CHAT MESSAGES */}
       <div
+         ref={chatContainerRef}
         className={`
           flex-1
           overflow-y-auto
@@ -755,6 +777,7 @@ const typingInterval =
 
           <textarea
             ref={textareaRef}
+            autoFocus
             placeholder={t("chat.typeMessage")}
             value={input}
             onChange={(e) =>
