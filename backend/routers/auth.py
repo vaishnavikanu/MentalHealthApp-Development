@@ -46,7 +46,11 @@ def signup(
         return {
             "message": "Username already exists"
         }
-
+        
+    if user_data.role == "doctor":
+        return {
+            "message": "Doctor registration not allowed"
+        }    
     # HASH PASSWORD
     hashed_password = pwd_context.hash(
         user_data.password
@@ -57,7 +61,7 @@ def signup(
         username=user_data.username,
         email=email_lower,
         password=hashed_password,
-        role=user_data.role,
+        role="patient",
         language=user_data.language  # ← ADD THIS
     )
 

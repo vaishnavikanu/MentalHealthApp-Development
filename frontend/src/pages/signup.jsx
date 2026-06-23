@@ -38,8 +38,7 @@ function Signup({ darkMode }) {
   const [confirmPassword, setConfirmPassword] =
     useState("");
 
-  const [role, setRole] =
-  useState("patient");
+  const role="patient";
 
   const [message, setMessage] =
     useState("");
@@ -476,48 +475,7 @@ function Signup({ darkMode }) {
           `}
         />
         
-        <div className="mb-6">
-
-          <p className="mb-3 font-medium">
-            {t("signup.signupAs")}
-          </p>
-
-          <div className="flex gap-4">
-
-            <label className="flex items-center gap-2">{/* RADIO BUTTON FOR PATIENT ROLE LABEL IS FLEX 
-            TO ALIGN THE RADIO BUTTON AND TEXT HORIZONTALLY */}
-
-              <input
-                type="radio"
-                value="patient"
-                checked={role === "patient"}
-                onChange={(e) =>
-                  setRole(e.target.value)
-                }
-              />
-
-              {t("signup.patient")}
-
-            </label>
-
-            <label className="flex items-center gap-2">
-
-              <input
-                type="radio"
-                value="doctor"
-                checked={role === "doctor"}
-                onChange={(e) =>
-                  setRole(e.target.value)
-                }
-              />
-
-             {t("signup.doctor")}
-
-            </label>
-
-          </div>
-
-        </div>
+        
 
         {/* BUTTON */}
         <button
