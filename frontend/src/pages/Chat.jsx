@@ -98,6 +98,7 @@ useEffect(() => {
   }
 
 }, [newChat, urlSessionId]);
+
 /* AUTOMATIC SCROLLING*/
   useEffect(() => {
 
@@ -126,6 +127,7 @@ useEffect(() => {
   textareaRef.current?.focus();
 
 }, []);
+
 //TO LOAD OLD CHAT MESSAGES
   useEffect(() => {
 
@@ -195,12 +197,13 @@ const loadMessages = async (
     if (isWaitingForReply) {
       return;
     }
-  if (
-  input.trim() === "" &&
-  attachments.length === 0
-) {
-  return;
-}//nothing is typed so NO SEND
+    if (
+      input.trim() === "" &&
+      attachments.length === 0
+    ) {
+      return;
+    }
+//nothing is typed so NO SEND
 
   const currentAttachments =
   [...attachments];
