@@ -91,7 +91,7 @@ useEffect(() => {
 
     setTimeout(() => {
 
-      textareaRef.current?.focus();
+      textareaRef.current?.focus();//focus on textarea after new chat
 
     }, 100);
 
