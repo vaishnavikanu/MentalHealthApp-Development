@@ -327,7 +327,7 @@ setGraphData(monthlyData);
             transition
             ${
               selected === "Weekly"
-                ? "bg-purple-600 text-white"
+              ? "bg-[#2D6658] text-white"
                 : darkMode
                 ? "bg-[#1f2937] text-gray-300"
                 : "bg-white text-black"
@@ -349,7 +349,7 @@ setGraphData(monthlyData);
             transition
             ${
               selected === "Monthly"
-                ? "bg-purple-600 text-white"
+              ? "bg-[#2D6658] text-white"
                 : darkMode
                 ? "bg-[#1f2937] text-gray-300"
                 : "bg-white text-black"
@@ -373,7 +373,7 @@ setGraphData(monthlyData);
             ${
               darkMode
                 ? "bg-[#1f2937] border-gray-700 text-white"
-                : "bg-white border-gray-200"
+                : "bg-white border-[#DCEFE9]"
             }
           `}
         >
@@ -432,7 +432,7 @@ setGraphData(monthlyData);
           ${
             darkMode
               ? "bg-[#1f2937] border-gray-700"
-              : "bg-white border-gray-200"
+              : "bg-white border-[#DCEFE9]"
           }
         `}
       >
@@ -532,11 +532,12 @@ setGraphData(monthlyData);
                 }}
                 className="
                   w-full
-                  bg-purple-600
+                 bg-[#649f91]
+                 hover:bg-[#4C8D79]
                   rounded-t-xl
                   transition-all
                   duration-500
-                  hover:bg-purple-500
+                  
                   cursor-pointer
                 "
               />

@@ -187,8 +187,8 @@ function Journal({ darkMode }) {
 
         <div
           className="
-            bg-purple-100
-            text-purple-700
+            bg-[#DCEFE9]
+            text-[#245247]
             px-4
             py-3
             rounded-xl
@@ -273,8 +273,8 @@ function Journal({ darkMode }) {
         <button
           onClick={addJournal}
           className="
-            bg-purple-600
-            hover:bg-purple-700
+            bg-[#2D6658]
+            hover:bg-[#245247]
             transition
             text-white
             px-6
@@ -302,8 +302,8 @@ function Journal({ darkMode }) {
               setShowAll(!showAll)
             }
             className="
-              bg-purple-600
-              hover:bg-purple-700
+              bg-[#2D6658]
+              hover:bg-[#245247]
               transition
               text-white
               px-4

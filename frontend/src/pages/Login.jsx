@@ -265,7 +265,7 @@ showMessage(
           text-left
           px-4
           py-3
-          hover:bg-purple-700
+          hover:bg-[#2D6658] hover:text-white
         "
       >
         English
@@ -285,7 +285,7 @@ showMessage(
           text-left
           px-4
           py-3
-          hover:bg-purple-700
+          hover:bg-[#2D6658] hover:text-white
         "
       >
         हिन्दी
@@ -305,7 +305,7 @@ showMessage(
           text-left
           px-4
           py-3
-          hover:bg-purple-700
+          hover:bg-[#2D6658] hover:text-white
         "
       >
         తెలుగు
@@ -336,8 +336,8 @@ showMessage(
 
           <div
             className="
-              bg-purple-100
-              text-purple-700
+              bg-[#DCEFE9]
+              text-[#2D6658]
               px-4
               py-3
               rounded-xl
@@ -462,8 +462,8 @@ showMessage(
           type="submit"
           className="
             w-full
-            bg-purple-600
-            hover:bg-purple-700
+            bg-[#2D6658]
+            hover:bg-[#245247]
             transition
             text-white
             py-3
@@ -488,7 +488,7 @@ showMessage(
           <Link
             to="/signup"
             className="
-              text-purple-600
+              text-[#2D6658]
               font-medium
               hover:underline
             "

@@ -131,8 +131,13 @@ chat: {
      "How are you feeling today?\nI'm here to listen and support you.",
 
    wellnessStreak: "🔥 Wellness Streak",
-keepGoing: "Keep taking care of yourself 💜",
-days:"Days"  
+keepGoing: "Keep taking care of yourself 💚",
+days:"Days"  ,
+doctorWelcomeTitle: "Welcome, Dr.",
+doctorWelcomeSubtitle: "How may I assist you today? View patient records, monitor mood trends, and provide support recommendations.",
+suggestion1: "I'm feeling anxious",
+suggestion2: "Help me understand my emotions",
+suggestion3: "Guide me through a breathing exercise"
 
 },
 checkin: {

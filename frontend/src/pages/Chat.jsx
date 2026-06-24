@@ -35,6 +35,16 @@ function Chat({ newChat, darkMode }) {
   const [typingText, setTypingText] =
   useState("");//to show thinking message for bot
 
+  const patientSuggestions = [
+
+    t("chat.suggestion1"),
+
+    t("chat.suggestion2"),
+
+    t("chat.suggestion3")
+
+  ];
+
     const [attachments, setAttachments] =
       useState([]);
 
@@ -553,7 +563,8 @@ const typingInterval =
               items-center
               justify-center
               text-center
-              h-[65vh]
+              min-h-[50vh] 
+              md:min-h-[55vh]
             "
           >
 
@@ -569,59 +580,83 @@ const typingInterval =
                 }
               `}
             >
-              {t("chat.welcomeTitle")}, {user.username} 👋
+              {user.role === "doctor"
+                ? `${t("chat.doctorWelcomeTitle")} ${user.username} 👋`
+                : `${t("chat.welcomeTitle")}, ${user.username} 👋`}
             </h1>
 
-            <p
-              className={`
-                text-xl
-                mb-8
-                max-w-2xl
-                ${
-                  darkMode
-                    ? "text-gray-300"
-                    : "text-gray-600"
-                }
-              `}
-            >
-              {t("chat.welcomeSubtitle")}
-            </p>
-
-            <div className="mt-8 text-center">
-
-              <p
-                className={`
-                  text-2xl
-                  font-medium
-                  mb-2
-                  ${
-                    darkMode
-                      ? "text-gray-300"
-                      : "text-gray-700"
-                  }
-                `}
-              >
-               {t("chat.wellnessStreak")}
-              </p>
-
-              <h2 className="text-6xl font-bold text-[#3B82F6] mb-2">
-                {streak} {t("chat.days")}
-              </h2>
+            {user.role === "doctor" ? (
 
               <p
                 className={`
                   text-xl
+                  max-w-2xl
                   ${
                     darkMode
-                      ? "text-gray-400"
-                      : "text-gray-500"
+                      ? "text-gray-300"
+                      : "text-gray-600"
                   }
                 `}
               >
-                {t("chat.keepGoing")}
+                {t("chat.doctorWelcomeSubtitle")}
               </p>
 
-            </div>
+            ) : (
+
+              <>
+                <p
+                  className={`
+                    text-xl
+                    mb-8
+                    max-w-2xl
+                    ${
+                      darkMode
+                        ? "text-gray-300"
+                        : "text-gray-600"
+                    }
+                  `}
+                >
+                  {t("chat.welcomeSubtitle")}
+                </p>
+
+                <div className="mt-8 text-center">
+
+                  <p
+                    className={`
+                      text-2xl
+                      font-medium
+                      mb-2
+                      ${
+                        darkMode
+                          ? "text-gray-300"
+                          : "text-gray-700"
+                      }
+                    `}
+                  >
+                    {t("chat.wellnessStreak")}
+                  </p>
+
+                  <h2 className="text-6xl font-bold text-[#2D6658] mb-2">
+                    {streak} {t("chat.days")}
+                  </h2>
+
+                  <p
+                    className={`
+                      text-xl
+                      ${
+                        darkMode
+                          ? "text-gray-400"
+                          : "text-gray-500"
+                      }
+                    `}
+                  >
+                    {t("chat.keepGoing")}
+                  </p>
+
+                </div>
+              </>
+
+            )}
 
           </div>
 
@@ -649,8 +684,8 @@ const typingInterval =
                     ? `
                       self-end
                       bg-gradient-to-r
-                      from-purple-600
-                      to-fuchsia-500
+                     from-[#2D6658]
+                     to-[#3A7A68]
                       text-white
                       shadow-lg
                     `
@@ -742,6 +777,53 @@ const typingInterval =
         `}
       >
 
+        {user.role === "patient" &&
+          messages.length === 0 &&
+          !urlSessionId && (
+
+            <div className="  flex  gap-3  mb-4  overflow-x-auto  scrollbar-hide md:ml-[92px]">
+
+              {patientSuggestions.map(
+                (suggestion, index) => (
+
+                  <button
+                    key={index}
+                    onClick={() =>
+                      setInput(suggestion)
+                    }
+                    className={`
+                    shrink-0
+                    px-4
+                    py-2.5
+                    rounded-full
+                    text-sm
+                    font-medium
+                    whitespace-nowrap
+                    transition-all
+                    ${
+                      darkMode
+                        ? `
+                          bg-[#1e293b]
+                          text-white
+                          hover:bg-[#2D6658]
+                        `
+                        : `
+                          bg-[#DCEFE9]
+                          text-[#2D6658]
+                          hover:bg-[#C6E6DD]
+                        `
+                    }
+                  `}
+                  >
+                    {suggestion}
+                  </button>
+
+                )
+              )}
+
+            </div>
+
+          )}  
         {attachments.length > 0 && (
 
   <div className="flex flex-wrap gap-2 mb-3">
@@ -805,8 +887,10 @@ const typingInterval =
               rounded-2xl
               text-white
               bg-gradient-to-r
-              from-purple-600
-              to-fuchsia-500
+              from-[#2D6658]
+              to-[#3A7A68]
+              hover:from-[#245246]
+              hover:to-[#2D6658]
               shrink-0
             `}
           >
@@ -849,7 +933,7 @@ const typingInterval =
                  ${
                     darkMode
                       ? "text-white hover:bg-[#334155]"
-                      : "text-black hover:bg-purple-100"
+                      : "text-black hover:bg-[#DCEFE9]"
                   }
                 `}
               >
@@ -874,7 +958,7 @@ const typingInterval =
       ${
         darkMode
           ? "text-white hover:bg-[#334155]"
-          : "text-black hover:bg-purple-100"
+          : "text-black hover:bg-[#DCEFE9]"
       }
     `}
   >
@@ -915,18 +999,20 @@ const typingInterval =
                     bg-[#1e293b]
                     text-white
                     placeholder-gray-500
-                    focus:border-purple-500
+                    focus:border-[#2D6658]
+                    focus:ring-[#2D6658]/30
                     focus:ring-2
-                    focus:ring-purple-500/30
+
                   `
                   : `
                     border-gray-300
                     bg-white
                     text-black
                     placeholder-gray-600
-                    focus:border-purple-600
+                    focus:border-[#2D6658]
+                    focus:ring-[#DCEFE9]
                     focus:ring-2
-                    focus:ring-purple-200
+
                   `
               }
             `}
@@ -943,8 +1029,8 @@ const typingInterval =
               text-[17px]
               font-medium
               bg-gradient-to-r
-              from-purple-600
-              to-fuchsia-500
+              from-[#2D6658]
+              to-[#3A7A68]
               transition-all
               duration-300
               shrink-0
@@ -952,12 +1038,12 @@ const typingInterval =
                 isWaitingForReply
                   ? "opacity-50 cursor-not-allowed"
                   : darkMode
-                  ? "hover:opacity-80 shadow-lg shadow-purple-600/30"
+                  ? "hover:opacity-80 shadow-lg shadow-[#2D6658]/30"
                   : "hover:opacity-90 shadow-md"
               }
               ${
                 darkMode
-                  ? "hover:opacity-80 shadow-lg shadow-purple-600/30"
+                  ? "hover:opacity-80 shadow-lg shadow-[#2D6658]/30"
                   : "hover:opacity-90 shadow-md"
               }
             `}

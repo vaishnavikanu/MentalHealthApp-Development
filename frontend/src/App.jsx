@@ -302,8 +302,8 @@ function App() {
                   transition
                   ${
                     darkMode
-                      ? "hover:bg-purple-500"
-                      : "hover:bg-purple-400"
+                    ? "hover:bg-[#2D6658]"
+                    : "hover:bg-[#5FAE9D]"
                   }
                   bg-transparent
                 `}
@@ -356,8 +356,8 @@ function App() {
                   transition
                   ${
                     darkMode
-                      ? "text-white hover:text-purple-400"
-                      : "text-black hover:text-purple-600"
+                    ? "text-white hover:text-[#7AB8A8]"
+                    : "text-black hover:text-[#2D6658]"
                   }
                 `}
               >

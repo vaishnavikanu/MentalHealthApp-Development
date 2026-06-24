@@ -257,8 +257,8 @@ useEffect(() => {
                 )
               }
               className="
-              bg-purple-600
-              hover:bg-purple-700
+              bg-[#2D6658]
+              hover:bg-[#245247]
               transition
               text-white
               px-4
@@ -384,8 +384,8 @@ useEffect(() => {
                 )
               }
               className="
-                 bg-purple-600
-              hover:bg-purple-700
+              bg-[#2D6658]
+              hover:bg-[#245247]
               transition
               text-white
               px-4
@@ -514,8 +514,8 @@ useEffect(() => {
                 )
               }
               className="
-                 bg-purple-600
-              hover:bg-purple-700
+               bg-[#2D6658]
+              hover:bg-[#245247]
               transition
               text-white
               px-4
@@ -629,8 +629,8 @@ useEffect(() => {
                 )
               }
               className="
-                bg-purple-600
-                hover:bg-purple-700
+                bg-[#2D6658]
+                hover:bg-[#245247]
                 text-white
                 px-4
                 py-2
@@ -682,8 +682,8 @@ useEffect(() => {
           <button
             onClick={saveSuggestion}
             className="
-              bg-purple-600
-              hover:bg-purple-700
+              bg-[#2D6658]
+              hover:bg-[#245247]
               text-white
               px-5
               py-2
@@ -723,7 +723,7 @@ useEffect(() => {
                     <div>
 
                       <h3
-                        className="font-semibold mb-2 text-purple-600"
+                        className="font-semibold mb-2 text-[#5ea493]"
                       >
                         Dr. {item.doctor_name}
                       </h3>

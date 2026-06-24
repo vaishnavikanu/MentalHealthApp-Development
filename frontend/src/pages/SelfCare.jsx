@@ -129,8 +129,8 @@ function SelfCare({ darkMode }) {
   `;
 
   const buttonStyle = `
-    bg-purple-600
-    hover:bg-purple-700
+    bg-[#2D6658]
+    hover:bg-[#245247]
     transition
     text-white
     px-7
@@ -159,7 +159,7 @@ function SelfCare({ darkMode }) {
     >
 
       {/* TITLE */}
-      <h1 className="text-3xl font-bold mb-1">
+      <h1 className="text-5xl font-bold mb-1">
        {t("selfCare.title")}
       </h1>
 
@@ -446,14 +446,14 @@ function SelfCare({ darkMode }) {
               md:w-52 md:h-52
               mx-auto
               rounded-full
-              bg-purple-300
+              bg-[#DCEFE9]
               flex
               items-center
               justify-center
               text-2xl
               sm:text-3xl
               md:text-4xl
-              text-purple-800
+              text-[#2D6658]
               mb-4
               animate-pulse
             ">
@@ -514,7 +514,7 @@ function SelfCare({ darkMode }) {
             {t("selfCare.meditation")}
             </h2>
 
-            <div className="text-4xl md:text-6xl font-bold text-purple-600 mb-6">
+            <div className="text-4xl md:text-6xl font-bold text-[#69a78f] mb-6">
 
               {Math.floor(timeLeft / 60)}:
               {String(timeLeft % 60).padStart(2, "0")} {/*CONVERTING INTO CLOCK FORMAT*/}

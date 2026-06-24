@@ -118,16 +118,16 @@ function Patients({ darkMode }) {
                   border-gray-700
                   text-white
                   placeholder:text-gray-400
-                  focus:border-purple-500
+                  focus:border-[#2D6658]
                 `
               : `
                   bg-white
-                  border-purple-400
+                  border-[#7FB8A7]
                   text-black
                   placeholder:text-gray-500
-                  focus:border-purple-500
+                  focus:border-[#2D6658]
                   focus:ring-2
-                  focus:ring-purple-200
+                  focus:ring-[#DCEFE9]
                 `
           }
         `}
@@ -207,7 +207,7 @@ function Patients({ darkMode }) {
 
               </div>
 
-              <div className="text-purple-600 font-medium">
+              <div className="text-[#5b9c8c] font-medium">
               {t("patients.viewHistory")} →
               </div>
 

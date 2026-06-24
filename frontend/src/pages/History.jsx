@@ -211,8 +211,8 @@ useEffect(() => {
                 )
               }
               className="
-              bg-purple-600
-              hover:bg-purple-700
+              bg-[#2D6658]
+              hover:bg-[#245247]
               transition
               text-white
               px-4
@@ -371,8 +371,8 @@ useEffect(() => {
                 )
               }
               className="
-                 bg-purple-600
-              hover:bg-purple-700
+              bg-[#2D6658]
+              hover:bg-[#245247]
               transition
               text-white
               px-4
@@ -510,8 +510,8 @@ useEffect(() => {
                 )
               }
               className="
-                 bg-purple-600
-              hover:bg-purple-700
+              bg-[#2D6658]
+              hover:bg-[#245247]
               transition
               text-white
               px-4
@@ -605,7 +605,7 @@ useEffect(() => {
           )}
 
         </div>
-        
+
       </div>
       )}
 

@@ -264,7 +264,7 @@ function Signup({ darkMode }) {
           text-left
           px-4
           py-3
-          hover:bg-purple-700
+          hover:bg-[#2D6658] hover:text-white
         "
       >
         English
@@ -284,7 +284,7 @@ function Signup({ darkMode }) {
           text-left
           px-4
           py-3
-          hover:bg-purple-700
+          hover:bg-[#2D6658] hover:text-white
         "
       >
         हिन्दी
@@ -304,7 +304,7 @@ function Signup({ darkMode }) {
           text-left
           px-4
           py-3
-          hover:bg-purple-700
+          hover:bg-[#2D6658] hover:text-white
         "
       >
         తెలుగు
@@ -335,8 +335,8 @@ function Signup({ darkMode }) {
 
           <div
             className="
-              bg-purple-100
-              text-purple-700
+              bg-[#DCEFE9]
+              text-[#2D6658]
               px-4
               py-3
               rounded-xl
@@ -482,8 +482,8 @@ function Signup({ darkMode }) {
           type="submit"
           className="
             w-full
-            bg-purple-600
-            hover:bg-purple-700
+             bg-[#2D6658]
+            hover:bg-[#245247]
             transition
             text-white
             py-3
@@ -509,7 +509,7 @@ function Signup({ darkMode }) {
           <Link
             to="/login"
             className="
-              text-purple-600
+              text-[#2D6658]
               font-medium
             "
           >

@@ -124,8 +124,8 @@ const { t } = useLanguage();
               setShowAll(!showAll)
             }
             className="
-              bg-purple-600
-              hover:bg-purple-700
+               bg-[#2D6658]
+               hover:bg-[#245246]
               transition
               text-white
               px-4
@@ -135,8 +135,8 @@ const { t } = useLanguage();
             "
           >
             {showAll
-  ? t("common.showLess")
-  : t("common.seeMore")}
+            ? t("common.showLess")
+            : t("common.seeMore")}
           </button>
 
         )}

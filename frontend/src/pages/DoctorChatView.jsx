@@ -97,12 +97,14 @@ function DoctorChatView({ darkMode }) {
           <div
   key={message.id}
   className={`
-    p-4
+    p-3
     rounded-2xl
     max-w-[75%]
+    text-xl
+    leading-relaxed
     ${
       message.sender === "user"
-        ? "ml-auto bg-purple-600 text-white"
+      ? "ml-auto bg-[#2D6658] text-white"
         : darkMode
         ? "bg-[#1f2937]"
         : "bg-white"

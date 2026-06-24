@@ -239,8 +239,8 @@ const deleteMood = async (moodId) => {
 
         <div
           className="
-            bg-purple-100
-            text-purple-700
+          bg-[#DCEFE9]
+          text-[#1E4A3F]
             px-4
             py-3
             rounded-xl
@@ -288,7 +288,7 @@ const deleteMood = async (moodId) => {
                 transition
                 ${
                   selectedMood === mood
-                    ? "bg-purple-600 scale-110"
+                  ? "bg-[#2D6658] scale-110 shadow-lg shadow-[#2D6658]/30"
                     : darkMode
                     ? "bg-[#374151]"
                     : "bg-gray-100"
@@ -348,8 +348,8 @@ const deleteMood = async (moodId) => {
         <button
           onClick={saveCheckIn}
           className="
-            bg-purple-600
-            hover:bg-purple-700
+          bg-[#2D6658]
+          hover:bg-[#245246]
             transition
             text-white
             px-6
@@ -377,8 +377,8 @@ const deleteMood = async (moodId) => {
               setShowAll(!showAll)
             }
             className="
-              bg-purple-600
-              hover:bg-purple-700
+              bg-[#2D6658]
+              hover:bg-[#245246]
               transition
               text-white
               px-4
@@ -409,7 +409,7 @@ const deleteMood = async (moodId) => {
               ${
                 darkMode
                   ? "bg-[#1f2937]"
-                  : "bg-white"
+                  : "bg-[#F8FCFA]"
               }
             `}
           >

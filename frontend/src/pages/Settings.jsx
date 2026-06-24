@@ -328,8 +328,8 @@ const [tempLanguage, setTempLanguage] =
 
         <div
           className="
-            bg-purple-100
-            text-purple-700
+            bg-[#DCEFE9]
+            text-[#2D6658]
             px-4
             py-3
             rounded-xl
@@ -477,8 +477,8 @@ const [tempLanguage, setTempLanguage] =
               relative
               ${
                 tempDarkMode
-                  ? "bg-purple-600"
-                  : "bg-gray-300"
+                ? "bg-[#2D6658]"
+                : "bg-gray-300"
               }
             `}
           >
@@ -574,7 +574,7 @@ const [tempLanguage, setTempLanguage] =
           setTempLanguage("en");
           setShowLanguageMenu(false);
         }}
-        className="w-full px-4 py-3 text-left hover:bg-purple-700"
+        className="w-full px-4 py-3 text-left hover:bg-[#2D6658] hover:text-white"
       >
         English
       </button>
@@ -584,7 +584,7 @@ const [tempLanguage, setTempLanguage] =
           setTempLanguage("hi");
           setShowLanguageMenu(false);
         }}
-        className="w-full px-4 py-3 text-left hover:bg-purple-700"
+        className="w-full px-4 py-3 text-left hover:bg-[#2D6658] hover:text-white"
       >
         हिन्दी
       </button>
@@ -594,7 +594,7 @@ const [tempLanguage, setTempLanguage] =
           setTempLanguage("te");
           setShowLanguageMenu(false);
         }}
-        className="w-full px-4 py-3 text-left hover:bg-purple-700"
+        className="w-full px-4 py-3 text-left hover:bg-[#2D6658] hover:text-white"
       >
         తెలుగు
       </button>
@@ -796,8 +796,8 @@ const [tempLanguage, setTempLanguage] =
         <button
           onClick={saveSettings}
           className="
-            bg-purple-600
-            hover:bg-purple-700
+            bg-[#2D6658]
+            hover:bg-[#245247]
             transition
             text-white
             px-6

@@ -100,10 +100,10 @@ const fetchLatestSuggestion =
     `flex items-center gap-3 px-4 py-3 rounded-xl transition text-[15px]
     ${
       isActive
-        ? "bg-purple-100 text-purple-700 font-medium"
+        ? "bg-[#DCEFE9] text-[#1E4A3F] font-medium"
         : darkMode
-        ? "hover:bg-[#374151] text-gray-200"
-        : "hover:bg-gray-100 text-gray-700"
+        ? "hover:bg-[#2D6658]/20 text-gray-200"
+        : "hover:bg-[#DCEFE9] text-gray-700"
     }`;
 
   return (
@@ -129,7 +129,9 @@ const fetchLatestSuggestion =
 
       {/* LOGO */}
       <h1 className={`text-3xl font-bold mb-6 transition-colors duration-300 ${
-        darkMode ? "text-purple-400" : "text-purple-600"
+        darkMode
+        ? "text-[#8FD3B8]"
+        : "text-[#2D6658]"
       }`}>
         Health buddy
       </h1>
@@ -148,11 +150,11 @@ const fetchLatestSuggestion =
           rounded-xl
           mb-6
           text-base
-          ${
-            darkMode
-              ? "bg-purple-600 hover:bg-purple-700"
-              : "bg-purple-600 hover:bg-purple-700"
-          }
+          bg-gradient-to-r
+        from-[#60ab98]
+        to-[#4a8776]
+        hover:from-[#245246]
+        hover:to-[#2D6658]
         `}
       >
         <FaPlus />
@@ -271,8 +273,8 @@ const fetchLatestSuggestion =
           <div
             className={`mt-6 rounded-xl p-3 border ${
               darkMode
-                ? "bg-[#111827] border-purple-700"
-                : "bg-purple-100 border-purple-700"
+              ? "bg-[#111827] border-[#3A7A68]"
+              : "bg-[#DCEFE9] border-[#2D6658]"
             }`}
           >
 
@@ -301,8 +303,8 @@ const fetchLatestSuggestion =
             <p
               className={`text-base ${
                 darkMode
-                  ? "text-purple-300"
-                  : "text-purple-900"
+                ? "text-[#6BA08F]"
+                : "text-[#1E4A3F]"
               }`}
             >
 
