@@ -50,11 +50,11 @@ function History({ darkMode }) {
 const patientId =
   queryParams.get("patient");
   /* FETCH HISTORY */
-  useEffect(() => {
+useEffect(() => {
 
-    fetchHistory();
+  fetchHistory();
 
-  }, []);
+}, []);
 
   const fetchHistory = async () => {
 
@@ -100,27 +100,27 @@ const patientId =
   };
 
  const deleteChat = async (
-  chatId
-) => {
+    chatId
+  ) => {
 
 
-  try {
+    try {
 
-    await API.delete(
-      `/chat-session/${chatId}`
-    );
+      await API.delete(
+        `/chat-session/${chatId}`
+      );
 
-    fetchHistory();
+      fetchHistory();
 
-  }
+    }
 
-  catch (error) {
+    catch (error) {
 
-    console.log(error);
+      console.log(error);
 
-  }
+    }
 
-}; 
+  }; 
 
   return (
 
@@ -353,6 +353,7 @@ const patientId =
       
 
       {/* MOOD HISTORY */}
+      {user.role === "patient" || patientId ? (
       <div className="mb-14">
 
         <div className="flex justify-between items-center mb-6">
@@ -467,6 +468,7 @@ const patientId =
         </div>
 
       </div>
+      ) : null}
 
       {/*MOOD TRACKER --- VISIBLE ONLY TO DOCTOR*/ }
      
@@ -490,6 +492,7 @@ const patientId =
       )}
 
       {/* JOURNAL HISTORY */}
+      {(user.role === "patient" || patientId) && (
       <div>
 
         <div className="flex justify-between items-center mb-6">
@@ -602,8 +605,9 @@ const patientId =
           )}
 
         </div>
-
+        
       </div>
+      )}
 
     </div>
 

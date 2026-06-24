@@ -20,6 +20,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/signup";
 import PatientHistory from "./pages/PatientHistory";
 import ScrollToTop from "./components/ScrollToTop";
+import DoctorSuggestions from "./pages/DoctorSuggestions";
 
 function App() {
   
@@ -428,6 +429,21 @@ function App() {
                     role === "patient"
                       ? (
                           <Journal
+                            darkMode={darkMode}
+                          />
+                        )
+                      : (
+                          <Navigate to="/" />
+                        )
+                  }
+                />
+
+                <Route
+                  path="/doctor-suggestions"
+                  element={
+                    role === "patient"
+                      ? (
+                          <DoctorSuggestions
                             darkMode={darkMode}
                           />
                         )

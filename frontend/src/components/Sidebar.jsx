@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
-
+import API from "../api/api";
+import { useState, useEffect } from "react";
 import {
   FaComments,
   FaSmile,
@@ -10,7 +11,8 @@ import {
   FaHeart,
   FaCog,
   FaPhone,
-  FaPlus
+  FaPlus,
+  FaUserMd
 } from "react-icons/fa";
 function Sidebar({
   startNewChat,
@@ -21,10 +23,21 @@ function Sidebar({
   const { t } = useLanguage();
 
   const navigate = useNavigate();
+  const [latestSuggestion,setLatestSuggestion] =
+    useState(null);
   const user =
   JSON.parse(
     localStorage.getItem("user")
   );
+  useEffect(() => {
+
+    if (
+      user.role !== "patient"
+    ) return;
+
+    fetchLatestSuggestion();
+
+  }, []);
   const handleNavClick = () => {
 
   if (window.innerWidth < 900) {
@@ -47,6 +60,41 @@ const handleNewChat = () => {
   }
 
 };
+
+const fetchLatestSuggestion =
+  async () => {
+
+    try {
+
+      const response =
+        await API.get(
+          `/suggestions/${user.id}`
+        );
+
+      const sorted =
+        [...response.data].sort(
+          (a, b) =>
+            new Date(b.created_at) -
+            new Date(a.created_at)
+        );
+
+      if (sorted.length > 0) {
+
+        setLatestSuggestion(
+          sorted[0]
+        );
+
+      }
+
+    }
+
+    catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
 
   const navStyle = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-3 rounded-xl transition text-[15px]
@@ -149,6 +197,17 @@ const handleNewChat = () => {
       </NavLink>
 
       <NavLink
+        to="/doctor-suggestions"
+        className={navStyle}
+        onClick={handleNavClick}
+      >
+        <FaUserMd />
+        <span>
+          {t("sidebar.doctorSuggestions")}
+        </span>
+      </NavLink>
+
+      <NavLink
         to="/history"
         className={navStyle}
         onClick={handleNavClick}
@@ -201,6 +260,59 @@ const handleNewChat = () => {
 
 </div>
 
+
+      {user.role === "patient" &&
+        latestSuggestion &&
+        String(latestSuggestion.id) !==
+          localStorage.getItem(
+            "lastSeenSuggestion"
+          ) && (
+
+          <div
+            className={`mt-6 rounded-xl p-3 border ${
+              darkMode
+                ? "bg-[#111827] border-purple-700"
+                : "bg-purple-100 border-purple-700"
+            }`}
+          >
+
+            <p
+              className={`font-semibold mb-2 ${
+                darkMode
+                  ? "text-white"
+                  : "text-black"
+              }`}
+            >
+
+              {t("doctorSuggestions.latest")}
+
+            </p>
+
+            <p
+              className={`text-base  line-clamp-3 ${
+                darkMode
+                  ? "text-gray-200"
+                  : "text-gray-700"
+              }`}
+            >
+              {latestSuggestion.suggestion}
+            </p>
+
+            <p
+              className={`text-base ${
+                darkMode
+                  ? "text-purple-300"
+                  : "text-purple-900"
+              }`}
+            >
+
+              {t("doctorSuggestions.doctor")}:{" "}{latestSuggestion.doctor_name}
+
+            </p>
+
+          </div>
+
+        )}
       {/* HELPLINE COMPLETE BOX*/}
       <div
         className={`

@@ -21,12 +21,7 @@ function Chat({ newChat, darkMode }) {
   const { t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
-  const defaultMessages = [
-  {
-    sender: "bot",
-    text: t("chat.welcome")
-  }
-];
+  const defaultMessages = [];
 
   const [messages, setMessages] =
     useState(defaultMessages);
@@ -45,6 +40,9 @@ function Chat({ newChat, darkMode }) {
 
     const [showAttachmentMenu, setShowAttachmentMenu] =
       useState(false);  
+
+    const [streak, setStreak] =
+      useState(0);  
 
     const fileInputRef =
       useRef(null);
@@ -128,6 +126,12 @@ useEffect(() => {
 
 }, []);
 
+useEffect(() => {
+
+  fetchStreak();
+
+}, []);
+
 //TO LOAD OLD CHAT MESSAGES
   useEffect(() => {
 
@@ -192,6 +196,28 @@ const loadMessages = async (
 };
 
 
+  const fetchStreak = async () => {
+
+    try {
+
+      const response =
+        await API.get(
+          `/streak/${user.id}`
+        );
+
+      setStreak(
+        response.data.streak
+      );
+
+    }
+
+    catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
   const sendMessage = async () => {
 
     if (isWaitingForReply) {
@@ -517,7 +543,90 @@ const typingInterval =
         `}
       >
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 ">
+          {messages.length === 0 && !urlSessionId && (
+
+          <div
+            className="
+              flex
+              flex-col
+              items-center
+              justify-center
+              text-center
+              h-[65vh]
+            "
+          >
+
+            <h1
+              className={`
+                text-5xl
+                font-bold
+                mb-4
+                ${
+                  darkMode
+                    ? "text-white"
+                    : "text-gray-900"
+                }
+              `}
+            >
+              {t("chat.welcomeTitle")}, {user.username} 👋
+            </h1>
+
+            <p
+              className={`
+                text-xl
+                mb-8
+                max-w-2xl
+                ${
+                  darkMode
+                    ? "text-gray-300"
+                    : "text-gray-600"
+                }
+              `}
+            >
+              {t("chat.welcomeSubtitle")}
+            </p>
+
+            <div className="mt-8 text-center">
+
+              <p
+                className={`
+                  text-2xl
+                  font-medium
+                  mb-2
+                  ${
+                    darkMode
+                      ? "text-gray-300"
+                      : "text-gray-700"
+                  }
+                `}
+              >
+               {t("chat.wellnessStreak")}
+              </p>
+
+              <h2 className="text-6xl font-bold text-[#3B82F6] mb-2">
+                {streak} {t("chat.days")}
+              </h2>
+
+              <p
+                className={`
+                  text-xl
+                  ${
+                    darkMode
+                      ? "text-gray-400"
+                      : "text-gray-500"
+                  }
+                `}
+              >
+                {t("chat.keepGoing")}
+              </p>
+
+            </div>
+
+          </div>
+
+        )}
+        
 
           {messages.map((msg, index) => (
 

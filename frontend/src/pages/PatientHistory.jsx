@@ -29,6 +29,12 @@ function PatientHistory({ darkMode }) {
   const [patientInfo, setPatientInfo] =
   useState(null);
 
+  const [suggestion, setSuggestion] =
+    useState("");
+
+  const [suggestions, setSuggestions] =
+    useState([]);
+
   const [showAllChats, setShowAllChats] =
     useState(false);
 
@@ -38,11 +44,17 @@ function PatientHistory({ darkMode }) {
   const [showAllJournals, setShowAllJournals] =
     useState(false);
 
+  const [showAllSuggestions,setShowAllSuggestions] =
+    useState(false);  
+
   const queryParams =
   new URLSearchParams(
     location.search
   );
 
+  const user = JSON.parse(
+    localStorage.getItem("user")
+  );
   const patientId =
     queryParams.get("patient");
 
@@ -64,7 +76,11 @@ useEffect(() => {
 
 }, [patientId]);
   useEffect(() => {
+
     fetchHistory();
+
+    fetchSuggestions();
+
   }, [patientId]);
 
   const fetchHistory = async () => {
@@ -99,6 +115,70 @@ useEffect(() => {
     }
 
   };
+  const fetchSuggestions = async () => {
+
+    try {
+
+      const response =
+        await API.get(
+          `/suggestions/${patientId}`
+        );
+
+      setSuggestions(
+        [...response.data].sort(
+          (a, b) =>
+            new Date(b.created_at) -
+            new Date(a.created_at)
+        )
+      );
+
+    }
+
+    catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
+
+  const saveSuggestion = async () => {
+
+    if (!suggestion.trim()) {
+
+      return;
+
+    }
+
+    try {
+
+      await API.post(
+        "/suggestion",
+        {
+          patient_id: patientId,
+          doctor_id: user.id,
+          suggestion: suggestion
+        }
+      );
+
+      setSuggestion("");
+
+      fetchSuggestions();
+
+    }
+
+    catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
+
+  const displayedSuggestions =
+    showAllSuggestions
+      ? suggestions
+      : suggestions.slice(0, 3);
 
   return (
 
@@ -315,8 +395,8 @@ useEffect(() => {
               "
             >
               {showAllMoods
-  ? t("common.showLess")
-  : t("common.seeMore")}
+                ? t("common.showLess")
+                : t("common.seeMore")}
             </button>
 
           )}
@@ -445,8 +525,8 @@ useEffect(() => {
               "
             >
               {showAllJournals
-  ? t("common.showLess")
-  : t("common.seeMore")}
+                ? t("common.showLess")
+                : t("common.seeMore")}
             </button>
 
           )}
@@ -532,6 +612,154 @@ useEffect(() => {
 
       </div>
 
+      <div className="mt-14">
+
+        <div className="flex justify-between items-center mb-6">
+
+          <h2 className="text-3xl font-semibold">
+            {t("history.doctorSuggestions")}
+          </h2>
+
+          {suggestions.length > 3 && (
+
+            <button
+              onClick={() =>
+                setShowAllSuggestions(
+                  !showAllSuggestions
+                )
+              }
+              className="
+                bg-purple-600
+                hover:bg-purple-700
+                text-white
+                px-4
+                py-2
+                rounded-xl
+                text-sm
+              "
+            >
+              {showAllSuggestions
+                ? t("common.showLess")
+                : t("common.seeMore")}
+            </button>
+
+          )}
+
+        </div>
+
+        <div
+          className={`rounded-2xl p-5 mb-6 ${
+            darkMode
+              ? "bg-[#1f2937]"
+              : "bg-white"
+          }`}
+        >
+
+          <textarea
+            value={suggestion}
+            onChange={(e) =>
+              setSuggestion(
+                e.target.value
+              )
+            }
+            rows={4}
+            placeholder={t("history.writeSuggestion")}
+            className={`
+              w-full
+              rounded-xl
+              p-4
+              mb-4
+              outline-none
+              resize-none
+              ${
+                darkMode
+                  ? "bg-[#374151] text-white"
+                  : "bg-gray-100 text-black"
+              }
+            `}
+          />
+
+          <button
+            onClick={saveSuggestion}
+            className="
+              bg-purple-600
+              hover:bg-purple-700
+              text-white
+              px-5
+              py-2
+              rounded-xl
+            "
+          >
+          {t("history.saveSuggestion")}
+          </button>
+
+        </div>
+
+        <div className="flex flex-col gap-4">
+
+          {displayedSuggestions.map(
+            (item) => (
+
+              <div
+                key={item.id}
+                className={`rounded-2xl p-5 ${
+                  darkMode
+                    ? "bg-[#1f2937]"
+                    : "bg-white"
+                }`}
+              >
+
+                <div className="flex justify-between items-start">
+
+                  <p
+                    className={`max-w-[75%] ${
+                      darkMode
+                        ? "text-gray-200"
+                        : "text-black"
+                    }`}
+                  >
+                  <div className="flex justify-between items-start">
+
+                    <div>
+
+                      <h3
+                        className="font-semibold mb-2 text-purple-600"
+                      >
+                        Dr. {item.doctor_name}
+                      </h3>
+
+                      <p>
+                        {item.suggestion}
+                      </p>
+
+                    </div>
+
+                    
+</div>
+                  </p>
+
+                  <p
+                    className={`text-sm text-right ${
+                      darkMode
+                        ? "text-gray-400"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    {new Date(
+                      item.created_at
+                    ).toLocaleString()}
+                  </p>
+
+                </div>
+
+              </div>
+
+            )
+          )}
+
+        </div>
+
+      </div>    
     </div>
 
   );

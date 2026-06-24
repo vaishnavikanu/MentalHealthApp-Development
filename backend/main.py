@@ -10,6 +10,7 @@ from routers.journals import router as journal_router
 from routers.chat import router as chat_router
 from routers.history import router as history_router
 from routers.upload import router as upload_router
+from routers.suggestions import router as suggestion_router
 app = FastAPI()
 app.mount(
     "/uploads",
@@ -30,6 +31,7 @@ app.include_router(chat_router)
 app.include_router(history_router)
 app.include_router(settings_router)
 app.include_router(upload_router)
+app.include_router(suggestion_router)
 Base.metadata.create_all(bind=engine)
 
 @app.get("/")

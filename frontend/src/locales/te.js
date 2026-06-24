@@ -9,7 +9,9 @@ export default {
   history: "చరిత్ర",
   selfCare: "సెల్ఫ్ కేర్",
   settings: "సెట్టింగ్స్",
-  patients: "రోగులు"
+  patients: "రోగులు",
+  latest: "తాజా సూచన",
+  doctorSuggestions: "డాక్టర్ సూచనలు"
 },
 
 helpline: {
@@ -122,7 +124,21 @@ chat: {
 
   send:
     "పంపండి",
-    "thinking": "ఆలోచిస్తోంది..."
+  thinking: "ఆలోచిస్తోంది...",
+
+  welcomeTitle:
+    "స్వాగతం",
+
+  welcomeSubtitle:
+     "ఈ రోజు మీరు ఎలా అనుభూతి చెందుతున్నారు?\nమీ మాట వినడానికి మరియు మీకు మద్దతు ఇవ్వడానికి నేను ఇక్కడ ఉన్నాను.",
+  wellnessStreak:
+  "🔥 వెల్‌నెస్ స్ట్రీక్",
+
+keepGoing:
+  "మీ ఆరోగ్యాన్ని జాగ్రత్తగా చూసుకోండి 💜",
+
+  days: "రోజులు"   
+
 
 },
 checkin: {
@@ -258,7 +274,14 @@ history: {
     "మూడ్ చరిత్ర అందుబాటులో లేదు.",
 
   noJournalHistory:
-    "జర్నల్ చరిత్ర అందుబాటులో లేదు."
+    "జర్నల్ చరిత్ర అందుబాటులో లేదు.",
+
+    doctorSuggestions:
+"డాక్టర్ సూచనలు",
+writeSuggestion:
+"రోగి కోసం సూచన వ్రాయండి...",
+saveSuggestion:
+"సూచనను సేవ్ చేయండి"
 
 },
 selfCare: {
@@ -353,6 +376,13 @@ doctorChat: {
   title: "రోగి సంభాషణ",
   subtitle:
   "రోగి చాట్ చరిత్ర యొక్క చదవడానికి మాత్రమే వీక్షణ."
+},
+doctorSuggestions: {
+  title: "డాక్టర్ సూచనలు",
+  subtitle: "వైద్యులు ఇచ్చిన సూచనలు",
+  latest: "తాజా సూచన",
+  noSuggestions: "సూచనలు అందుబాటులో లేవు",
+  doctor: "వైద్యుడు"
 }
 
 };

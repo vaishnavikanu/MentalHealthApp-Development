@@ -9,7 +9,9 @@ export default {
   history: "History",
   selfCare: "Self Care",
   settings: "Settings",
-  patients: "Patients"
+  patients: "Patients",
+  latest: "Latest Suggestion",
+  doctorSuggestions: "Doctor Suggestions"
 },
 
 helpline: {
@@ -119,9 +121,18 @@ chat: {
   typeMessage:
     "Type your message...",
 
-  send:
-    "Send",
-    "thinking": "Thinking..."
+  send:"Send",
+
+  thinking: "Thinking...",
+  welcomeTitle:
+    "Welcome",
+
+  welcomeSubtitle:
+     "How are you feeling today?\nI'm here to listen and support you.",
+
+   wellnessStreak: "🔥 Wellness Streak",
+keepGoing: "Keep taking care of yourself 💜",
+days:"Days"  
 
 },
 checkin: {
@@ -257,7 +268,13 @@ history: {
     "No mood history available.",
 
   noJournalHistory:
-    "No journal history available."
+    "No journal history available.",
+    doctorSuggestions:
+"Doctor Suggestions",
+writeSuggestion:
+"Write recommendation for patient...",
+saveSuggestion:
+"Save Suggestion"
 
 },
 selfCare: {
@@ -343,6 +360,13 @@ doctorChat: {
   title: "Patient Conversation",
   subtitle:
   "Read-only view of patient chat history."
+},
+doctorSuggestions: {
+  title: "Doctor Suggestions",
+  subtitle: "Recommendations from doctors",
+  latest: "Latest Suggestion",
+  noSuggestions: "No suggestions available",
+  doctor: "Doctor"
 }
 
 };

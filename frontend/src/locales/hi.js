@@ -9,7 +9,9 @@ export default {
   history: "इतिहास",
   selfCare: "स्वयं देखभाल",
   settings: "सेटिंग्स",
-  patients: "रोगी"
+  patients: "रोगी",
+  latest: "नवीनतम सुझाव",
+  doctorSuggestions: "डॉक्टर सुझाव"
 },
 
 helpline: {
@@ -122,7 +124,22 @@ chat: {
 
   send:
     "भेजें",
-    "thinking": "सोच रहा है..."
+  thinking: "सोच रहा है...",
+
+
+  welcomeTitle:
+    "स्वागत है",
+
+  welcomeSubtitle:
+     "आज आप कैसा महसूस कर रहे हैं?\nमैं आपकी बात सुनने और आपका समर्थन करने के लिए यहाँ हूँ।",
+
+   days: "दिन",
+   wellnessStreak:
+  "🔥 वेलनेस स्ट्रीक",
+
+keepGoing:
+  "अपना ख्याल रखते रहें 💜"  
+
 
 },
 checkin: {
@@ -256,7 +273,13 @@ history: {
     "कोई मूड इतिहास उपलब्ध नहीं है।",
 
   noJournalHistory:
-    "कोई जर्नल इतिहास उपलब्ध नहीं है।"
+    "कोई जर्नल इतिहास उपलब्ध नहीं है।",
+    doctorSuggestions:
+"डॉक्टर सुझाव",
+writeSuggestion:
+"रोगी के लिए सुझाव लिखें...",
+saveSuggestion:
+"सुझाव सहेजें"
 
 },
 selfCare: {
@@ -351,5 +374,12 @@ doctorChat: {
   title: "रोगी वार्तालाप",
   subtitle:
   "रोगी चैट इतिहास का केवल-पढ़ने योग्य दृश्य।"
+},
+doctorSuggestions: {
+  title: "डॉक्टर सुझाव",
+  subtitle: "डॉक्टरों द्वारा दिए गए सुझाव",
+  latest: "नवीनतम सुझाव",
+  noSuggestions: "कोई सुझाव उपलब्ध नहीं है",
+  doctor: "डॉक्टर"
 }
 };
