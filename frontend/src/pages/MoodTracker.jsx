@@ -16,9 +16,6 @@ const { t } = useLanguage();
     useState([]);
 
 
-  const [showAll, setShowAll] =
-    useState(false);
-
   // FETCH MOODS
   useEffect(() => {
 
@@ -46,12 +43,112 @@ const { t } = useLanguage();
 
   };
 
+  const moodCount = {};
 
-  // SHOW ONLY 5
-  const displayedEntries =
-    showAll
-      ? moodEntries
-      : moodEntries.slice(0, 5);
+    moodEntries.forEach((entry) => {
+
+      moodCount[entry.mood] =
+        (moodCount[entry.mood] || 0) + 1;
+
+    });
+
+  const totalMoods = moodEntries.length;
+
+  const moodScores = {
+
+    "😍": 10,
+    "😊": 8,
+    "😴": 6,
+    "😔": 4,
+    "😨": 2,
+    "😡": 1
+
+  };
+
+  let totalScore = 0;
+
+  moodEntries.forEach((entry) => {
+
+    totalScore +=
+      moodScores[entry.mood] || 0;
+
+  });
+
+  const averageScore =
+    totalMoods > 0
+      ? (
+          totalScore /
+          totalMoods
+        ).toFixed(1)
+      : 0;
+
+  let averageEmoji = "😐";
+
+  let averageLabel =
+    t("moodTracker.noData");
+
+  if (averageScore >= 9) {
+
+    averageEmoji = "😍";
+
+    averageLabel =
+      t("moodTracker.excellent");
+
+  }
+
+  else if (averageScore >= 7) {
+
+    averageEmoji = "😊";
+
+    averageLabel =
+      t("moodTracker.good");
+
+  }
+
+  else if (averageScore >= 5) {
+
+    averageEmoji = "😴";
+
+    averageLabel =
+      t("moodTracker.okay");
+
+  }
+
+  else if (averageScore >= 3) {
+
+    averageEmoji = "😔";
+
+    averageLabel =
+      t("moodTracker.low");
+
+  }
+
+  else if (averageScore > 0) {
+
+    averageEmoji = "😨";
+
+    averageLabel =
+      t("moodTracker.poor");
+
+  }
+
+  let moodInsight = t("moodTracker.noInsight");
+
+  if (averageScore >= 9) {
+    moodInsight = t("moodTracker.insightExcellent");
+  }
+  else if (averageScore >= 7) {
+    moodInsight = t("moodTracker.insightGood");
+  }
+  else if (averageScore >= 5) {
+    moodInsight = t("moodTracker.insightOkay");
+  }
+  else if (averageScore >= 3) {
+    moodInsight = t("moodTracker.insightLow");
+  }
+  else if (averageScore > 0) {
+    moodInsight = t("moodTracker.insightPoor");
+  }
 
   return (
 
@@ -100,113 +197,205 @@ const { t } = useLanguage();
         </div>
       </div>
       {/*GRAPH SECTION*/}
-      <div className="overflow-x-auto">
+      <div >
 
   <MoodGraph
         moods={moodEntries}
         darkMode={darkMode}
       />
 
-</div>
-      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
 
-      {/* RECENT ENTRIES */}
-      <div className="flex items-center justify-between mb-5">
+        <div
+          className={`
+          rounded-3xl
+          p-4
+          ${
+          darkMode
+          ? "bg-[#1f2937]"
+          : "bg-white"
+          }
+          `}
+        >
 
-        <h2 className="text-3xl font-semibold">
-          {t("moodTracker.recent")}
+        <h2 className="text-2xl font-semibold mb-5">
+
+        {t("moodTracker.distribution")}
+
         </h2>
 
-        {moodEntries.length > 5 && (
+        <div className="space-y-2">
 
-          <button
-            onClick={() =>
-              setShowAll(!showAll)
-            }
-            className="
-               bg-[#2D6658]
-               hover:bg-[#245246]
-              transition
-              text-white
-              px-4
-              py-2
-              rounded-xl
-              text-sm
-            "
-          >
-            {showAll
-            ? t("common.showLess")
-            : t("common.seeMore")}
-          </button>
+          {Object.entries(moodCount).map(
 
-        )}
+          ([mood,count])=>{
 
-      </div>
+          const percent=Math.round(
+          (count/totalMoods)*100
+          );
 
-      {/* ENTRIES */}
-      <div className="flex flex-col gap-4">
-
-        {displayedEntries.map((entry) => (
+        return (
 
           <div
-            key={entry.id}
-            className={`
-              rounded-2xl
-              p-5
-              shadow-sm
-              ${
-                darkMode
-                  ? "bg-[#1f2937]"
-                  : "bg-white"
-              }
-            `}
+            key={mood}
+            className="space-y-2"
           >
 
-           <div className="   flex   flex-col   sm:flex-row   sm:items-center  sm:justify-between
-                gap-3 mb-3">
+            <div className="flex justify-between items-center">
 
-              <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-3">
 
-                <span className="text-5xl">
-                  {entry.mood}
+                <span className="text-3xl">
+                  {mood}
                 </span>
 
-                <div >
-                  <p
-                    className={`text-sm ${
-                      darkMode
-                        ? "text-gray-300"
-                        : "text-gray-500"
-                    }`}
-                  >
-                    {new Date(
-                      entry.created_at
-                    ).toLocaleString()}
-                  </p>
-
-                </div>
+                <span className="font-medium">
+                  {count}
+                </span>
 
               </div>
 
+              <span className="font-semibold text-[#2D6658]">
+                {percent}%
+              </span>
+
             </div>
 
-            <p
-              className={`text-sm ${
-                darkMode
-                  ? "text-gray-300"
-                  : "text-gray-600"
-              }`}
+            <div
+              className={`
+                w-full
+                h-3
+                rounded-full
+                overflow-hidden
+                ${
+                  darkMode
+                    ? "bg-[#374151]"
+                    : "bg-gray-200"
+                }
+              `}
             >
-              {entry.note}
-            </p>
+
+              <div
+                style={{
+                  width: `${percent}%`
+                }}
+                className="
+                  h-full
+                  rounded-full
+                  bg-gradient-to-r
+                  from-[#2D6658]
+                  to-[#58A58A]
+                "
+              />
+
+            </div>
 
           </div>
 
-        ))}
+          );
+
+        }
+
+        )} {/*END OF MOOD DISTRIBUTION */}
+
+        </div>
+        </div>
+        <div
+          className={`
+
+          rounded-3xl
+          p-6
+
+          ${
+          darkMode
+          ? "bg-[#1f2937]"
+          : "bg-white"
+          }
+
+          `}
+          >
+
+          <h2 className="text-2xl font-semibold mb-6">
+
+          {t("moodTracker.averageMood")}
+
+          </h2>
+
+         <div className="flex flex-col h-full">
+
+        <div className="text-center">
+
+          <div className="text-7xl mb-4">
+            {averageEmoji}
+          </div>
+
+          <h3 className="text-4xl font-bold text-[#2D6658]">
+            {averageLabel}
+          </h3>
+
+          <p
+            className={`mt-2 ${
+              darkMode
+                ? "text-gray-300"
+                : "text-gray-500"
+            }`}
+          >
+            {averageScore} / 10
+          </p>
+
+        </div>
+
+        <div
+          className={`
+            mt-8
+            rounded-2xl
+            p-5
+            py-7
+            border
+            ${
+              darkMode
+                ? "bg-[#111827] border-[#374151]"
+                : "bg-[#F7FAF9] border-[#D9E8E3]"
+            }
+          `}
+        >
+
+          <h4 className="font-semibold text-xl text-[#2D6658] mb-2">
+            {t("moodTracker.moodInsight")}
+          </h4>
+
+          <p
+            className={`leading-8 text-lg ${
+              darkMode
+                ? "text-gray-300"
+                : "text-gray-600"
+            }`}
+          >
+            {moodInsight.split(". ").map((sentence, index) => (
+
+              <span key={index}>
+
+                {sentence}
+                {index !== moodInsight.split(". ").length - 1 && "."}
+
+                <br />
+
+              </span>
+
+            ))}
+          </p>
+
+        </div>
 
       </div>
 
-    </div>
+        </div>
+
+      </div>
+      </div>
+
+</div>
+      
   );
 }
 

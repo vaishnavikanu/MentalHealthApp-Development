@@ -121,7 +121,7 @@ function DoctorSuggestions({ darkMode }) {
 
                 <div className="flex justify-between items-start mb-3">
 
-                  <h3 className="font-semibold text-lg">
+                  <h3 className="font-semibold text-lg text-[#458d7b]">
                   {t("doctorSuggestions.doctor")}:{" "}{item.doctor_name}
                   </h3>
 

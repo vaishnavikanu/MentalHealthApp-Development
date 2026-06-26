@@ -437,7 +437,7 @@ const deleteMood = async (moodId) => {
         deleteMood(item.id)
       }
       className="
-        bg-red-500
+        bg-red-400
         hover:bg-red-600
         text-white
         px-3

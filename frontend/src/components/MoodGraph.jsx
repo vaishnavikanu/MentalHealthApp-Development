@@ -429,6 +429,7 @@ setGraphData(monthlyData);
           mb-10
           border
           overflow-x-auto
+          hide-scrollbar
           ${
             darkMode
               ? "bg-[#1f2937] border-gray-700"
@@ -442,7 +443,7 @@ setGraphData(monthlyData);
           {t("moodGraph.analysis")}
         </h2>
 
-        <div className="  flex  gap-2  md:gap-5  h-72  overflow-x-auto">
+        <div className="  flex  gap-2  md:gap-5  h-72  overflow-x-auto hide-scrollbar">
 
           <div
             className={`
@@ -480,6 +481,7 @@ setGraphData(monthlyData);
               p-4
               rounded-xl
               overflow-x-auto
+              hide-scrollbar
               min-w-0
               ${
                 darkMode

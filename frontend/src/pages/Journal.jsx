@@ -378,7 +378,7 @@ function Journal({ darkMode }) {
                 }
                 className="
                   ml-4
-                  bg-red-500
+                  bg-red-400
                   hover:bg-red-600
                   transition
                   text-white

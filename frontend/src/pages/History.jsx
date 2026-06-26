@@ -38,6 +38,9 @@ function History({ darkMode }) {
   const [showAllJournals, setShowAllJournals] =
     useState(false);
 
+  const [activeTab, setActiveTab] =
+    useState("chat");  
+
   const user = JSON.parse(
     localStorage.getItem("user")
   );
@@ -167,33 +170,111 @@ useEffect(() => {
 
       </p>
 
-       {patientId && patientInfo && (
+      {/* HISTORY TABS */}
 
-        <div
-          className={`mb-10 rounded-2xl p-5 ${
-            darkMode
-              ? "bg-[#1f2937]"
-              : "bg-white"
-          }`}
+      <div
+        className="
+          flex
+          gap-3
+          mb-10
+          overflow-x-auto
+          overflow-y-hidden
+          whitespace-nowrap
+          pb-2
+          hide-scrollbar
+          snap-x
+          snap-mandatory
+          touch-pan-x
+        "
+      >
+
+        <button
+          onClick={() => setActiveTab("chat")}
+          className={`
+            shrink-0
+            snap-start
+            whitespace-nowrap
+            px-6
+            py-3
+            rounded-full
+            font-semibold
+            transition-all
+            duration-300
+            ${
+              activeTab === "chat"
+                ? "bg-[#2D6658] text-white shadow-lg"
+                : darkMode
+                ? "bg-[#1f2937] text-gray-300 hover:bg-[#2B3A4A]"
+                : "bg-white text-gray-700 hover:bg-[#DCEFE9]"
+            }
+          `}
         >
+          {t("history.chatHistory")}
+        </button>
 
-          <h2 className="text-2xl font-semibold mb-3">
-          {t("history.patientInformation")}
-          </h2>
+        {(user.role === "patient" || patientId) && (
 
-          <p className="mb-2">
-            <strong>{t("history.name")}:</strong> {patientInfo.username}
-          </p>
+          <button
+            onClick={() => setActiveTab("mood")}
+            className={`
+              shrink-0
+              snap-start
+              whitespace-nowrap
+              px-6
+              py-3
+              rounded-full
+              font-semibold
+              transition-all
+              duration-300
 
-          <p>
-            <strong>{t("history.email")}:</strong> {patientInfo.email}
-          </p>
+              ${
+                activeTab === "mood"
+                  ? "bg-[#2D6658] text-white shadow-lg"
+                  : darkMode
+                  ? "bg-[#1f2937] text-gray-300 hover:bg-[#2B3A4A]"
+                  : "bg-white text-gray-700 hover:bg-[#DCEFE9]"
+              }
+            `}
+          >
+            {t("history.moodHistory")}
+          </button>
 
-        </div>
+        )}
 
-)}     
+        {(user.role === "patient" || patientId) && (
+
+          <button
+            onClick={() => setActiveTab("journal")}
+            className={`
+              shrink-0
+              snap-start
+              whitespace-nowrap
+              px-6
+              py-3
+              rounded-full
+              font-semibold
+              transition-all
+              duration-300
+              ${
+                activeTab === "journal"
+                  ? "bg-[#2D6658] text-white shadow-lg"
+                  : darkMode
+                  ? "bg-[#1f2937] text-gray-300 hover:bg-[#2B3A4A]"
+                  : "bg-white text-gray-700 hover:bg-[#DCEFE9]"
+              }
+            `}
+          >
+            {t("history.journalHistory")}
+          </button>
+
+        )}
+
+      </div>
 
       {/* CHAT HISTORY */}
+      {activeTab === "chat" && (
+
+    <>
       <div className="mb-14">
 
         <div className="flex justify-between items-center mb-6">
@@ -298,44 +379,44 @@ useEffect(() => {
 
                   <div className="flex flex-col items-end gap-2">
 
-  <p
-    className={`text-sm ${
-      darkMode
-        ? "text-gray-400"
-        : "text-gray-400"
-    }`}
-  >
-    {new Date(
-      chat.updated_at
-    ).toLocaleString()}
-  </p>
+                    <p
+                      className={`text-sm ${
+                        darkMode
+                          ? "text-gray-400"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      {new Date(
+                        chat.updated_at
+                      ).toLocaleString()}
+                    </p>
 
-  {!patientId && (
+                    {!patientId && (
 
-    <button
-      onClick={(e) => {
+                      <button
+                        onClick={(e) => {
 
-        e.stopPropagation();
+                          e.stopPropagation();
 
-        deleteChat(chat.id);
+                          deleteChat(chat.id);
 
-      }}
-      className="
-        bg-red-500
-        hover:bg-red-600
-        text-white
-        px-3
-        py-1
-        rounded-lg
-        text-xl
-      "
-    >
-     {t("common.delete")}
-    </button>
+                        }}
+                        className="
+                          bg-red-400
+                          hover:bg-red-600
+                          text-white
+                          px-3
+                          py-1
+                          rounded-lg
+                          text-xl
+                        "
+                      >
+                      {t("common.delete")}
+                      </button>
 
-  )}
+                    )}
 
-</div>
+                  </div>
 
                 </div>
 
@@ -348,11 +429,15 @@ useEffect(() => {
         </div>
 
       </div>
+</>
+)}
 
-
-      
+    
 
       {/* MOOD HISTORY */}
+      {activeTab === "mood" && (
+        <>
+    
       {user.role === "patient" || patientId ? (
       <div className="mb-14">
 
@@ -469,6 +554,8 @@ useEffect(() => {
 
       </div>
       ) : null}
+      </>
+    )}
 
       {/*MOOD TRACKER --- VISIBLE ONLY TO DOCTOR*/ }
      
@@ -492,6 +579,8 @@ useEffect(() => {
       )}
 
       {/* JOURNAL HISTORY */}
+      {activeTab === "journal" && (
+      <>
       {(user.role === "patient" || patientId) && (
       <div>
 
@@ -607,6 +696,8 @@ useEffect(() => {
         </div>
 
       </div>
+      )}
+      </>
       )}
 
     </div>

@@ -781,7 +781,7 @@ const typingInterval =
           messages.length === 0 &&
           !urlSessionId && (
 
-            <div className="  flex  gap-3  mb-4  overflow-x-auto  scrollbar-hide md:ml-[92px]">
+            <div className="  flex  gap-3  mb-4  overflow-x-auto  hide-scrollbar md:ml-[92px]">
 
               {patientSuggestions.map(
                 (suggestion, index) => (

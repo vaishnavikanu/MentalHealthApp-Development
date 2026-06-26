@@ -191,11 +191,36 @@ moodTracker: {
   subtitle:
     "Track your emotional well-being.",
 
-  recent:
-    "Recent Mood Entries",
+    distribution:"Mood Distribution",
+    averageMood:"Average Mood",
+    calendar:"Mood Calendar",
+    bestDay:"Best mood this week",
+    consistency:"Check-in consistency",
+    excellent:"Excellent",
+    good:"Good",
+    okay:"Okay",
+    low:"Low",
+    poor:"Poor",
+    noData:"No Data",
+    moodInsight: "Mood Insight",
 
-  entry:
-    "Mood Entry"
+    noInsight: "No mood entries are available yet.",
+
+    insightExcellent:
+      "Excellent! Your recent mood has been consistently positive. Keep maintaining your healthy routine.",
+
+    insightGood:
+      "Your mood has been stable and generally positive. Continue checking in regularly.",
+
+    insightOkay:
+      "Your mood appears balanced. Regular journaling and self-care can help maintain your wellbeing.",
+
+    insightLow:
+      "Your recent moods suggest occasional emotional difficulties.Consider using the self-care resources available in the application.",
+
+    insightPoor:
+      "Your recent mood scores have been low. Consider reaching out to a trusted person or healthcare professional if these feelings continue."
+
 
 },
 moodGraph: {
