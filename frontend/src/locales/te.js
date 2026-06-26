@@ -177,10 +177,34 @@ checkin: {
   failed:
     "చెక్-ఇన్ సేవ్ చేయడం విఫలమైంది.",
      deleted: "మూడ్ విజయవంతంగా తొలగించబడింది",
-    deleteFailed: "మూడ్ తొలగించడంలో విఫలమైంది"
+    deleteFailed: "మూడ్ తొలగించడంలో విఫలమైంది",
+    moodCalendar: "మూడ్ క్యాలెండర్"
 
 },
 
+months: {
+    january: "జనవరి",
+    february: "ఫిబ్రవరి",
+    march: "మార్చి",
+    april: "ఏప్రిల్",
+    may: "మే",
+    june: "జూన్",
+    july: "జూలై",
+    august: "ఆగస్టు",
+    september: "సెప్టెంబర్",
+    october: "అక్టోబర్",
+    november: "నవంబర్",
+    december: "డిసెంబర్"
+  },
+
+  moods: {
+  happy: "సంతోషం",
+  sad: "విచారం",
+  angry: "కోపం",
+  anxious: "ఆందోళన",
+  tired: "అలసట",
+  loved: "ప్రేమ"
+},
 common: {
 
   seeMore: "మరిన్ని చూడండి",

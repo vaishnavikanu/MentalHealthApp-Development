@@ -178,10 +178,32 @@ checkin: {
   failed:
     "चेक-इन सहेजने में विफल।",
     deleted: "मूड सफलतापूर्वक हटाया गया",
-    deleteFailed: "मूड हटाने में विफल"
+    deleteFailed: "मूड हटाने में विफल",
+    moodCalendar: "मूड कैलेंडर"
 
 },
-
+months: {
+    january: "जनवरी",
+    february: "फ़रवरी",
+    march: "मार्च",
+    april: "अप्रैल",
+    may: "मई",
+    june: "जून",
+    july: "जुलाई",
+    august: "अगस्त",
+    september: "सितंबर",
+    october: "अक्टूबर",
+    november: "नवंबर",
+    december: "दिसंबर"
+  },
+moods: {
+  happy: "खुश",
+  sad: "उदास",
+  angry: "गुस्सा",
+  anxious: "चिंतित",
+  tired: "थका हुआ",
+  loved: "प्यार"
+},
 common: {
 
   seeMore: "और देखें",

@@ -9,6 +9,9 @@ import {
   useEffect
 } from "react";
 import MoodGraph from "../components/MoodGraph";
+import ChatHistoryCard from "../components/ChatHistoryCard";
+import MoodHistoryCard from "../components/MoodHistoryCard";
+import JournalHistoryCard from "../components/JournalHistoryCard";
 import API from "../api/api";
 
 function PatientHistory({ darkMode }) {
@@ -46,6 +49,9 @@ function PatientHistory({ darkMode }) {
 
   const [showAllSuggestions,setShowAllSuggestions] =
     useState(false);  
+  
+  const [activeTab, setActiveTab] =
+    useState("chat");  
 
   const queryParams =
   new URLSearchParams(
@@ -239,7 +245,124 @@ useEffect(() => {
 
       )}
 
+      {/* HISTORY TABS */}
+
+      <div
+        className="
+          flex
+          gap-3
+          mb-10
+          overflow-x-auto
+          overflow-y-hidden
+          whitespace-nowrap
+          pb-2
+          hide-scrollbar
+          snap-x
+          snap-mandatory
+          touch-pan-x
+        "
+      >
+
+        <button
+          onClick={() => setActiveTab("chat")}
+          className={`
+            shrink-0
+            snap-start
+            whitespace-nowrap
+            px-6
+            py-3
+            rounded-full
+            font-semibold
+            transition-all
+            duration-300
+            ${
+              activeTab === "chat"
+                ? "bg-[#2D6658] text-white shadow-lg"
+                : darkMode
+                ? "bg-[#1f2937] text-gray-300 hover:bg-[#2B3A4A]"
+                : "bg-white text-gray-700 hover:bg-[#DCEFE9]"
+            }
+          `}
+        >
+          {t("history.chatHistory")}
+        </button>
+
+        <button
+          onClick={() => setActiveTab("mood")}
+          className={`
+            shrink-0
+            snap-start
+            whitespace-nowrap
+            px-6
+            py-3
+            rounded-full
+            font-semibold
+            transition-all
+            duration-300
+            ${
+              activeTab === "mood"
+                ? "bg-[#2D6658] text-white shadow-lg"
+                : darkMode
+                ? "bg-[#1f2937] text-gray-300 hover:bg-[#2B3A4A]"
+                : "bg-white text-gray-700 hover:bg-[#DCEFE9]"
+            }
+          `}
+        >
+          {t("history.moodHistory")}
+        </button>
+
+        <button
+          onClick={() => setActiveTab("journal")}
+          className={`
+            shrink-0
+            snap-start
+            whitespace-nowrap
+            px-6
+            py-3
+            rounded-full
+            font-semibold
+            transition-all
+            duration-300
+            ${
+              activeTab === "journal"
+                ? "bg-[#2D6658] text-white shadow-lg"
+                : darkMode
+                ? "bg-[#1f2937] text-gray-300 hover:bg-[#2B3A4A]"
+                : "bg-white text-gray-700 hover:bg-[#DCEFE9]"
+            }
+          `}
+        >
+          {t("history.journalHistory")}
+        </button>
+
+        <button
+          onClick={() => setActiveTab("suggestion")}
+          className={`
+            shrink-0
+            snap-start
+            whitespace-nowrap
+            px-6
+            py-3
+            rounded-full
+            font-semibold
+            transition-all
+            duration-300
+            ${
+              activeTab === "suggestion"
+                ? "bg-[#2D6658] text-white shadow-lg"
+                : darkMode
+                ? "bg-[#1f2937] text-gray-300 hover:bg-[#2B3A4A]"
+                : "bg-white text-gray-700 hover:bg-[#DCEFE9]"
+            }
+          `}
+        >
+          {t("history.doctorSuggestions")}
+        </button>
+
+      </div>
+
       {/* CHAT HISTORY */}
+      {activeTab === "chat" && (
       <div className="mb-14">
 
         <div className="flex justify-between items-center mb-6">
@@ -301,62 +424,13 @@ useEffect(() => {
               : chatHistory.slice(0, 5)
             ).map((chat) => (
 
-              <div
+              <ChatHistoryCard
                 key={chat.id}
-                onClick={() =>
-  navigate(
-    `/doctor-chat-view?session=${chat.id}`
-  )
-}
-                className={`
-                  rounded-2xl
-                  p-4
-                  cursor-pointer
-                  transition
-                  shadow-sm
-                  ${
-                    darkMode
-                      ? "bg-[#1f2937] hover:bg-[#374151]"
-                      : "bg-white hover:bg-gray-100"
-                  }
-                `}
-              >
-
-                <div className="flex justify-between items-start">
-
-                  <div>
-
-                    <h3 className="text-xl font-semibold mb-2">
-                      {chat.title}
-                    </h3>
-
-                    <p
-                      className={`${
-                        darkMode
-                          ? "text-gray-300"
-                          : "text-gray-500"
-                      }`}
-                    >
-                    {t("history.continueChat")}
-                    </p>
-
-                  </div>
-
-                  <p
-                    className={`text-sm ${
-                      darkMode
-                        ? "text-gray-400"
-                        : "text-gray-400"
-                    }`}
-                  >
-                    {new Date(
-                      chat.updated_at
-                    ).toLocaleString()}
-                  </p>
-
-                </div>
-
-              </div>
+                chat={chat}
+                darkMode={darkMode}
+                patientId={patientId}
+                navigateTo="/doctor-chat-view"
+            />
 
             ))
 
@@ -365,8 +439,25 @@ useEffect(() => {
         </div>
 
       </div>
+      )}
 
       {/* MOOD HISTORY */}
+      {activeTab === "mood" && (
+      <>
+       {/* MOOD TRACKER */}
+      <div className="mb-14">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-3xl font-semibold">
+          {t("history.moodTracker")}
+          </h2>   
+        </div>
+
+        <MoodGraph
+          moods={moodHistory}
+          darkMode={darkMode}
+        />
+      </div>
+
       <div className="mb-14">
 
         <div className="flex justify-between items-center mb-6">
@@ -428,51 +519,11 @@ useEffect(() => {
               : moodHistory.slice(0, 5)
             ).map((mood) => (
 
-              <div
+              <MoodHistoryCard
                 key={mood.id}
-                className={`
-                  rounded-2xl
-                  p-5
-                  shadow-sm
-                  ${
-                    darkMode
-                      ? "bg-[#1f2937]"
-                      : "bg-white"
-                  }
-                `}
-              >
-
-                <div className="flex justify-between items-center mb-3">
-
-                  <h3 className="text-5xl font-semibold">
-                    {mood.mood}
-                  </h3>
-
-                  <p
-                    className={`text-sm ${
-                      darkMode
-                        ? "text-gray-400"
-                        : "text-gray-400"
-                    }`}
-                  >
-                    {new Date(
-                      mood.created_at
-                    ).toLocaleString()}
-                  </p>
-
-                </div>
-
-                <p
-                  className={`${
-                    darkMode
-                      ? "text-gray-300"
-                      : "text-gray-600"
-                  }`}
-                >
-                  {mood.note}
-                </p>
-
-              </div>
+                mood={mood}
+                darkMode={darkMode}
+              />
 
             ))
 
@@ -482,21 +533,13 @@ useEffect(() => {
 
       </div>
 
-      {/* MOOD TRACKER */}
-      <div className="mb-14">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-semibold">
-          {t("history.moodTracker")}
-          </h2>   
-        </div>
-
-        <MoodGraph
-          moods={moodHistory}
-          darkMode={darkMode}
-        />
-      </div>
+     
+      </>
+)}
 
       {/* JOURNAL HISTORY */}
+      {activeTab === "journal" && (
+      <>
       <div>
 
         <div className="flex justify-between items-center mb-6">
@@ -557,52 +600,12 @@ useEffect(() => {
               ? journalHistory
               : journalHistory.slice(0, 5)
             ).map((journal) => (
-
-              <div
+              <JournalHistoryCard
                 key={journal.id}
-                className={`
-                  rounded-2xl
-                  p-5
-                  shadow-sm
-                  ${
-                    darkMode
-                      ? "bg-[#1f2937]"
-                      : "bg-white"
-                  }
-                `}
-              >
-
-                <div className="flex justify-between items-center mb-3">
-
-                  <h3 className="text-lg font-semibold">
-                    {journal.title}
-                  </h3>
-
-                  <p
-                    className={`text-sm ${
-                      darkMode
-                        ? "text-gray-400"
-                        : "text-gray-400"
-                    }`}
-                  >
-                    {new Date(
-                      journal.created_at
-                    ).toLocaleString()}
-                  </p>
-
-                </div>
-
-                <p
-                  className={`${
-                    darkMode
-                      ? "text-gray-300"
-                      : "text-gray-600"
-                  }`}
-                >
-                  {journal.content}
-                </p>
-
-              </div>
+                journal={journal}
+                darkMode={darkMode}
+              />
+              
 
             ))
 
@@ -611,7 +614,10 @@ useEffect(() => {
         </div>
 
       </div>
-
+      </>
+      )}
+      {activeTab === "suggestion" && (
+      <>
       <div className="mt-14">
 
         <div className="flex justify-between items-center mb-6">
@@ -735,7 +741,7 @@ useEffect(() => {
                     </div>
 
                     
-</div>
+                  </div>
                   </p>
 
                   <p
@@ -760,7 +766,11 @@ useEffect(() => {
         </div>
 
       </div>    
+   
+      </>
+      )}
     </div>
+
 
   );
 }

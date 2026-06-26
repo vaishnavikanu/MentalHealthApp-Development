@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import API from "../api/api";
+import MoodCalendar from "../components/MoodCalendar";
 import {
   useLanguage
 } from "../context/LanguageContext";
@@ -253,12 +254,16 @@ const deleteMood = async (moodId) => {
         </div>
 
       )}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-8">
 
+    {/* LEFT SIDE */}
+
+    <div className="xl:col-span-2 flex flex-col gap-8">
       {/* MOOD CARD */}
       <div
         className={`
           rounded-3xl
-          p-5
+          p-6
           mb-8
           ${
             darkMode
@@ -323,7 +328,7 @@ const deleteMood = async (moodId) => {
         </h2>
 
         <textarea
-          rows={6}
+          rows={5}
           placeholder={t("checkin.notePlaceholder")}
           value={note}
           onChange={(e) =>
@@ -360,8 +365,17 @@ const deleteMood = async (moodId) => {
         >
          {t("checkin.save")}
         </button>
+    </div>
+    </div>
+    <div className="xl:col-span-1 self-start">
 
-      </div>
+      <MoodCalendar
+          moods={recentCheckins}
+          darkMode={darkMode}
+      />
+
+    </div>
+    </div>
 
       {/* RECENT HEADER */}
       <div className="flex items-center justify-between mb-5">

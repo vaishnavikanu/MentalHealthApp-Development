@@ -1,85 +1,108 @@
-<div
-                key={chat.id}
-                onClick={() =>
-                  navigate(
-                    `/?session=${chat.id}`
-                  )
-                }
-                className={`
-                  rounded-2xl
-                  p-4
-                  cursor-pointer
-                  transition
-                  shadow-sm
-                  ${
-                    darkMode
-                      ? "bg-[#1f2937] hover:bg-[#374151]"
-                      : "bg-white hover:bg-gray-100"
-                  }
-                `}
-              >
+import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 
-                <div className="flex justify-between items-start">
+function ChatHistoryCard({
+  chat,
+  darkMode,
+  patientId,
+  deleteChat,
+  navigateTo
+}) {
 
-                  <div>
+  const navigate = useNavigate();
+  const { t } = useLanguage();
 
-                    <h3 className="text-xl font-semibold mb-2">
-                      {chat.title}
-                    </h3>
+  return (
 
-                    <p
-                      className={`${
-                        darkMode
-                          ? "text-gray-300"
-                          : "text-gray-500"
-                      }`}
-                    >
-                    {t("history.continueChat")}
-                    </p>
+    // paste your removed card here
+    <div       
+        key={chat.id}
+        onClick={() =>
+            navigate(
+            `${navigateTo}?session=${chat.id}`
+            )
+        }
+        className={`
+            rounded-2xl
+            p-4
+            cursor-pointer
+            transition
+            shadow-sm
+            ${
+            darkMode
+                ? "bg-[#1f2937] hover:bg-[#374151]"
+                : "bg-white hover:bg-gray-100"
+            }
+        `}
+        >
 
-                  </div>
+        <div className="flex justify-between items-start">
 
-                  <div className="flex flex-col items-end gap-2">
+            <div>
 
-                    <p
-                      className={`text-sm ${
-                        darkMode
-                          ? "text-gray-400"
-                          : "text-gray-400"
-                      }`}
-                    >
-                      {new Date(
-                        chat.updated_at
-                      ).toLocaleString()}
-                    </p>
+            <h3 className="text-xl font-semibold mb-2">
+                {chat.title}
+            </h3>
 
-                    {!patientId && (
+            <p
+                className={`${
+                darkMode
+                    ? "text-gray-300"
+                    : "text-gray-500"
+                }`}
+            >
+            {t("history.continueChat")}
+            </p>
 
-                      <button
-                        onClick={(e) => {
+            </div>
 
-                          e.stopPropagation();
+            <div className="flex flex-col items-end gap-2">
 
-                          deleteChat(chat.id);
+            <p
+                className={`text-sm ${
+                darkMode
+                    ? "text-gray-400"
+                    : "text-gray-400"
+                }`}
+            >
+                {new Date(
+                chat.updated_at
+                ).toLocaleString()}
+            </p>
 
-                        }}
-                        className="
-                          bg-red-400
-                          hover:bg-red-600
-                          text-white
-                          px-3
-                          py-1
-                          rounded-lg
-                          text-xl
-                        "
-                      >
-                      {t("common.delete")}
-                      </button>
+            {!patientId && (
 
-                    )}
+                <button
+                onClick={(e) => {
 
-                  </div>
+                    e.stopPropagation();
 
-                </div>
+                    deleteChat(chat.id);
 
-              </div>
+                }}
+                className="
+                    bg-red-400
+                    hover:bg-red-600
+                    text-white
+                    px-3
+                    py-1
+                    rounded-lg
+                    text-xl
+                "
+                >
+                {t("common.delete")}
+                </button>
+
+            )}
+
+            </div>
+
+        </div>
+
+    </div>
+
+  );
+
+}
+
+export default ChatHistoryCard;

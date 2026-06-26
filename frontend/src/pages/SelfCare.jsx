@@ -126,6 +126,9 @@ function SelfCare({ darkMode }) {
     text-center
     shadow-sm
     transition
+    h-[180px]
+    flex
+    flex-col
   `;
 
   const buttonStyle = `
@@ -193,7 +196,7 @@ function SelfCare({ darkMode }) {
           </h2>
 
           <p
-            className={`text-[16px] mb-8 ${
+            className={`text-[16px] flex-1 ${
               darkMode
                 ? "text-gray-300"
                 : "text-gray-600"
@@ -230,7 +233,7 @@ function SelfCare({ darkMode }) {
           </h2>
 
           <p
-            className={`text-[16px] mb-8 ${
+            className={`text-[16px] flex-1 ${
               darkMode
                 ? "text-gray-300"
                 : "text-gray-600"
@@ -271,7 +274,7 @@ function SelfCare({ darkMode }) {
           </h2>
 
           <p
-            className={`text-[16px] mb-8 ${
+            className={`text-[16px] flex-1 ${
               darkMode
                 ? "text-gray-300"
                 : "text-gray-600"
@@ -308,7 +311,7 @@ function SelfCare({ darkMode }) {
           </h2>
 
           <p
-            className={`text-[16px] mb-8 ${
+            className={`text-[16px] flex-1 ${
               darkMode
                 ? "text-gray-300"
                 : "text-gray-600"
@@ -343,7 +346,7 @@ function SelfCare({ darkMode }) {
           </h2>
 
           <p
-            className={`text-[16px] mb-8 ${
+            className={`text-[16px] flex-1 ${
               darkMode
                 ? "text-gray-300"
                 : "text-gray-600"
@@ -380,7 +383,7 @@ function SelfCare({ darkMode }) {
           </h2>
 
           <p
-            className={`text-[16px] mb-8 ${
+            className={`text-[16px] flex-1 ${
               darkMode
                 ? "text-gray-300"
                 : "text-gray-600"

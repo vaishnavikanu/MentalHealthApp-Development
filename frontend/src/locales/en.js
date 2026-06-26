@@ -171,8 +171,31 @@ checkin: {
   failed:
     "Failed to save check-in.",
     deleted: "Mood deleted successfully",
-    deleteFailed: "Failed to delete mood"
+    deleteFailed: "Failed to delete mood",
+    moodCalendar: "Mood Calendar"
 
+},
+months: {
+    january: "January",
+    february: "February",
+    march: "March",
+    april: "April",
+    may: "May",
+    june: "June",
+    july: "July",
+    august: "August",
+    september: "September",
+    october: "October",
+    november: "November",
+    december: "December"
+  },
+  moods: {
+  happy: "Happy",
+  sad: "Sad",
+  angry: "Angry",
+  anxious: "Anxious",
+  tired: "Tired",
+  loved: "Loved"
 },
 
 common: {
