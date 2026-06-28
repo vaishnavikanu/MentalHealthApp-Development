@@ -1,260 +1,154 @@
-import {
-  useState,
-  useEffect,
-  useRef
-} from "react";
-import {
-  useLocation,
-  useNavigate
-} from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import API from "../api/api";
 import { FaPaperclip } from "react-icons/fa";
-import {
-  useLanguage
-} from "../context/LanguageContext";
+import { useLanguage } from "../context/LanguageContext";
 function Chat({ newChat, darkMode }) {
-
-  const user = JSON.parse(
-  localStorage.getItem("user")
-  );
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const { t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
   const defaultMessages = [];
 
-  const [messages, setMessages] =
-    useState(defaultMessages);
+  const [messages, setMessages] = useState(defaultMessages);
 
-  const [input, setInput] =
-    useState("");
+  const [input, setInput] = useState("");
 
-  const [isWaitingForReply, setIsWaitingForReply] =
-  useState(false);  // to not let send while waiting for bot reply
+  const [isWaitingForReply, setIsWaitingForReply] = useState(false); // to not let send while waiting for bot reply
 
-  const [typingText, setTypingText] =
-  useState("");//to show thinking message for bot
+  const [typingText, setTypingText] = useState(""); //to show thinking message for bot
 
   const patientSuggestions = [
-
     t("chat.suggestion1"),
 
     t("chat.suggestion2"),
 
-    t("chat.suggestion3")
-
+    t("chat.suggestion3"),
   ];
 
-    const [attachments, setAttachments] =
-      useState([]);
+  const [attachments, setAttachments] = useState([]);
 
-    const [showAttachmentMenu, setShowAttachmentMenu] =
-      useState(false);  
+  const [showAttachmentMenu, setShowAttachmentMenu] = useState(false);
 
-    const [streak, setStreak] =
-      useState(0);  
+  const [streak, setStreak] = useState(0);
 
-    const fileInputRef =
-      useRef(null);
+  const fileInputRef = useRef(null);
 
-    const cameraInputRef =
-      useRef(null);
+  const cameraInputRef = useRef(null);
 
-    const textareaRef =
-      useRef(null);
+  const textareaRef = useRef(null);
 
-    const isMobile =
-      /Android|iPhone|iPad|iPod/i.test(
-        navigator.userAgent
-      );  
-    
-/* CHAT SESSION CURRENT OPEN*/
-  const [sessionId, setSessionId] =
-  useState(null);
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  const queryParams =
-  new URLSearchParams(
-    location.search
-  );
+  /* CHAT SESSION CURRENT OPEN*/
+  const [sessionId, setSessionId] = useState(null);
 
-  const urlSessionId =
-  queryParams.get("session");
+  const queryParams = new URLSearchParams(location.search);
 
-  const messagesEndRef =
-    useRef(null);
+  const urlSessionId = queryParams.get("session");
 
-  const chatContainerRef =
-  useRef(null);  
+  const messagesEndRef = useRef(null);
 
-  const isInitialLoad =
-  useRef(true);  
+  const chatContainerRef = useRef(null);
 
-useEffect(() => {
+  const isInitialLoad = useRef(true);
 
-  if (!urlSessionId) {
+  useEffect(() => {
+    if (!urlSessionId) {
+      setMessages(defaultMessages);
 
-    setMessages(defaultMessages);
+      setSessionId(null);
 
-    setSessionId(null);
+      setTimeout(() => {
+        textareaRef.current?.focus(); //focus on textarea after new chat
+      }, 100);
+    }
+  }, [newChat, urlSessionId]);
+
+  /* AUTOMATIC SCROLLING*/
+  useEffect(() => {
+    if (isInitialLoad.current) {
+      messagesEndRef.current?.scrollIntoView({
+        behavior: "auto",
+      });
+
+      isInitialLoad.current = false;
+    } else {
+      messagesEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    textareaRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    fetchStreak();
+  }, []);
+
+  //TO LOAD OLD CHAT MESSAGES
+  useEffect(() => {
+    if (urlSessionId) {
+      loadMessages(urlSessionId);
+    } else {
+      setMessages(defaultMessages);
+    }
 
     setTimeout(() => {
-
-      textareaRef.current?.focus();//focus on textarea after new chat
-
+      textareaRef.current?.focus();
     }, 100);
+  }, [urlSessionId]);
 
-  }
+  const loadMessages = async (session_id) => {
+    try {
+      const response = await API.get(`/messages/${session_id}`);
 
-}, [newChat, urlSessionId]);
+      const formattedMessages = response.data.map((msg) => ({
+        sender: msg.sender,
+        text: msg.message,
+        attachments: msg.attachments || [],
+      }));
 
-/* AUTOMATIC SCROLLING*/
-  useEffect(() => {
+      isInitialLoad.current = true;
+      setMessages(formattedMessages);
 
-  if (isInitialLoad.current) {
-
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "auto"
-    });
-
-    isInitialLoad.current = false;
-
-  }
-
-  else {
-
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth"
-    });
-
-  }
-
-}, [messages]);
-
-useEffect(() => {
-
-  textareaRef.current?.focus();
-
-}, []);
-
-useEffect(() => {
-
-  fetchStreak();
-
-}, []);
-
-//TO LOAD OLD CHAT MESSAGES
-  useEffect(() => {
-
-  if (urlSessionId) {
-
-    loadMessages(
-      urlSessionId
-    );
-
-  }
-
-  else {
-
-    setMessages(defaultMessages);
-
-  }
-
-  setTimeout(() => {
-
-    textareaRef.current?.focus();
-
-  }, 100);
-
-}, [urlSessionId]);
-
-const loadMessages = async (
-  session_id
-) => {
-
-  try {
-
-    const response =
-      await API.get(
-        `/messages/${session_id}`
-      );
-
-    const formattedMessages =
-      response.data.map(
-        (msg) => ({
-          sender: msg.sender,
-          text: msg.message,
-          attachments:
-            msg.attachments || []
-        })
-      );
-
-    isInitialLoad.current = true;  
-    setMessages(
-      formattedMessages
-    );
-
-    setSessionId(
-      session_id
-    );
-
-  } catch (error) {
-
-    console.log(error);
-
-  }
-
-};
-
+      setSessionId(session_id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchStreak = async () => {
-
     try {
+      const response = await API.get(`/streak/${user.id}`);
 
-      const response =
-        await API.get(
-          `/streak/${user.id}`
-        );
-
-      setStreak(
-        response.data.streak
-      );
-
-    }
-
-    catch (error) {
-
+      setStreak(response.data.streak);
+    } catch (error) {
       console.log(error);
-
     }
-
   };
   const sendMessage = async () => {
-
     if (isWaitingForReply) {
       return;
     }
-    if (
-      input.trim() === "" &&
-      attachments.length === 0
-    ) {
+    if (input.trim() === "" && attachments.length === 0) {
       return;
     }
-//nothing is typed so NO SEND
+    //nothing is typed so NO SEND
 
-  const currentAttachments =
-  [...attachments];
+    const currentAttachments = [...attachments];
 
-  const currentInput = input;
-  const userMessage = {
-    sender: "user",
-    text: input,
-    attachments: currentAttachments
-  };
+    const currentInput = input;
+    const userMessage = {
+      sender: "user",
+      text: input,
+      attachments: currentAttachments,
+    };
 
-    setMessages(prev => [
-      ...prev,
-      userMessage
-    ]);
+    setMessages((prev) => [...prev, userMessage]);
 
     setInput("");
     setAttachments([]);
@@ -262,302 +156,183 @@ const loadMessages = async (
 
     textareaRef.current?.focus();
 
-  try {
+    try {
+      /* CREATE NEW SESSION */
+      let currentSessionId = sessionId;
 
+      /* CREATE NEW SESSION */
+      if (!currentSessionId) {
+        let chatTitle = currentInput;
 
-    /* CREATE NEW SESSION */
-   let currentSessionId =
-  sessionId;
+        if (currentInput.trim() === "" && currentAttachments.length > 0) {
+          chatTitle = currentAttachments[0].filename;
+        }
 
-/* CREATE NEW SESSION */
-if (!currentSessionId) {
-
-  let chatTitle = currentInput;
-
-  if (
-    currentInput.trim() === "" &&
-    currentAttachments.length > 0
-  ) {
-
-    chatTitle =
-      currentAttachments[0].filename;
-
-  }
-
-  const sessionResponse =
-    await API.post(
-      "/chat-session",
-      {
-        user_id: user.id,
-        title: chatTitle
-      }
-    );
-
-  currentSessionId =
-    sessionResponse.data.session_id;
-
-  setSessionId(
-    currentSessionId
-  );
-
-}
-
-    /* SAVE USER MESSAGE IN DB */
-    const messageResponse =
-        await API.post(
-          "/message",
-          {
-            session_id:
-              currentSessionId,
-            sender: "user",
-            message: currentInput
-          }
-        );
-
-      const messageId =
-        messageResponse.data.id;
-      
-      for (const file of currentAttachments) {
-
-        await API.put(
-          `/attachment/${file.id}`,
-          {
-            message_id: messageId
-          }
-        );
-
-      }  
-      if (!sessionId) {
-
-        navigate(
-          `/?session=${currentSessionId}`,
-          { replace: true }
-        );
-
-      }
-
-    /* TEMP BOT RESPONSE */
-   const botText =
-  t("chat.botReply");
-
-let currentText = "";
-
-let index = 0;
-
-const typingInterval =
-  setInterval(() => {
-
-    currentText +=
-      botText[index];
-
-    setTypingText(
-      currentText
-    );
-
-    requestAnimationFrame(() => {
-
-      if (chatContainerRef.current) {
-
-        chatContainerRef.current.scrollTo({
-          top:
-            chatContainerRef.current.scrollHeight,
-          behavior: "smooth"
+        const sessionResponse = await API.post("/chat-session", {
+          user_id: user.id,
+          title: chatTitle,
         });
 
+        currentSessionId = sessionResponse.data.session_id;
+
+        setSessionId(currentSessionId);
       }
 
-    });
+      /* SAVE USER MESSAGE IN DB */
+      const messageResponse = await API.post("/message", {
+        session_id: currentSessionId,
+        sender: "user",
+        message: currentInput,
+      });
 
-    index++;
+      const messageId = messageResponse.data.id;
 
-    if (
-      index >= botText.length
-    ) {
+      for (const file of currentAttachments) {
+        await API.put(`/attachment/${file.id}`, {
+          message_id: messageId,
+        });
+      }
+      if (!sessionId) {
+        navigate(`/?session=${currentSessionId}`, { replace: true });
+      }
 
-      clearInterval(
-        typingInterval
-      );
+      /* TEMP BOT RESPONSE */
+      const botText = t("chat.botReply");
 
-      setMessages(prev => [
+      let currentText = "";
 
-        ...prev,
+      let index = 0;
 
-        {
-          sender: "bot",
-          text: botText
+      const typingInterval = setInterval(() => {
+        currentText += botText[index];
+
+        setTypingText(currentText);
+
+        requestAnimationFrame(() => {
+          if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTo({
+              top: chatContainerRef.current.scrollHeight,
+              behavior: "smooth",
+            });
+          }
+        });
+
+        index++;
+
+        if (index >= botText.length) {
+          clearInterval(typingInterval);
+
+          setMessages((prev) => [
+            ...prev,
+
+            {
+              sender: "bot",
+              text: botText,
+            },
+          ]);
+
+          setTypingText("");
+
+          API.post("/message", {
+            session_id: currentSessionId,
+            sender: "bot",
+            message: botText,
+          });
+
+          setIsWaitingForReply(false);
+          textareaRef.current?.focus();
         }
-
-      ]);
-
-      setTypingText("");
-
-      API.post(
-        "/message",
-        {
-          session_id:
-            currentSessionId,
-          sender: "bot",
-          message: botText
-        }
-      );
-
-      setIsWaitingForReply(false);
-      textareaRef.current?.focus();
-
+      }, 30);
+    } catch (error) {
+      console.log(error);
     }
-
-  }, 30);
-
-    
-    
-
-  } catch (error) {
-
-    console.log(error);
-
-  }
-
-};
+  };
 
   const handleKeyDown = (e) => {
-
-    if (
-      e.key === "Enter" &&
-      !e.shiftKey
-    ) {
-
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
   };
 
   const handleFileUpload = async (e) => {
-
-    const files =
-      Array.from(e.target.files);
+    const files = Array.from(e.target.files);
 
     for (const file of files) {
-
       try {
+        const formData = new FormData();
 
-        const formData =
-          new FormData();
+        formData.append("file", file);
 
-        formData.append(
-          "file",
-          file
-        );
+        const response = await API.post("/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
-        const response =
-          await API.post(
-            "/upload",
-            formData,
-            {
-              headers: {
-                "Content-Type":
-                  "multipart/form-data"
-              }
-            }
-          );
-
-        setAttachments(prev => [
-          ...prev,
-          response.data
-        ]);
-
-      }
-
-      catch (error) {
-
+        setAttachments((prev) => [...prev, response.data]);
+      } catch (error) {
         console.log(error);
-
       }
-
     }
     textareaRef.current?.focus();
     e.target.value = "";
   };
 
   const removeAttachment = async (id) => {
-
     try {
+      await API.delete(`/attachment/${id}`);
 
-      await API.delete(
-        `/attachment/${id}`
-      );
-
-      setAttachments(prev =>
-        prev.filter(
-          file => file.id !== id
-        )
-      );
-
-    }
-
-    catch (error) {
-
+      setAttachments((prev) => prev.filter((file) => file.id !== id));
+    } catch (error) {
       console.log(error);
-
     }
-
   };
   return (
-
     <>
-  <input
-    type="file"
-    multiple
-    hidden
-    ref={fileInputRef}
-    onChange={handleFileUpload}
-  />
+      <input
+        type="file"
+        multiple
+        hidden
+        ref={fileInputRef}
+        onChange={handleFileUpload}
+      />
 
-  <input
-    type="file"
-    accept="image/*"
-    capture="environment"
-    hidden
-    ref={cameraInputRef}
-    onChange={handleFileUpload}
-  />
-    <div
-      className={`
+      <input
+        type="file"
+        accept="image/*"
+        capture="environment"
+        hidden
+        ref={cameraInputRef}
+        onChange={handleFileUpload}
+      />
+      <div
+        className={`
         h-full
         flex
         flex-col
         transition-colors
         duration-300
-        ${
-          darkMode
-            ? "bg-[#0f172a]"
-            : "bg-[#f7f5fc]"
-        }
+        ${darkMode ? "bg-[#0f172a]" : "bg-[#f7f5fc]"}
       `}
-    >
-
-      {/* CHAT MESSAGES */}
-      <div
-         ref={chatContainerRef}
-        className={`
+      >
+        {/* CHAT MESSAGES */}
+        <div
+          ref={chatContainerRef}
+          className={`
           flex-1
           overflow-y-auto
           px-10
           py-8
           transition-colors
           duration-300
-          ${
-            darkMode
-              ? "bg-[#0f172a]"
-              : "bg-[#f7f5fc]"
-          }
+          ${darkMode ? "bg-[#0f172a]" : "bg-[#f7f5fc]"}
         `}
-      >
-
-        <div className="flex flex-col gap-5 ">
-          {messages.length === 0 && !urlSessionId && (
-
-          <div
-            className="
+        >
+          <div className="flex flex-col gap-5 ">
+            {messages.length === 0 && !urlSessionId && (
+              <div
+                className="
               flex
               flex-col
               items-center
@@ -566,108 +341,77 @@ const typingInterval =
               min-h-[50vh] 
               md:min-h-[55vh]
             "
-          >
-
-            <h1
-              className={`
+              >
+                <h1
+                  className={`
                 text-5xl
                 font-bold
                 mb-4
-                ${
-                  darkMode
-                    ? "text-white"
-                    : "text-gray-900"
-                }
+                ${darkMode ? "text-white" : "text-gray-900"}
               `}
-            >
-              {user.role === "doctor"
-                ? `${t("chat.doctorWelcomeTitle")} ${user.username} 👋`
-                : `${t("chat.welcomeTitle")}, ${user.username} 👋`}
-            </h1>
+                >
+                  {user.role === "doctor"
+                    ? `${t("chat.doctorWelcomeTitle")} ${user.username} 👋`
+                    : `${t("chat.welcomeTitle")}, ${user.username} 👋`}
+                </h1>
 
-            {user.role === "doctor" ? (
-
-              <p
-                className={`
+                {user.role === "doctor" ? (
+                  <p
+                    className={`
                   text-xl
                   max-w-2xl
-                  ${
-                    darkMode
-                      ? "text-gray-300"
-                      : "text-gray-600"
-                  }
+                  ${darkMode ? "text-gray-300" : "text-gray-600"}
                 `}
-              >
-                {t("chat.doctorWelcomeSubtitle")}
-              </p>
-
-            ) : (
-
-              <>
-                <p
-                  className={`
+                  >
+                    {t("chat.doctorWelcomeSubtitle")}
+                  </p>
+                ) : (
+                  <>
+                    <p
+                      className={`
                     text-xl
                     mb-8
                     max-w-2xl
-                    ${
-                      darkMode
-                        ? "text-gray-300"
-                        : "text-gray-600"
-                    }
+                    ${darkMode ? "text-gray-300" : "text-gray-600"}
                   `}
-                >
-                  {t("chat.welcomeSubtitle")}
-                </p>
+                    >
+                      {t("chat.welcomeSubtitle")}
+                    </p>
 
-                <div className="mt-8 text-center">
-
-                  <p
-                    className={`
+                    <div className="mt-8 text-center">
+                      <p
+                        className={`
                       text-2xl
                       font-medium
                       mb-2
-                      ${
-                        darkMode
-                          ? "text-gray-300"
-                          : "text-gray-700"
-                      }
+                      ${darkMode ? "text-gray-300" : "text-gray-700"}
                     `}
-                  >
-                    {t("chat.wellnessStreak")}
-                  </p>
+                      >
+                        {t("chat.wellnessStreak")}
+                      </p>
 
-                  <h2 className="text-6xl font-bold text-[#2D6658] mb-2">
-                    {streak} {t("chat.days")}
-                  </h2>
+                      <h2 className="text-6xl font-bold text-[#2D6658] mb-2">
+                        {streak} {t("chat.days")}
+                      </h2>
 
-                  <p
-                    className={`
+                      <p
+                        className={`
                       text-xl
-                      ${
-                        darkMode
-                          ? "text-gray-400"
-                          : "text-gray-500"
-                      }
+                      ${darkMode ? "text-gray-400" : "text-gray-500"}
                     `}
-                  >
-                    {t("chat.keepGoing")}
-                  </p>
-
-                </div>
-              </>
-
+                      >
+                        {t("chat.keepGoing")}
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
             )}
 
-          </div>
-
-        )}
-        
-
-          {messages.map((msg, index) => (
-
-            <div
-              key={index}
-              className={`
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`
                 max-w-[70%]
                 px-6
                 py-4
@@ -698,36 +442,32 @@ const typingInterval =
                     `
                 }
               `}
-            >
-              {msg.text}
+              >
+                {msg.text}
 
-              {msg.attachments?.map((file) => (
-
-                <a
-                  key={file.id}
-                  href={`http://localhost:8000/${file.file_path}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
+                {msg.attachments?.map((file) => (
+                  <a
+                    key={file.id}
+                    href={`http://localhost:8000/${file.file_path}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
                     block
                     mt-2
                     text-sm
                     underline
                     hover:opacity-80
                   "
-                >
-                  📎 {file.filename}
-                </a>
+                  >
+                    📎 {file.filename}
+                  </a>
+                ))}
+              </div>
+            ))}
 
-              ))}
-            </div>
-
-          ))}
-
-          {typingText && (
-
-          <div
-            className={`
+            {typingText && (
+              <div
+                className={`
               max-w-[70%]
               px-6
               py-4
@@ -743,26 +483,19 @@ const typingInterval =
                   : "bg-[#e9e9ee] text-black"
               }
             `}
-          >
+              >
+                {typingText}
 
-            {typingText}
-
-            <span className="animate-pulse">
-              |
-            </span>
-
+                <span className="animate-pulse">|</span>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
           </div>
-
-        )}
-          <div ref={messagesEndRef} />
-
         </div>
 
-      </div>
-
-      {/* FIXED INPUT AREA */}
-      <div
-        className={`
+        {/* FIXED INPUT AREA */}
+        <div
+          className={`
           px-10
           py-5
          
@@ -775,22 +508,15 @@ const typingInterval =
               : "border-gray-200 bg-[#f7f5fc]"
           }
         `}
-      >
-
-        {user.role === "patient" &&
-          messages.length === 0 &&
-          !urlSessionId && (
-
-            <div className="  flex  gap-3  mb-4  overflow-x-auto  hide-scrollbar md:ml-[92px]">
-
-              {patientSuggestions.map(
-                (suggestion, index) => (
-
+        >
+          {user.role === "patient" &&
+            messages.length === 0 &&
+            !urlSessionId && (
+              <div className="  flex  gap-3  mb-4  overflow-x-auto  hide-scrollbar md:ml-[92px]">
+                {patientSuggestions.map((suggestion, index) => (
                   <button
                     key={index}
-                    onClick={() =>
-                      setInput(suggestion)
-                    }
+                    onClick={() => setInput(suggestion)}
                     className={`
                     shrink-0
                     px-4
@@ -817,22 +543,15 @@ const typingInterval =
                   >
                     {suggestion}
                   </button>
-
-                )
-              )}
-
-            </div>
-
-          )}  
-        {attachments.length > 0 && (
-
-  <div className="flex flex-wrap gap-2 mb-3">
-
-    {attachments.map((file) => (
-
-      <div
-        key={file.id}
-        className={`
+                ))}
+              </div>
+            )}
+          {attachments.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-3">
+              {attachments.map((file) => (
+                <div
+                  key={file.id}
+                  className={`
           flex
           items-center
           gap-2
@@ -840,49 +559,31 @@ const typingInterval =
           py-2
           rounded-xl
           text-sm
-          ${
-            darkMode
-              ? "bg-[#1e293b] text-white"
-              : "bg-white"
-          }
+          ${darkMode ? "bg-[#1e293b] text-white" : "bg-white"}
         `}
-      >
+                >
+                  <span>📎 {file.filename}</span>
 
-        <span>
-          📎 {file.filename}
-        </span>
-
-        <button
-          onClick={() =>
-            removeAttachment(file.id)
-          }
-          className="
+                  <button
+                    onClick={() => removeAttachment(file.id)}
+                    className="
             ml-1
             font-bold
             hover:text-red-500
             transition
           "
-        >
-          ×
-        </button>
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
 
-      </div>
-
-    ))}
-
-        </div>
-
-    )}
-
-        <div className="flex items-end gap-4 relative">
-
-          <button
-            onClick={() =>
-              setShowAttachmentMenu(
-                !showAttachmentMenu
-              )
-            }
-            className={`
+          <div className="flex items-end gap-4 relative">
+            <button
+              onClick={() => setShowAttachmentMenu(!showAttachmentMenu)}
+              className={`
               p-5
               rounded-2xl
               text-white
@@ -893,14 +594,13 @@ const typingInterval =
               hover:to-[#2D6658]
               shrink-0
             `}
-          >
-            <FaPaperclip fontSize={18} />
-          </button>
+            >
+              <FaPaperclip fontSize={18} />
+            </button>
 
-          {showAttachmentMenu && (
-
-            <div
-              className={`
+            {showAttachmentMenu && (
+              <div
+                className={`
                 absolute
                 bottom-20
                 left-0
@@ -915,42 +615,36 @@ const typingInterval =
                     : "bg-white border border-gray-200"
                 }
               `}
-            >
+              >
+                <button
+                  onClick={() => {
+                    fileInputRef.current.click();
 
-              <button
-                onClick={() => {
-
-                  fileInputRef.current.click();
-
-                  setShowAttachmentMenu(false);
-
-                }}
-                className={`
+                    setShowAttachmentMenu(false);
+                  }}
+                  className={`
                   w-full
                   text-left
                   px-4
                   py-3
                  ${
-                    darkMode
-                      ? "text-white hover:bg-[#334155]"
-                      : "text-black hover:bg-[#DCEFE9]"
-                  }
+                   darkMode
+                     ? "text-white hover:bg-[#334155]"
+                     : "text-black hover:bg-[#DCEFE9]"
+                 }
                 `}
-              >
-                {t("chat.upload")}
-              </button>
+                >
+                  {t("chat.upload")}
+                </button>
 
-              {isMobile && (
+                {isMobile && (
+                  <button
+                    onClick={() => {
+                      cameraInputRef.current.click();
 
-  <button
-    onClick={() => {
-
-      cameraInputRef.current.click();
-
-      setShowAttachmentMenu(false);
-
-    }}
-    className={`
+                      setShowAttachmentMenu(false);
+                    }}
+                    className={`
       w-full
       text-left
       px-4
@@ -961,27 +655,22 @@ const typingInterval =
           : "text-black hover:bg-[#DCEFE9]"
       }
     `}
-  >
-                  {t("chat.takePhoto")}
-                </button>
+                  >
+                    {t("chat.takePhoto")}
+                  </button>
+                )}
+              </div>
+            )}
 
-              )}
-
-            </div>
-
-          )}      
-
-          <textarea
-            ref={textareaRef}
-            autoFocus
-            placeholder={t("chat.typeMessage")}
-            value={input}
-            onChange={(e) =>
-              setInput(e.target.value)
-            }
-            onKeyDown={handleKeyDown}
-            rows={1}
-            className={`
+            <textarea
+              ref={textareaRef}
+              autoFocus
+              placeholder={t("chat.typeMessage")}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              rows={1}
+              className={`
               flex-1
               rounded-2xl
               border
@@ -1016,12 +705,12 @@ const typingInterval =
                   `
               }
             `}
-          />
+            />
 
-          <button
-          disabled={isWaitingForReply}
-            onClick={sendMessage}
-            className={`
+            <button
+              disabled={isWaitingForReply}
+              onClick={sendMessage}
+              className={`
               px-8
               py-4
               rounded-2xl
@@ -1035,29 +724,24 @@ const typingInterval =
               duration-300
               shrink-0
                ${
-                isWaitingForReply
-                  ? "opacity-50 cursor-not-allowed"
-                  : darkMode
-                  ? "hover:opacity-80 shadow-lg shadow-[#2D6658]/30"
-                  : "hover:opacity-90 shadow-md"
-              }
+                 isWaitingForReply
+                   ? "opacity-50 cursor-not-allowed"
+                   : darkMode
+                     ? "hover:opacity-80 shadow-lg shadow-[#2D6658]/30"
+                     : "hover:opacity-90 shadow-md"
+               }
               ${
                 darkMode
                   ? "hover:opacity-80 shadow-lg shadow-[#2D6658]/30"
                   : "hover:opacity-90 shadow-md"
               }
             `}
-          >
-           {isWaitingForReply
-            ? t("chat.thinking")
-            : t("chat.send")}
-          </button>
-
+            >
+              {isWaitingForReply ? t("chat.thinking") : t("chat.send")}
+            </button>
+          </div>
         </div>
-
       </div>
-
-    </div>
     </>
   );
 }

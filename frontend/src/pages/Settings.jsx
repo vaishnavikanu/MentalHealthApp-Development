@@ -14,17 +14,18 @@ function Settings({
       localStorage.getItem("user")
     );
 
-    const {
-  language,
-  changeLanguage,
-  t
-} = useLanguage();
+  const {
+    language,
+    changeLanguage,
+    t,
+    translate
+  } = useLanguage();
   /* TEMP THEME */
   const [tempDarkMode, setTempDarkMode] =
     useState(darkMode);
 
-const [tempLanguage, setTempLanguage] =
-  useState(language);  
+  const [tempLanguage, setTempLanguage] =
+    useState(language);  
 
   const [message, setMessage] =
     useState("");
@@ -53,22 +54,25 @@ const [tempLanguage, setTempLanguage] =
   /* SAVE SETTINGS */
   const saveSettings = () => {
 
-  setDarkMode(tempDarkMode);
+    setDarkMode(tempDarkMode);
 
-  localStorage.setItem(
-    "theme",
-    tempDarkMode ? "dark" : "light"
-  );
+    localStorage.setItem(
+      "theme",
+      tempDarkMode ? "dark" : "light"
+    );
 
-  changeLanguage(
-    tempLanguage
-  );
+    changeLanguage(
+      tempLanguage
+    );
 
-  showMessage(
-  t("settings.saved")
-);
+    showMessage(
+      translate(
+        "settings.saved",
+        tempLanguage
+      )
+    );
 
-};
+  };
 
   /* CLEAR DATA */
   const clearAllData = async () => {
@@ -129,7 +133,7 @@ const [tempLanguage, setTempLanguage] =
 
   return (
     <>
-          {showChatPopup && (
+      {showChatPopup && (
 
         <div className="
           fixed inset-0
@@ -152,11 +156,11 @@ const [tempLanguage, setTempLanguage] =
           `}>
 
             <h2 className="text-xl sm:text-2xl font-bold mb-4">
-            {t("settings.clearChatHistory")}
+              {t("settings.clearChatHistory")}
             </h2>
 
             <p className="mb-6 text-sm sm:text-base">
-            {t("settings.chatPopup")}
+              {t("settings.chatPopup")}
             </p>
 
             <div 
@@ -282,7 +286,7 @@ const [tempLanguage, setTempLanguage] =
                   bg-red-500 text-white
                 "
               >
-              {t("settings.delete")}
+                {t("settings.delete")}
               </button>
 
             </div>
@@ -292,54 +296,54 @@ const [tempLanguage, setTempLanguage] =
         </div>
 
       )}
-    <div
-      className={`
-        min-h-full
-        px-8
-        py-6
-        pb-20
-        transition-all
-        duration-300
-        ${
-          darkMode
-            ? "bg-[#111827] text-white"
-            : "bg-[#f5f5f7] text-black"
-        }
-      `}
-    >
-
-      {/* HEADING */}
-      <h1 className="text-4xl font-bold mb-2">
-       {t("settings.title")}
-      </h1>
-
-      <p
-        className={`mb-8 ${
-          darkMode
-            ? "text-gray-300"
-            : "text-gray-500"
-        }`}
+      <div
+        className={`
+          min-h-full
+          px-8
+          py-6
+          pb-20
+          transition-all
+          duration-300
+          ${
+            darkMode
+              ? "bg-[#111827] text-white"
+              : "bg-[#f5f5f7] text-black"
+          }
+        `}
       >
-      {t("settings.subtitle")}
-      </p>
 
-      {/* MESSAGE */}
-      {message && (
+        {/* HEADING */}
+        <h1 className="text-4xl font-bold mb-2">
+          {t("settings.title")}
+        </h1>
 
-        <div
-          className="
-            bg-[#DCEFE9]
-            text-[#2D6658]
-            px-4
-            py-3
-            rounded-xl
-            mb-6
-            text-sm
-            font-medium
-          "
+        <p
+          className={`mb-8 ${
+            darkMode
+              ? "text-gray-300"
+              : "text-gray-500"
+          }`}
         >
-          {message}
-        </div>
+          {t("settings.subtitle")}
+        </p>
+
+        {/* MESSAGE */}
+        {message && (
+
+          <div
+            className="
+              bg-[#DCEFE9]
+              text-[#2D6658]
+              px-4
+              py-3
+              rounded-xl
+              mb-6
+              text-sm
+              font-medium
+            "
+          >
+            {message}
+          </div>
 
       )}
 
@@ -358,7 +362,7 @@ const [tempLanguage, setTempLanguage] =
       >
 
         <h2 className="text-xl font-semibold mb-5">
-        {t("settings.profile")}
+          {t("settings.profile")}
         </h2>
 
         <div className="flex flex-col gap-5">
@@ -373,7 +377,7 @@ const [tempLanguage, setTempLanguage] =
                   : "text-gray-400"
               }`}
             >
-            {t("settings.name")}
+              {t("settings.name")}
             </p>
 
             <div
@@ -442,7 +446,7 @@ const [tempLanguage, setTempLanguage] =
       >
 
         <h2 className="text-xl font-semibold mb-5">
-        {t("settings.preferences")}
+          {t("settings.preferences")}
         </h2>
 
         <div className="flex items-center justify-between">
@@ -505,110 +509,106 @@ const [tempLanguage, setTempLanguage] =
 
         </div>
         <div className="
-  mt-6
-  flex
-  flex-col
-  sm:flex-row
-  sm:justify-between
-  sm:items-center
-  gap-3
-">
+          mt-6
+          flex
+          flex-col
+          sm:flex-row
+          sm:justify-between
+          sm:items-center
+          gap-3
+        ">
 
-  <h3 className="font-medium">
-    {t("settings.language")}
-  </h3>
+          <h3 className="font-medium">
+            {t("settings.language")}
+          </h3>
 
-  <div className="relative w-full sm:w-auto">
+          <div className="relative w-full sm:w-auto">
 
-  <button
-    onClick={() =>
-      setShowLanguageMenu(
-        !showLanguageMenu
-      )
-    }
-    className={`
-      w-full
-      sm:w-[150px]
-      px-4
-      py-2
-      rounded-xl
-      border
-      text-left
-      ${
-        darkMode
-          ? "bg-[#374151] text-white border-gray-600"
-          : "bg-white text-black border-gray-300"
-      }
-    `}
-  >
-    {tempLanguage === "en"
-      ? "English"
-      : tempLanguage === "hi"
-      ? "हिन्दी"
-      : "తెలుగు"}
-  </button>
+            <button
+              onClick={() =>
+                setShowLanguageMenu(
+                  !showLanguageMenu
+                )
+              }
+              className={`
+                w-full
+                sm:w-[150px]
+                px-4
+                py-2
+                rounded-xl
+                border
+                text-left
+                ${
+                  darkMode
+                    ? "bg-[#374151] text-white border-gray-600"
+                    : "bg-white text-black border-gray-300"
+                }
+              `}
+            >
+                {tempLanguage === "en"
+                  ? "English"
+                  : tempLanguage === "hi"
+                  ? "हिन्दी"
+                  : "తెలుగు"}
+            </button>
 
-  {showLanguageMenu && (
+            {showLanguageMenu && (
 
-    <div
-      className={`
-        absolute
-        top-full
-        mt-2
-        left-0
-        w-full
-        rounded-xl
-        overflow-hidden
-        shadow-lg
-        z-50
-        ${
-          darkMode
-            ? "bg-[#374151]"
-            : "bg-white"
-        }
-      `}
-    >
+              <div
+                className={`
+                  absolute
+                  top-full
+                  mt-2
+                  left-0
+                  w-full
+                  rounded-xl
+                  overflow-hidden
+                  shadow-lg
+                  z-50
+                  ${
+                    darkMode
+                      ? "bg-[#374151]"
+                      : "bg-white"
+                  }
+                `}
+              >
 
-      <button
-        onClick={() => {
-          setTempLanguage("en");
-          setShowLanguageMenu(false);
-        }}
-        className="w-full px-4 py-3 text-left hover:bg-[#2D6658] hover:text-white"
-      >
-        English
-      </button>
+              <button
+                onClick={() => {
+                  setTempLanguage("en");
+                  setShowLanguageMenu(false);
+                }}
+                className="w-full px-4 py-3 text-left hover:bg-[#2D6658] hover:text-white"
+              >
+                English
+              </button>
 
-      <button
-        onClick={() => {
-          setTempLanguage("hi");
-          setShowLanguageMenu(false);
-        }}
-        className="w-full px-4 py-3 text-left hover:bg-[#2D6658] hover:text-white"
-      >
-        हिन्दी
-      </button>
+              <button
+                onClick={() => {
+                  setTempLanguage("hi");
+                  setShowLanguageMenu(false);
+                }}
+                className="w-full px-4 py-3 text-left hover:bg-[#2D6658] hover:text-white"
+              >
+                हिन्दी
+              </button>
 
-      <button
-        onClick={() => {
-          setTempLanguage("te");
-          setShowLanguageMenu(false);
-        }}
-        className="w-full px-4 py-3 text-left hover:bg-[#2D6658] hover:text-white"
-      >
-        తెలుగు
-      </button>
+              <button
+                onClick={() => {
+                  setTempLanguage("te");
+                  setShowLanguageMenu(false);
+                }}
+                className="w-full px-4 py-3 text-left hover:bg-[#2D6658] hover:text-white"
+              >
+                తెలుగు
+              </button>
 
-    </div>
+            </div>
 
-  )}
+            )}
 
-</div>
-
-        
-
-
-</div>        
+          </div>
+        </div>        
       </div>
 
       {/* DATA MANAGEMENT */}

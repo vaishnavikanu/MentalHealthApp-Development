@@ -329,11 +329,12 @@ function MoodCalendar({ moods, darkMode }) {
                 `}
                 >
 
-                {new Date(
-                    currentYear,
-                    currentMonth,
-                    day
-                ).toLocaleDateString()}
+              {  new Date(currentYear, currentMonth, day).toLocaleDateString("en-IN", {
+                weekday: "short",
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+                })}
 
                 </div>
 

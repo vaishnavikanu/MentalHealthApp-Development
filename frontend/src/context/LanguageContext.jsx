@@ -41,6 +41,16 @@ export function LanguageProvider({
     te
   };
 
+  const translate = (key, lang) => {
+
+    return key
+      .split(".")
+      .reduce(
+        (obj, i) => obj?.[i],
+        translations[lang]
+      ) || key;
+
+  };
   const t = (key) => {
 
     return key
@@ -58,7 +68,8 @@ export function LanguageProvider({
       value={{
         language,
         changeLanguage,
-        t
+        t,
+        translate
       }}
     >
 
