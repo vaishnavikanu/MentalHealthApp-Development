@@ -322,12 +322,9 @@ history: {
 
   noJournalHistory:
     "No journal history available.",
-    doctorSuggestions:
-"Doctor Suggestions",
-writeSuggestion:
-"Write recommendation for patient...",
-saveSuggestion:
-"Save Suggestion"
+  doctorSuggestions:"Doctor Suggestions",
+  writeSuggestion:"Write recommendation for patient...",
+  saveSuggestion:"Save Suggestion"
 
 },
 selfCare: {
@@ -365,7 +362,7 @@ selfCare: {
   someone: "Someone you appreciate",
   proud: "One thing you're proud of",
 
-  sleepText: "Take deep breaths 🌙 Relax your body slowly. Let your thoughts drift away.",
+  sleepText: "Take deep breaths 🌙\nRelax your body slowly.\nLet your thoughts drift away.",
 
   step1: "5 things you can SEE",
   step2: "4 things you can TOUCH",

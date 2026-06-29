@@ -1,161 +1,98 @@
 import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api/api";
-import { useLanguage }
-from "../context/LanguageContext";
+import { useLanguage } from "../context/LanguageContext";
 function Signup({ darkMode }) {
-
-  const {
-  language,
-  changeLanguage,
-  t
-} = useLanguage();
-  const usernameRef = useRef(null);//REFERS USERNAME INPUT BOX
-  const emailRef = useRef(null);//EMAIL BOX
-  const passwordRef = useRef(null);//PASSWORD BOX
+  const { language, changeLanguage, t } = useLanguage();
+  const usernameRef = useRef(null); //REFERS USERNAME INPUT BOX
+  const emailRef = useRef(null); //EMAIL BOX
+  const passwordRef = useRef(null); //PASSWORD BOX
   const confirmPasswordRef = useRef(null);
 
   const showMessage = (text) => {
+    setMessage(text);
 
-  setMessage(text);
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
+  };
+  const [username, setUsername] = useState("");
 
-  setTimeout(() => {
+  const [email, setEmail] = useState("");
 
-    setMessage("");
+  const [password, setPassword] = useState("");
 
-  }, 3000);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-};
-  const [username, setUsername] =
-    useState("");
+  const role = "patient";
 
-  const [email, setEmail] =
-    useState("");
+  const [message, setMessage] = useState("");
 
-  const [password, setPassword] =
-    useState("");
-
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
-
-  const role="patient";
-
-  const [message, setMessage] =
-    useState("");
-
-  const [showLanguages, setShowLanguages] =
-    useState(false);  
+  const [showLanguages, setShowLanguages] = useState(false);
 
   const signupUser = async () => {
-
-    if (
-      !username ||
-      !email ||
-      !password ||
-      !confirmPassword
-    ) {
-
-      showMessage(
-  t("signup.fillFields")
-);
+    if (!username || !email || !password || !confirmPassword) {
+      showMessage(t("signup.fillFields"));
 
       return;
     }
 
-    if (
-      password !== confirmPassword
-    ) {
-
-      showMessage(
-  t("signup.passwordMismatch")
-);
+    if (password !== confirmPassword) {
+      showMessage(t("signup.passwordMismatch"));
 
       return;
     }
 
     try {
-
-      const response =
-        await API.post(
-          "/signup",
-          {
-            username,
-            email,
-            password,
-            role,
-            language
-          }
-        );
+      const response = await API.post("/signup", {
+        username,
+        email,
+        password,
+        role,
+        language,
+      });
 
       localStorage.setItem(
         "user",
-        JSON.stringify( // STORES USER INFO IN LOCAL STORAGE IN STRING FORMAT
-          response.data.user
-        )
+        JSON.stringify(
+          // STORES USER INFO IN LOCAL STORAGE IN STRING FORMAT
+          response.data.user,
+        ),
       );
 
-      showMessage(
-  t("signup.signupSuccess")
-);
+      showMessage(t("signup.signupSuccess"));
 
       setTimeout(() => {
-
         window.location.href = "/";
-
       }, 1000);
-
     } catch (error) {
-
       console.log(error);
 
-      showMessage(
-  t("signup.signupFailed")
-);
-
+      showMessage(t("signup.signupFailed"));
     }
-
   };
 
   const handleSubmit = (e) => {
-
     e.preventDefault(); //PREVENTS PAGE REFRESH ON FORM SUBMISSION BECAUSE OF DEFAULT BEHAVIOR
 
     signupUser();
-
   };
 
-  const handleArrowNavigation = (
-    e,
-    nextRef,
-    prevRef
-  ) => {
-
-    if (
-      e.key === "ArrowDown" &&
-      nextRef 
-    ) {
-
+  const handleArrowNavigation = (e, nextRef, prevRef) => {
+    if (e.key === "ArrowDown" && nextRef) {
       e.preventDefault(); //PREVENTS SCROLLING THE PAGE WHEN USING ARROW KEYS
 
-      nextRef.current.focus();//FOCUSES THE NEXT INPUT FIELD
-
+      nextRef.current.focus(); //FOCUSES THE NEXT INPUT FIELD
     }
 
-    if (
-      e.key === "ArrowUp" &&
-      prevRef
-    ) {
-
+    if (e.key === "ArrowUp" && prevRef) {
       e.preventDefault();
 
       prevRef.current.focus();
-
     }
-
   };
 
   return (
-
     <div //WE USE FLEX BECAUSE WE WANT TO CENTER THE FORM BOTH VERTICALLY AND HORIZONTALLY
       className={`
         min-h-screen
@@ -165,40 +102,25 @@ function Signup({ darkMode }) {
         px-6
         py-6
         overflow-y-scroll
-        ${
-          darkMode
-            ? "bg-[#111827]"
-            : "bg-[#f5f5f7]"
-        }
+        ${darkMode ? "bg-[#111827]" : "bg-[#f5f5f7]"}
       `}
     >
-
       <form
-        onSubmit={handleSubmit} 
+        onSubmit={handleSubmit}
         className={`
           w-full
           max-w-md
           rounded-3xl
           p-4 sm:p-8
           shadow-lg
-          ${
-            darkMode
-              ? "bg-[#1f2937] text-white"
-              : "bg-white text-black"
-          }
+          ${darkMode ? "bg-[#1f2937] text-white" : "bg-white text-black"}
         `}
       >
-
-      <div className="mb-5 relative">
-
-  <button
-    type="button"
-    onClick={() =>
-      setShowLanguages(
-        !showLanguages
-      )
-    }
-    className={`
+        <div className="mb-5 relative">
+          <button
+            type="button"
+            onClick={() => setShowLanguages(!showLanguages)}
+            className={`
       w-full
       px-4
       py-3
@@ -213,26 +135,21 @@ function Signup({ darkMode }) {
           : "bg-white text-black border-gray-300"
       }
     `}
-  >
+          >
+            <span>
+              {language === "en"
+                ? "English"
+                : language === "hi"
+                  ? "हिन्दी"
+                  : "తెలుగు"}
+            </span>
 
-    <span>
+            <span>▼</span>
+          </button>
 
-      {language === "en"
-        ? "English"
-        : language === "hi"
-        ? "हिन्दी"
-        : "తెలుగు"}
-
-    </span>
-
-    <span>▼</span>
-
-  </button>
-
-  {showLanguages && (
-
-    <div
-      className={`
+          {showLanguages && (
+            <div
+              className={`
         absolute
         top-full
         left-0
@@ -242,97 +159,76 @@ function Signup({ darkMode }) {
         overflow-hidden
         shadow-xl
         z-50
-        ${
-          darkMode
-            ? "bg-[#374151]"
-            : "bg-white"
-        }
+        ${darkMode ? "bg-[#374151]" : "bg-white"}
       `}
-    >
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  changeLanguage("en");
 
-      <button
-        type="button"
-        onClick={() => {
-
-          changeLanguage("en");
-
-          setShowLanguages(false);
-
-        }}
-        className="
+                  setShowLanguages(false);
+                }}
+                className="
           w-full
           text-left
           px-4
           py-3
           hover:bg-[#2D6658] hover:text-white
         "
-      >
-        English
-      </button>
+              >
+                English
+              </button>
 
-      <button
-        type="button"
-        onClick={() => {
+              <button
+                type="button"
+                onClick={() => {
+                  changeLanguage("hi");
 
-          changeLanguage("hi");
-
-          setShowLanguages(false);
-
-        }}
-        className="
+                  setShowLanguages(false);
+                }}
+                className="
           w-full
           text-left
           px-4
           py-3
           hover:bg-[#2D6658] hover:text-white
         "
-      >
-        हिन्दी
-      </button>
+              >
+                हिन्दी
+              </button>
 
-      <button
-        type="button"
-        onClick={() => {
+              <button
+                type="button"
+                onClick={() => {
+                  changeLanguage("te");
 
-          changeLanguage("te");
-
-          setShowLanguages(false);
-
-        }}
-        className="
+                  setShowLanguages(false);
+                }}
+                className="
           w-full
           text-left
           px-4
           py-3
           hover:bg-[#2D6658] hover:text-white
         "
-      >
-        తెలుగు
-      </button>
-
-    </div>
-
-  )}
-
-</div>
+              >
+                తెలుగు
+              </button>
+            </div>
+          )}
+        </div>
         {/* TITLE */}
         <h1 className="text-3xl sm:text-4xl font-bold mb-2">
           {t("signup.title")}
         </h1>
 
-        <p
-          className={`mb-6 ${
-            darkMode
-              ? "text-gray-300"
-              : "text-gray-500"
-          }`}
-        >
+        <p className={`mb-6 ${darkMode ? "text-gray-300" : "text-gray-500"}`}>
           {t("signup.subtitle")}
         </p>
 
         {/* MESSAGE */}
         {message && (
-
           <div
             className="
               bg-[#DCEFE9]
@@ -346,7 +242,6 @@ function Signup({ darkMode }) {
           >
             {message}
           </div>
-
         )}
 
         {/* USERNAME */}
@@ -355,16 +250,8 @@ function Signup({ darkMode }) {
           type="text"
           placeholder={t("signup.username")}
           value={username}
-          onChange={(e) =>
-            setUsername(e.target.value)
-          }
-          onKeyDown={(e) =>
-            handleArrowNavigation(
-              e,
-              emailRef,
-              null
-            )
-          }
+          onChange={(e) => setUsername(e.target.value)}
+          onKeyDown={(e) => handleArrowNavigation(e, emailRef, null)}
           className={`
             w-full
             px-4
@@ -372,11 +259,7 @@ function Signup({ darkMode }) {
             rounded-xl
             outline-none
             mb-4
-            ${
-              darkMode
-                ? "bg-[#374151] text-white"
-                : "bg-gray-100"
-            }
+            ${darkMode ? "bg-[#374151] text-white" : "bg-gray-100"}
           `}
         />
 
@@ -386,16 +269,8 @@ function Signup({ darkMode }) {
           type="email"
           placeholder={t("signup.email")}
           value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-          onKeyDown={(e) =>
-            handleArrowNavigation(
-              e,
-              passwordRef,
-              usernameRef
-            )
-          }
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={(e) => handleArrowNavigation(e, passwordRef, usernameRef)}
           className={`
             w-full
             px-4
@@ -403,11 +278,7 @@ function Signup({ darkMode }) {
             rounded-xl
             outline-none
             mb-4
-            ${
-              darkMode
-                ? "bg-[#374151] text-white"
-                : "bg-gray-100"
-            }
+            ${darkMode ? "bg-[#374151] text-white" : "bg-gray-100"}
           `}
         />
 
@@ -417,15 +288,9 @@ function Signup({ darkMode }) {
           type="password"
           placeholder={t("signup.password")}
           value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
+          onChange={(e) => setPassword(e.target.value)}
           onKeyDown={(e) =>
-            handleArrowNavigation(
-              e,
-              confirmPasswordRef,
-              emailRef
-            )
+            handleArrowNavigation(e, confirmPasswordRef, emailRef)
           }
           className={`
             w-full
@@ -434,11 +299,7 @@ function Signup({ darkMode }) {
             rounded-xl
             outline-none
             mb-4
-            ${
-              darkMode
-                ? "bg-[#374151] text-white"
-                : "bg-gray-100"
-            }
+            ${darkMode ? "bg-[#374151] text-white" : "bg-gray-100"}
           `}
         />
 
@@ -448,18 +309,8 @@ function Signup({ darkMode }) {
           type="password"
           placeholder={t("signup.confirmPassword")}
           value={confirmPassword}
-          onChange={(e) =>
-            setConfirmPassword(
-              e.target.value
-            )
-          }
-          onKeyDown={(e) =>
-            handleArrowNavigation(
-              e,
-              null,
-              passwordRef
-            )
-          }
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          onKeyDown={(e) => handleArrowNavigation(e, null, passwordRef)}
           className={`
             w-full
             px-4
@@ -467,15 +318,9 @@ function Signup({ darkMode }) {
             rounded-xl
             outline-none
             mb-6
-            ${
-              darkMode
-                ? "bg-[#374151] text-white"
-                : "bg-gray-100"
-            }
+            ${darkMode ? "bg-[#374151] text-white" : "bg-gray-100"}
           `}
         />
-        
-        
 
         {/* BUTTON */}
         <button
@@ -492,20 +337,18 @@ function Signup({ darkMode }) {
             mb-5
           "
         >
-          {t("signup.signup")} {/* WHEN THIS BUTTON IS CLICKED THE FORM 
+          {t("signup.signup")}{" "}
+          {/* WHEN THIS BUTTON IS CLICKED THE FORM 
           SUBMISSION IS TRIGGERED AND THE SIGNUP FUNCTION IS CALLED */}
         </button>
 
         {/* LOGIN LINK */}
         <p
           className={`text-sm text-center ${
-            darkMode
-              ? "text-gray-300"
-              : "text-gray-500"
+            darkMode ? "text-gray-300" : "text-gray-500"
           }`}
         >
           {t("signup.haveAccount")}{" "}
-
           <Link
             to="/login"
             className="
@@ -515,11 +358,8 @@ function Signup({ darkMode }) {
           >
             {t("signup.loginLink")}
           </Link>
-
         </p>
-
       </form>
-
     </div>
   );
 }
